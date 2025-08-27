@@ -155,9 +155,89 @@ export const dashboardAPI = {
 
 // Legacy axios-style API object for backward compatibility
 const api = {
-  get: async (url) => {
-    // Bu sadece geriye uyumluluk için - kullanılmaması tavsiye edilir
-    console.warn('Legacy API kullanımı tespit edildi. Yeni Supabase API\'sini kullanın.');
+  async get(url) {
+    console.log('Legacy API GET:', url);
+    
+    if (url.includes('/products')) {
+      const result = await productsAPI.getAll();
+      return { data: result.data || [] };
+    }
+    if (url.includes('/categories')) {
+      const result = await categoriesAPI.getAll();
+      return { data: result.data || [] };
+    }
+    if (url.includes('/stocktransactions')) {
+      const result = await stockTransactionsAPI.getAll();
+      return { data: result.data || [] };
+    }
+    if (url.includes('/stockrequests')) {
+      const result = await stockRequestsAPI.getAll();
+      return { data: result.data || [] };
+    }
+    
+    console.warn('Legacy API endpoint not supported:', url);
+    return { data: [] };
+  },
+
+  async post(url, data) {
+    console.log('Legacy API POST:', url, data);
+    
+    if (url.includes('/auth/login')) {
+      return await authAPI.login(data.email, data.password);
+    }
+    if (url.includes('/auth/register')) {
+      return await authAPI.register(data);
+    }
+    if (url.includes('/categories')) {
+      const result = await categoriesAPI.create(data);
+      return { data: result.data };
+    }
+    if (url.includes('/products')) {
+      const result = await productsAPI.create(data);
+      return { data: result.data };
+    }
+    if (url.includes('/stocktransactions')) {
+      const result = await stockTransactionsAPI.create(data);
+      return { data: result.data };
+    }
+    if (url.includes('/stockrequests')) {
+      const result = await stockRequestsAPI.create(data);
+      return { data: result.data };
+    }
+    
+    console.warn('Legacy API endpoint not supported:', url);
+    return { data: null };
+  },
+
+  async put(url, data) {
+    console.log('Legacy API PUT:', url, data);
+    
+    const id = url.split('/').pop();
+    
+    if (url.includes('/products/')) {
+      const result = await productsAPI.update(id, data);
+      return { data: result.data };
+    }
+    if (url.includes('/stockrequests/')) {
+      const result = await stockRequestsAPI.update(id, data);
+      return { data: result.data };
+    }
+    
+    console.warn('Legacy API endpoint not supported:', url);
+    return { data: null };
+  },
+
+  async delete(url) {
+    console.log('Legacy API DELETE:', url);
+    
+    const id = url.split('/').pop();
+    
+    if (url.includes('/products/')) {
+      const result = await productsAPI.delete(id);
+      return { data: result.data };
+    }
+    
+    console.warn('Legacy API endpoint not supported:', url);
     return { data: null };
   }
 };
