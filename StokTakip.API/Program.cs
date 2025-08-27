@@ -49,9 +49,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Database configuration
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Database configuration - PostgreSQL for production, SQL Server for local
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (!string.IsNullOrEmpty(connectionString) && connectionString.Contains("postgresql"))
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
 
 // Identity configuration
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
