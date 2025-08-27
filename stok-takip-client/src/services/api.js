@@ -131,6 +131,17 @@ export const dashboardAPI = {
         .select('*', { count: 'exact', head: true })
         .eq('is_active', true);
 
+      // Categories count
+      const { count: categoriesCount } = await supabase
+        .from('categories')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_active', true);
+
+      // Transactions count
+      const { count: transactionsCount } = await supabase
+        .from('stock_transactions')
+        .select('*', { count: 'exact', head: true });
+
       // Low stock count  
       const { count: lowStockCount } = await supabase
         .from('products')
@@ -144,19 +155,13 @@ export const dashboardAPI = {
         .select('*', { count: 'exact', head: true })
         .eq('status', 'Pending');
 
-      // Recent transactions
-      const { data: recentTransactions } = await supabase
-        .from('stock_transactions')
-        .select('*, products(name)')
-        .order('transaction_date', { ascending: false })
-        .limit(5);
-
       return {
         data: {
           totalProducts: productsCount || 0,
+          totalCategories: categoriesCount || 0,
+          totalTransactions: transactionsCount || 0,
           lowStockProducts: lowStockCount || 0,
-          pendingRequests: pendingRequestsCount || 0,
-          recentTransactions: recentTransactions || []
+          pendingRequests: pendingRequestsCount || 0
         },
         error: null
       };
@@ -203,6 +208,30 @@ const api = {
     if (url.includes('/products/low-stock')) {
       const result = await productsAPI.getLowStock();
       return { data: result.data || [] };
+    }
+    if (url.includes('/auth/users')) {
+      // Supabase'den kullanıcıları al
+      try {
+        const { data: users, error } = await supabase.auth.admin.listUsers();
+        if (error) throw error;
+        
+        // .NET formatına dönüştür
+        const formattedUsers = users.users.map(user => ({
+          id: user.id,
+          email: user.email,
+          firstName: user.user_metadata?.firstName || 'N/A',
+          lastName: user.user_metadata?.lastName || 'N/A',
+          phoneNumber: user.user_metadata?.phoneNumber || '',
+          roles: [user.user_metadata?.role || 'user'],
+          isSuperAdmin: user.user_metadata?.role === 'admin',
+          createdAt: user.created_at
+        }));
+        
+        return { data: formattedUsers };
+      } catch (error) {
+        console.error('Users fetch error:', error);
+        return { data: [] };
+      }
     }
     
     console.warn('Legacy API endpoint not supported:', url);

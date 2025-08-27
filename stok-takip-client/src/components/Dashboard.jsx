@@ -73,11 +73,22 @@ const Dashboard = () => {
     }
   };
 
+  const fetchLowStockProducts = async () => {
+    try {
+      const response = await api.get('/products/low-stock');
+      const products = response.data || [];
+      setLowStockProducts(products);
+    } catch (error) {
+      console.error('Düşük stoklu ürünler alınamadı:', error);
+      setLowStockProducts([]);
+    }
+  };
+
   const fetchPendingRequests = async () => {
     try {
       const response = await api.get('/stockrequests');
       const requests = response.data || [];
-      const pendingCount = requests.filter(request => request.status === 'pending').length;
+      const pendingCount = requests.filter(request => request.status === 'Pending').length;
       setPendingRequests(pendingCount);
     } catch (error) {
       console.error('Bekleyen talepler alınamadı:', error);
