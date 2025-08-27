@@ -158,6 +158,15 @@ const api = {
   async get(url) {
     console.log('Legacy API GET:', url);
     
+    if (url.includes('/auth/profile')) {
+      // Supabase'den current user bilgisi al
+      const user = authAPI.getCurrentUser();
+      return { data: user || {} };
+    }
+    if (url.includes('/dashboard/stats')) {
+      const result = await dashboardAPI.getStats();
+      return { data: result.data || {} };
+    }
     if (url.includes('/products')) {
       const result = await productsAPI.getAll();
       return { data: result.data || [] };
