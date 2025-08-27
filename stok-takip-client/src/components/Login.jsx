@@ -1,0 +1,369 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Form, Button, Alert, Card, InputGroup } from 'react-bootstrap';
+import api from '../services/api.js';
+import './Login.css';
+
+const Login = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [userType, setUserType] = useState('employee'); // 'admin' veya 'employee'
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phoneNumber: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      if (isLogin) {
+        const response = await api.post('/auth/login', {
+          email: formData.email,
+          password: formData.password
+        });
+        localStorage.setItem('token', response.data.token);
+        
+        // Token'dan rol bilgisini al ve rol kontrolü yap
+        try {
+          const payload = JSON.parse(atob(response.data.token.split('.')[1]));
+          
+          // JWT'de roller ClaimTypes.Role ile ekleniyor, bu "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" claim türü
+          const roleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+          let roles = [];
+          
+          // Farklı role claim formatlarını kontrol et
+          if (payload[roleClaimType]) {
+            roles = Array.isArray(payload[roleClaimType]) ? payload[roleClaimType] : [payload[roleClaimType]];
+          } else if (payload.role) {
+            roles = Array.isArray(payload.role) ? payload.role : [payload.role];
+          } else if (payload.roles) {
+            roles = Array.isArray(payload.roles) ? payload.roles : [payload.roles];
+          }
+          
+          const hasAdminRole = roles.includes('Admin');
+          
+          // Rol ve seçilen kullanıcı tipi kontrolü
+          if (userType === 'admin') {
+            // Yönetici bölümü seçildi
+            if (hasAdminRole) {
+              navigate('/dashboard');
+            } else {
+              setError('Bu hesap yönetici değil. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
+              localStorage.removeItem('token');
+              return;
+            }
+          } else {
+            // Mağaza çalışanı bölümü seçildi
+            if (!hasAdminRole) {
+              navigate('/user-dashboard');
+            } else {
+              setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
+              localStorage.removeItem('token');
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('Token decode error:', error);
+          setError('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+          localStorage.removeItem('token');
+        }
+      } else {
+        // Kayıt işlemi - userType'a göre kayıt olur
+        const registerData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
+          phoneNumber: formData.phoneNumber,
+          isAdminRegistration: userType === 'admin' // Admin kayıt mı?
+        };
+
+        const response = await api.post('/auth/register', registerData);
+        localStorage.setItem('token', response.data.token);
+        
+        // Admin onay bekleme mesajı göster
+        if (response.data.isAdminRequestPending) {
+          setError('Admin olma talebiniz alındı. Ana admin onayı bekleniyor. Onaylandıktan sonra yönetici olarak giriş yapabilirsiniz.');
+          // Kullanıcıyı normal kullanıcı dashboard'una yönlendir
+          setTimeout(() => {
+            navigate('/user-dashboard');
+          }, 3000);
+          return;
+        }
+        
+        // Kayıt sonrası yönlendirme
+        if (userType === 'admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/user-dashboard');
+        }
+      }
+    } catch (err) {
+      // Validation hatalarını göster
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        setError(err.response.data.errors.join(', '));
+      } else {
+        setError(err.response?.data?.message || (isLogin ? 'Giriş yapılırken hata oluştu' : 'Kayıt olurken hata oluştu'));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setError('');
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      phoneNumber: ''
+    });
+  };
+
+  const toggleUserType = () => {
+    setUserType(userType === 'admin' ? 'employee' : 'admin');
+    setError('');
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-background">
+        <div className="login-overlay"></div>
+      </div>
+      
+      <div className="login-content">
+        <div className="login-card-wrapper">
+          <Card className="login-card">
+            <Card.Body className="p-4">
+              <div className="text-center mb-3">
+                <div className="login-logo">
+                  <span className="logo-icon">📦</span>
+                </div>
+                <h2 className="login-title">Stok Takip Sistemi</h2>
+                <p className="login-subtitle">
+                  {isLogin ? 'Hesabınıza giriş yapın' : 'Yeni hesap oluşturun'}
+                </p>
+                
+                {/* User Type Toggle */}
+                <div className="user-type-toggle mb-3">
+                  <div className="btn-group" role="group">
+                    <Button
+                      variant={userType === 'employee' ? 'primary' : 'outline-primary'}
+                      onClick={() => {
+                        setUserType('employee');
+                        setError('');
+                      }}
+                      size="sm"
+                    >
+                      <i className="fas fa-store me-1"></i>
+                      Mağaza Çalışanı
+                    </Button>
+                    <Button
+                      variant={userType === 'admin' ? 'primary' : 'outline-primary'}
+                      onClick={() => {
+                        setUserType('admin');
+                        setError('');
+                      }}
+                      size="sm"
+                    >
+                      <i className="fas fa-user-shield me-1"></i>
+                      Yönetici
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {error && (
+                <Alert variant={error.includes('onayı bekleniyor') ? 'info' : 'danger'} className="login-alert mb-3">
+                  <i className={`fas ${error.includes('onayı bekleniyor') ? 'fa-info-circle' : 'fa-exclamation-triangle'} me-2`}></i>
+                  {error}
+                </Alert>
+              )}
+
+              <Form onSubmit={handleSubmit} className="login-form">
+                {!isLogin && (
+                  <>
+                    <div className="row">
+                      <div className="col-12 col-sm-6">
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label">
+                            <i className="fas fa-user me-2"></i>
+                            Ad
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
+                            className="form-control-custom"
+                            placeholder="Adınız"
+                            required={!isLogin}
+                          />
+                        </Form.Group>
+                      </div>
+                      <div className="col-12 col-sm-6">
+                        <Form.Group className="mb-3">
+                          <Form.Label className="form-label">
+                            <i className="fas fa-user me-2"></i>
+                            Soyad
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
+                            className="form-control-custom"
+                            placeholder="Soyadınız"
+                            required={!isLogin}
+                          />
+                        </Form.Group>
+                      </div>
+                    </div>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label className="form-label">
+                        <i className="fas fa-phone me-2"></i>
+                        Telefon
+                      </Form.Label>
+                      <Form.Control
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        className="form-control-custom"
+                        placeholder="0555 123 45 67"
+                      />
+                    </Form.Group>
+                  </>
+                )}
+
+                <Form.Group className="mb-3">
+                  <Form.Label className="form-label">
+                    <i className="fas fa-envelope me-2"></i>
+                    Email Adresi
+                  </Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="form-control-custom"
+                    placeholder="ornek@email.com"
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label className="form-label">
+                    <i className="fas fa-lock me-2"></i>
+                    Şifre
+                  </Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="form-control-custom"
+                      placeholder="••••••••"
+                      required
+                    />
+                    <Button
+                      variant="outline-secondary"
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="password-toggle"
+                    >
+                      <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </Button>
+                  </InputGroup>
+                </Form.Group>
+
+                {!isLogin && (
+                  <Form.Group className="mb-3">
+                    <Form.Label className="form-label">
+                      <i className="fas fa-lock me-2"></i>
+                      Şifre Tekrar
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="form-control-custom"
+                        placeholder="••••••••"
+                        required={!isLogin}
+                      />
+                      <Button
+                        variant="outline-secondary"
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="password-toggle"
+                      >
+                        <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                      </Button>
+                    </InputGroup>
+                  </Form.Group>
+                )}
+
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  className="login-button w-100 mb-3"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                      {isLogin ? 'Giriş Yapılıyor...' : 'Kayıt Yapılıyor...'}
+                    </>
+                  ) : (
+                    <>
+                      <i className={`fas ${isLogin ? 'fa-sign-in-alt' : 'fa-user-plus'} me-2`}></i>
+                      {isLogin ? 'Giriş Yap' : 'Kayıt Ol'}
+                    </>
+                  )}
+                </Button>
+              </Form>
+
+              <div className="text-center">
+                <Button
+                  variant="link"
+                  onClick={toggleMode}
+                  className="mode-toggle"
+                >
+                  {isLogin ? 'Hesabınız yok mu? Kayıt olun' : 'Zaten hesabınız var mı? Giriş yapın'}
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;

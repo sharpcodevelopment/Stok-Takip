@@ -1,0 +1,228 @@
+import React, { useState, useEffect } from 'react';
+import { Navbar, Nav, Container, Dropdown, Badge } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api.js';
+
+const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
+  const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUserProfile();
+
+  }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await api.get('/auth/profile');
+      setUser(response.data);
+    } catch (error) {
+      console.error('Kullanıcı bilgileri alınamadı:', error);
+    }
+  };
+
+
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const getMenuClass = (menuName) => {
+    return activeMenu === menuName ? 'text-white fw-semibold me-2' : 'fw-semibold me-2';
+  };
+
+  const getMenuStyle = (menuName) => {
+    if (activeMenu === menuName) {
+      return {
+        color: '#ffffff', 
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: 'translateY(0)',
+        textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+      };
+    } else {
+      return {
+        color: '#adb5bd', 
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: 'translateY(0)'
+      };
+    }
+  };
+
+  return (
+    <Navbar 
+      expand="lg" 
+      className="shadow-lg mb-4" 
+      style={{
+        background: 'linear-gradient(135deg, #343a40 0%, #495057 100%)',
+        borderBottom: '3px solid rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '0 0 20px 20px'
+      }}
+    >
+      <Container>
+        <Navbar.Brand className="fw-bold" style={{fontSize: '1.4rem'}}>
+          <span 
+            className="me-2" 
+            style={{
+              fontSize: '1.6rem', 
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+            }}
+          >
+            🏪
+          </span>
+          <span className="text-white" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}>Mağaza</span>
+          <span className="text-white" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}> Paneli</span>
+        </Navbar.Brand>
+        
+        <Navbar.Toggle aria-controls="employee-navbar-nav" />
+        
+        <Navbar.Collapse id="employee-navbar-nav">
+          {/* Ana Menü */}
+          <Nav className="me-auto flex-column flex-lg-row">
+            <Nav.Link 
+              onClick={() => navigate('/user-dashboard')} 
+              className={getMenuClass('dashboard')}
+              style={{...getMenuStyle('dashboard'), borderRadius: '8px'}}
+              onMouseEnter={(e) => {
+                if (activeMenu !== 'dashboard') {
+                  e.target.style.color = '#ffffff';
+                  e.target.style.transform = 'translateY(-0.5px)';
+                  e.target.style.textShadow = '0 1px 2px rgba(0,0,0,0.2)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeMenu !== 'dashboard') {
+                  e.target.style.color = '#adb5bd';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.textShadow = 'none';
+                }
+              }}
+            >
+              <i className="fas fa-home me-2"></i>
+              <span className="d-lg-inline">Ana Sayfa</span>
+            </Nav.Link>
+            
+            <Nav.Link 
+              onClick={() => navigate('/user-products')}
+              className={getMenuClass('products')}
+              style={{...getMenuStyle('products'), borderRadius: '8px'}}
+              onMouseEnter={(e) => {
+                if (activeMenu !== 'products') {
+                  e.target.style.color = '#ffffff';
+                  e.target.style.transform = 'translateY(-0.5px)';
+                  e.target.style.textShadow = '0 1px 2px rgba(0,0,0,0.2)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeMenu !== 'products') {
+                  e.target.style.color = '#adb5bd';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.textShadow = 'none';
+                }
+              }}
+            >
+              <i className="fas fa-boxes me-2"></i>
+              <span className="d-lg-inline">Ürün Kataloğu</span>
+            </Nav.Link>
+            
+            <Nav.Link 
+              onClick={() => navigate('/user-requests')}
+              className={getMenuClass('requests')}
+              style={{...getMenuStyle('requests'), borderRadius: '8px'}}
+              onMouseEnter={(e) => {
+                if (activeMenu !== 'requests') {
+                  e.target.style.color = '#ffffff';
+                  e.target.style.transform = 'translateY(-0.5px)';
+                  e.target.style.textShadow = '0 1px 2px rgba(0,0,0,0.2)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeMenu !== 'requests') {
+                  e.target.style.color = '#adb5bd';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.textShadow = 'none';
+                }
+              }}
+            >
+              <i className="fas fa-plus-square me-2"></i>
+              <span className="d-lg-inline">Talep Oluştur</span>
+            </Nav.Link>
+          </Nav>
+
+          {/* Sağ Taraf - Kullanıcı Bilgileri */}
+          <Nav className="align-items-center">
+            {/* Kullanıcı Dropdown */}
+            <Dropdown align="end">
+              <Dropdown.Toggle 
+                variant="outline-light" 
+                id="user-dropdown"
+                className="border-0 d-flex align-items-center"
+                style={{
+                  borderRadius: '25px', 
+                  padding: '8px 16px',
+                  transition: 'all 0.2s ease',
+                  transform: 'translateY(0)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(255, 255, 255, 0.05)'
+                }}
+              >
+                <div 
+                  className="rounded-circle d-flex align-items-center justify-content-center me-2" 
+                  style={{
+                    width: '32px', 
+                    height: '32px',
+                    background: 'linear-gradient(135deg, #495057 0%, #6c757d 100%)',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+                  }}
+                >
+                  <i className="fas fa-user text-white" style={{fontSize: '14px'}}></i>
+                </div>
+                <div className="text-start d-none d-sm-block">
+                  <div className="fw-semibold" style={{fontSize: '14px'}}>
+                    {user?.firstName} {user?.lastName}
+                  </div>
+                  <div style={{fontSize: '12px', color: '#ffffff', opacity: '0.8'}}>
+                    Mağaza Çalışanı
+                  </div>
+                </div>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu 
+                className="shadow border-0" 
+                style={{
+                  borderRadius: '12px', 
+                  minWidth: '160px',
+                  zIndex: 99999,
+                  marginTop: '8px',
+                  position: 'absolute'
+                }}
+              >
+                <Dropdown.Header className="text-muted small px-3 py-1">
+                  <i className="fas fa-user me-2"></i>
+                  Hesap
+                </Dropdown.Header>
+                
+                <Dropdown.Item onClick={() => navigate('/user-profile')} className="px-3 py-1" style={{fontSize: '14px'}}>
+                  <i className="fas fa-user-edit me-2 text-primary"></i>
+                  Profil
+                </Dropdown.Item>
+                
+                <Dropdown.Divider className="my-1" />
+                
+                <Dropdown.Item onClick={handleLogout} className="px-3 py-1 text-danger" style={{fontSize: '14px'}}>
+                  <i className="fas fa-sign-out-alt me-2"></i>
+                  Çıkış
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
+
+export default EmployeeHeader;

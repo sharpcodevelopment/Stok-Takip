@@ -1,0 +1,64 @@
+# Hassas konfigürasyon dosyaları
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+
+# Environment dosyaları
+.env
+.env.local
+.env.development
+.env.production
+*.env
+
+# Build klasörleri
+bin/
+obj/
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# IDE/Editor dosyaları
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.swp
+*.tmp
+
+# Package klasörleri
+node_modules/
+packages/
+
+# Database dosyaları
+*.db
+*.sqlite
+*.mdf
+*.ldf
+
+# OS dosyaları
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Demo ve test script'leri (içinde hassas veri olabilir)
+create-demo-user.js
+create-first-admin.js
+create-normal-user.js
+make-admin*.js
+
+# Migration dosyaları (production'da farklı olabilir)
+Migrations/
+
+# HTTP test dosyaları
+*.http

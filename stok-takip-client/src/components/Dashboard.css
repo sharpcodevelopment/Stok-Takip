@@ -1,0 +1,1257 @@
+.dashboard-container {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #1a1d23 0%, #2c3e50 50%, #34495e 100%);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+}
+
+.dashboard-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(0, 123, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(40, 167, 69, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(108, 117, 125, 0.04) 0%, transparent 50%);
+  animation: backgroundMove 25s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes backgroundMove {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+.welcome-section {
+  text-align: center;
+  padding: 2.5rem 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* Container flex grow */
+.dashboard-container .container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  max-width: 100% !important;
+  width: 100% !important;
+  position: relative;
+  z-index: 2;
+}
+
+.welcome-title {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 2.8rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #e9ecef 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-subtitle {
+  color: #adb5bd;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Sayfa başlıkları için genel stil - Welcome title ile uyumlu */
+.dashboard-container h2 {
+  color: #e9ecef !important;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.dashboard-container h2 i {
+  color: #e9ecef !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Mağaza paneli başlıkları için de aynı stil */
+.user-dashboard-container h2,
+.dashboard-container h2 {
+  color: #e9ecef !important;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.user-dashboard-container h2 i,
+.dashboard-container h2 i {
+  color: #e9ecef !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* H5 başlıkları için de aynı stil */
+.user-dashboard-container h5,
+.dashboard-container h5 {
+  color: #e9ecef !important;
+  font-weight: 600 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.user-dashboard-container h5 i,
+.dashboard-container h5 i {
+  color: #e9ecef !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Card header başlıkları için de aynı stil */
+.card-header h5,
+.card-header h4,
+.card-header h3 {
+  color: #e9ecef !important;
+  font-weight: 600 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.card-header h5 i,
+.card-header h4 i,
+.card-header h3 i {
+  color: #e9ecef !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.current-time {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  display: inline-block;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.stats-row {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.stat-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.stat-icon.products { 
+  color: #5dade2; 
+  text-shadow: 0 0 20px rgba(93, 173, 226, 0.6);
+}
+.stat-icon.categories { 
+  color: #ec7063; 
+  text-shadow: 0 0 20px rgba(236, 112, 99, 0.6);
+}
+.stat-icon.low-stock { 
+  color: #f7dc6f; 
+  text-shadow: 0 0 20px rgba(247, 220, 111, 0.6);
+}
+.stat-icon.requests { 
+  color: #58d68d; 
+  text-shadow: 0 0 20px rgba(88, 214, 141, 0.6);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* Fallback for stat cards using Card.Title */
+.stat-card .card-title {
+  font-size: 3rem !important;
+  font-weight: 900 !important;
+  color: #ffffff !important;
+  margin-bottom: 0.5rem !important;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+.stat-card .card-text {
+  font-size: 1.1rem !important;
+  color: #e9ecef !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  text-align: center !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  margin-bottom: 0 !important;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #e9ecef;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.charts-row {
+  margin-top: 3rem;
+}
+
+.chart-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.chart-card .card-header, .recent-card .card-header, .action-card .card-header {
+  background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+  color: white !important;
+  border: none;
+  padding: 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.chart-card .card-header h5, .recent-card .card-header h5, .action-card .card-header h5 {
+  color: white !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.chart-card .card-body {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* Card Content Styling - Sadece açıklama metinleri için */
+.card-body p.text-muted {
+  color: #adb5bd !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 500 !important;
+}
+
+/* Sayfa başlıklarının altındaki açıklama metinleri */
+.dashboard-container p.text-muted {
+  color: #adb5bd !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 500 !important;
+}
+
+/* Card body içindeki genel açıklama metinleri */
+.card-body p:not(.text-muted) {
+  color: #ced4da !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Form label'ları için */
+.form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+}
+
+/* Login sayfasındaki başlık metni için */
+.login-title {
+  color: #495057 !important;
+}
+
+.login-subtitle {
+  color: #495057 !important;
+}
+
+/* Card Header başlıkları için - tablo başlık metinleri */
+.card-header h5 {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Card Header içindeki ikonlar için */
+.card-header h5 i {
+  color: #000000 !important;
+  opacity: 1 !important;
+}
+
+/* Dashboard'daki hızlı işlemler ve son işlemler kartlarının header ikonları için */
+.action-card .card-header h5 i,
+.recent-card .card-header h5 i {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki text-muted yazıları için */
+.user-dashboard-container .action-card .card-body p.text-muted {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki text-muted yazıları için daha spesifik seçici */
+.user-dashboard-container .action-card .card-body .text-muted {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki tüm text-muted elementleri için */
+.user-dashboard-container .action-card .text-muted {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki butonların üstündeki açıklama yazıları için */
+.user-dashboard-container .action-card .card-body p.text-muted {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki butonların üstündeki açıklama yazıları için daha spesifik */
+.user-dashboard-container .action-card .card-body .text-muted:not(.btn .text-muted) {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki açıklama yazıları için en güçlü seçici */
+.dashboard-container .user-dashboard-container .action-card .card-body p.text-muted {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Mağaza panelindeki hızlı işlem kartlarındaki açıklama yazıları için alternatif seçici */
+.dashboard-container .action-card .card-body p.text-muted {
+  color: #000000 !important;
+  font-weight: 500 !important;
+}
+
+/* Card Header içindeki metinler için */
+.card-header {
+  color: #343a40 !important;
+}
+
+
+
+.card-body .btn {
+  font-weight: 600 !important;
+}
+
+/* Tablo genel stilleri */
+.table {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  font-size: 16px !important;
+}
+
+.table th {
+  color: #343a40 !important;
+  font-weight: 700 !important;
+  background-color: #f8f9fa !important;
+  font-size: 16px !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.table td {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Tablo ilk sütunları için kalın ve koyu font */
+.table td:first-child {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* ID sütunu olan tablolarda ikinci sütun için kalın ve koyu font */
+.table td:nth-child(2) {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Email kolonundaki metinler için normal font ağırlığı */
+.table td:nth-child(2) {
+  font-weight: 600 !important;
+  color: #000000 !important;
+}
+
+/* Kategoriler tablosunda ikinci sütun (Kategori Adı) için koyu font */
+.categories-table .table td:nth-child(2) {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Kategoriler tablosunda ikinci sütun için daha spesifik seçici */
+.categories-table tbody tr td:nth-child(2) {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Tüm kategoriler tablosu için ikinci sütun */
+.categories-table td:nth-child(2) {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Stok hareketleri tablosunda ikinci sütun (Ürün) için koyu font */
+.stock-transactions-table td:nth-child(2) {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Stok hareketleri tablosunda ikinci sütun için daha spesifik seçici */
+.stock-transactions-table tbody tr td:nth-child(2) {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Stok talepleri tablosunda "Talep Eden" kolonu hariç diğer kolonlar için notlar sütunu stili */
+.stock-requests-table tbody tr td:not(:first-child) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "Talep Eden" kolonu için koyu font */
+.stock-requests-table tbody tr td:first-child {
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+/* Stok talepleri tablosunda "Ürün" kolonu (2. sütun) için notlar sütunu stili */
+.stock-requests-table tbody tr td:nth-child(2) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "Ürün" kolonu için daha spesifik seçici */
+.stock-requests-table td:nth-child(2) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "Ürün" kolonu için en güçlü seçici */
+.dashboard-container .stock-requests-table tbody tr td:nth-child(2) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "Ürün" kolonundaki strong elementleri için */
+.dashboard-container .stock-requests-table tbody tr td:nth-child(2) strong {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "Miktar" kolonu (3. sütun) için aynı stil */
+.dashboard-container .stock-requests-table tbody tr td:nth-child(3) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "Miktar" kolonundaki strong elementleri için */
+.dashboard-container .stock-requests-table tbody tr td:nth-child(3) strong {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Mağaza panelindeki talep oluştur tablosunda "Miktar" kolonu (2. sütun) için aynı stil */
+.dashboard-container .user-requests-table tbody tr td:nth-child(2) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Mağaza panelindeki talep oluştur tablosunda "Miktar" kolonundaki strong elementleri için */
+.dashboard-container .user-requests-table tbody tr td:nth-child(2) strong {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Stok talepleri tablosunda "İşlemler" kolonu (9. sütun) için notlar sütunu stili */
+.dashboard-container .stock-requests-table tbody tr td:nth-child(9) {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Tablo içindeki strong elementleri için */
+.table td strong {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Stok miktarı kolonundaki fw-bold span'ı için */
+.table td .fw-bold {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+/* Email kolonundaki metinler için */
+.table td {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+/* Tüm tablo hücrelerindeki metinler için genel kural */
+.table tbody td {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+/* Tablo içindeki text-muted small elementleri için */
+.table td .text-muted.small {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Tablo içindeki small elementleri için */
+.table td .small {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Tablo içindeki text-muted elementleri için */
+.table td .text-muted {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+
+
+/* Badge improvements */
+.badge {
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+}
+
+/* Alert improvements */
+.alert {
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%) !important;
+  color: #0c5460 !important;
+}
+
+/* Form control improvements */
+.form-control, .form-select {
+  border: 2px solid #dee2e6 !important;
+  font-weight: 500 !important;
+  color: #495057 !important;
+}
+
+/* Modal içindeki metinler için */
+.modal-body p {
+  color: #ced4da !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.modal-body .text-muted {
+  color: #adb5bd !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #495057 !important;
+  box-shadow: 0 0 0 0.2rem rgba(73, 80, 87, 0.25) !important;
+}
+
+.form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Modal içindeki form label'ları için özel stil */
+.modal .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Stok hareketleri modal'ındaki form label'ları için daha spesifik stil */
+.modal-body .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Bootstrap modal içindeki tüm form label'ları için */
+.modal .modal-body .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* En yüksek öncelik için daha spesifik seçiciler */
+.modal .form-group .form-label,
+.modal-body .form-group .form-label,
+.modal .modal-body .form-group .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Stok hareketleri sayfasındaki modal için özel stil */
+.dashboard-container .modal .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Bootstrap'in varsayılan stillerini geçersiz kılmak için */
+.modal .form-label,
+.modal-body .form-label,
+.modal .modal-body .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Dropdown Z-Index Fix */
+.dropdown-menu {
+  z-index: 99999 !important;
+  position: absolute !important;
+}
+
+.navbar .dropdown-menu {
+  z-index: 99999 !important;
+}
+
+.navbar {
+  z-index: 9999 !important;
+}
+
+.dropdown {
+  position: relative !important;
+  z-index: 99999 !important;
+}
+
+/* Bootstrap override for dropdown positioning */
+.dropdown-menu.show {
+  z-index: 99999 !important;
+  position: absolute !important;
+}
+
+/* Button improvements */
+.btn-primary {
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(73, 80, 87, 0.3) !important;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(73, 80, 87, 0.4) !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4) !important;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3) !important;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4) !important;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  color: #212529 !important;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3) !important;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #ff8c00 0%, #ff7b00 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4) !important;
+  color: #212529 !important;
+}
+
+.recent-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.recent-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.recent-card .card-header {
+  background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+  color: white;
+  border: none;
+  padding: 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.recent-card .card-body {
+  padding: 2rem;
+  max-height: 350px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.recent-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.recent-item:hover {
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.user-info {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: white;
+  margin-bottom: 2rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.user-info::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.user-info h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+}
+
+.user-info small {
+  color: #adb5bd;
+  position: relative;
+  z-index: 2;
+}
+
+/* Quick Actions */
+.quick-actions {
+  margin-top: 2rem;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: white;
+  text-decoration: none;
+  display: block;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.action-btn .btn-text {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Navigation Menu Styles */
+.navbar-nav .nav-link {
+  color: #adb5bd !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+  margin: 0 4px !important;
+  padding: 8px 12px !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.navbar-nav .nav-link.active {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Mağaza panelindeki aktif menü için yönetici paneli stili */
+.user-dashboard-container .navbar-nav .nav-link.active {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Mağaza panelindeki aktif menü için daha belirgin stil */
+.user-dashboard-container .navbar-nav .nav-link.text-white {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Mağaza panelindeki aktif menü için en spesifik seçici */
+.navbar .navbar-nav .nav-link.text-white {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Mağaza panelindeki aktif menü için alternatif seçici */
+.navbar-nav .nav-link.text-white.fw-semibold {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+.navbar-nav .nav-link i {
+  opacity: 0.9;
+}
+
+.navbar-nav .nav-link:hover i {
+  opacity: 1;
+}
+
+/* Badge styling for admin requests */
+.navbar-nav .nav-link .badge {
+  font-size: 0.7rem !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.navbar-nav .nav-link .badge.bg-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%) !important;
+  color: #212529 !important;
+}
+
+.navbar-nav .nav-link .badge.bg-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Modern Scrollbar */
+.recent-card .card-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.recent-card .card-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.recent-card .card-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.recent-card .card-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Action Card Styles - Hızlı İşlemler Kartı */
+.action-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.action-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.08) 0%, rgba(52, 73, 94, 0.08) 50%, rgba(108, 117, 125, 0.06) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.action-card:hover::before {
+  opacity: 1;
+}
+
+.action-card .card-body {
+  padding: 2.5rem 2rem;
+  background: rgba(255, 255, 255, 0.98);
+  position: relative;
+  z-index: 2;
+}
+
+.action-card .card-body .row {
+  margin-bottom: 1rem;
+}
+
+.action-card .card-body .row:last-child {
+  margin-bottom: 0;
+}
+
+.action-card .card-body .col-sm-6 {
+  padding: 0.5rem;
+}
+
+.action-card .card-body .btn {
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-card .card-body .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.action-card .card-body .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.action-card .card-body .btn:hover::before {
+  left: 100%;
+}
+
+.action-card .card-body .btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.action-card .card-body .btn i {
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.action-card .card-body .btn:hover i {
+  transform: scale(1.1);
+}
+
+/* Button variant specific hover effects */
+.action-card .card-body .btn-primary:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+}
+
+.action-card .card-body .btn-success:hover {
+  background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.action-card .card-body .btn-info:hover {
+  background: linear-gradient(135deg, #138496 0%, #0c5460 100%);
+  box-shadow: 0 8px 25px rgba(23, 162, 184, 0.4);
+}
+
+.action-card .card-body .btn-warning:hover {
+  background: linear-gradient(135deg, #d39e00 0%, #b08800 100%);
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+}
+
+/* Minimal navbar fix - Sadece kayma sorununu çöz */
+.navbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1020 !important;
+}
+
+.navbar-nav .nav-link {
+  transition: all 0.2s ease;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Admin Dropdown Styling */
+.admin-dropdown-toggle {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.admin-dropdown-toggle:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.admin-dropdown-toggle:focus {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 0 0 0.2rem rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Employee Navbar Styling - Stabilized */
+.navbar .dropdown-toggle {
+  transition: all 0.2s ease !important;
+}
+
+.navbar .dropdown-toggle:hover {
+  transform: translateY(-0.5px) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.navbar .nav-link {
+  transition: all 0.2s ease !important;
+}
+
+.navbar .nav-link:hover {
+  transform: translateY(-0.5px) !important;
+}
+
+/* Mağaza çalışanı text visibility */
+#user-dropdown .text-start div {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2.2rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+  
+  .stat-card {
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .chart-card .card-body,
+  .recent-card .card-body,
+  .action-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .action-card .card-body .col-sm-6 {
+    padding: 0.25rem;
+  }
+  
+  .action-card .card-body .btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-section {
+    padding: 1.5rem 0;
+  }
+  
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .stat-icon {
+    font-size: 2.5rem;
+  }
+  
+  .stat-number {
+    font-size: 1.8rem;
+  }
+  
+  .action-card .card-body {
+    padding: 1rem !important;
+  }
+  
+  .action-card .card-body .btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .action-card .card-body .btn i {
+    margin-right: 0.5rem;
+  }
+
+  .current-time {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Stok hareketleri modal'ındaki form label'ları için en yüksek öncelik */
+.dashboard-container .modal .modal-body .form-group .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* Tüm modal'lardaki form label'ları için genel stil */
+.modal .form-label {
+  color: #343a40 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
