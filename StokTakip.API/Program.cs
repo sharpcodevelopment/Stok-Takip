@@ -129,6 +129,20 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Root endpoint ekliyoruz
+app.MapGet("/", () => new { 
+    message = "Stok Takip API is running!", 
+    version = "1.0.0",
+    status = "healthy",
+    endpoints = new {
+        swagger = "/swagger",
+        api = "/api"
+    }
+});
+
+// Favicon endpoint ekliyoruz
+app.MapGet("/favicon.ico", () => Results.NotFound());
+
 // Database migration and role seeding
 using (var scope = app.Services.CreateScope())
 {
