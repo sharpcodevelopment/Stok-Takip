@@ -15,12 +15,19 @@ import './App.css';
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
-  return token ? children : <Navigate to="/login" />;
+  const user = localStorage.getItem('user');
+  const session = localStorage.getItem('session');
+  
+  // Token (eski sistem) veya Supabase session kontrolü
+  return (token || (user && session)) ? children : <Navigate to="/login" />;
 };
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('token');
-  if (!token) return <Navigate to="/login" />;
+  const user = localStorage.getItem('user');
+  const session = localStorage.getItem('session');
+  
+  if (!(token || (user && session))) return <Navigate to="/login" />;
   
   // Geçici olarak tüm kullanıcılara admin sayfalarına erişim ver
   return children;
@@ -28,7 +35,10 @@ const AdminRoute = ({ children }) => {
 
 const UserRoute = ({ children }) => {
   const token = localStorage.getItem('token');
-  if (!token) return <Navigate to="/login" />;
+  const user = localStorage.getItem('user');
+  const session = localStorage.getItem('session');
+  
+  if (!(token || (user && session))) return <Navigate to="/login" />;
   
   // Geçici olarak tüm kullanıcılara user sayfalarına erişim ver
   return children;
