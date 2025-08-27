@@ -47,9 +47,32 @@ const Login = () => {
           return;
         }
         
-        // Supabase'de basit rol kontrolü - şimdilik herkesi dashboard'a yönlendir
+        // Rol kontrolü ve yönlendirme
         console.log('User logged in:', result.data.user);
-        navigate('/dashboard');
+        
+        const userRole = result.data.user?.user_metadata?.role || 'user';
+        console.log('User role:', userRole);
+        
+        // Rol ve seçilen kullanıcı tipi kontrolü
+        if (userType === 'admin') {
+          // Yönetici bölümü seçildi
+          if (userRole === 'admin') {
+            navigate('/dashboard');
+          } else {
+            setError('Bu hesap yönetici değil. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
+            await authAPI.logout();
+            return;
+          }
+        } else {
+          // Mağaza çalışanı bölümü seçildi  
+          if (userRole === 'user') {
+            navigate('/user-dashboard');
+          } else {
+            setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
+            await authAPI.logout();
+            return;
+          }
+        }
       } else {
         // Kayıt işlemi - userType'a göre kayıt olur
         const registerData = {

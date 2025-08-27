@@ -11,6 +11,7 @@ import Categories from './components/Categories.jsx';
 import StockTransactions from './components/StockTransactions.jsx';
 import UserManagement from './components/UserManagement.jsx';
 import StockRequestManagement from './components/StockRequestManagement.jsx';
+import { authAPI } from './services/api.js';
 import './App.css';
 
 const PrivateRoute = ({ children }) => {
@@ -29,7 +30,11 @@ const AdminRoute = ({ children }) => {
   
   if (!(token || (user && session))) return <Navigate to="/login" />;
   
-  // Geçici olarak tüm kullanıcılara admin sayfalarına erişim ver
+  // Rol kontrolü - sadece admin'ler erişebilir
+  if (!authAPI.isAdmin()) {
+    return <Navigate to="/user-dashboard" />;
+  }
+  
   return children;
 };
 
@@ -40,7 +45,11 @@ const UserRoute = ({ children }) => {
   
   if (!(token || (user && session))) return <Navigate to="/login" />;
   
-  // Geçici olarak tüm kullanıcılara user sayfalarına erişim ver
+  // Rol kontrolü - sadece user'lar erişebilir (admin'ler user dashboard'a giremez)
+  if (!authAPI.isUser()) {
+    return <Navigate to="/dashboard" />;
+  }
+  
   return children;
 };
 

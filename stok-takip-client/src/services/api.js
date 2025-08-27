@@ -31,6 +31,19 @@ export const authAPI = {
   getCurrentUser() {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
+  },
+
+  getUserRole() {
+    const user = this.getCurrentUser();
+    return user?.user_metadata?.role || 'user'; // default user
+  },
+
+  isAdmin() {
+    return this.getUserRole() === 'admin';
+  },
+
+  isUser() {
+    return this.getUserRole() === 'user';
   }
 };
 
