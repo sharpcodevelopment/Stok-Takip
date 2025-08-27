@@ -183,6 +183,14 @@ const api = {
       const result = await stockRequestsAPI.getAll();
       return { data: result.data || [] };
     }
+    if (url.includes('/auth/admin-requests')) {
+      // Admin requests - şimdilik boş array döndür
+      return { data: [] };
+    }
+    if (url.includes('/products/low-stock')) {
+      const result = await productsAPI.getLowStock();
+      return { data: result.data || [] };
+    }
     
     console.warn('Legacy API endpoint not supported:', url);
     return { data: [] };

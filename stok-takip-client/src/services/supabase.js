@@ -95,11 +95,10 @@ export const supabaseHelpers = {
       .select(`
         *,
         products (
-          name,
-          product_code
+          name
         )
       `)
-      .order('created_at', { ascending: false });
+      .order('transaction_date', { ascending: false });
     return { data, error };
   },
 
@@ -118,8 +117,7 @@ export const supabaseHelpers = {
       .select(`
         *,
         products (
-          name,
-          product_code
+          name
         )
       `)
       .order('created_at', { ascending: false });
