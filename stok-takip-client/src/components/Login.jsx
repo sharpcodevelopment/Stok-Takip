@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert, Card, InputGroup } from 'react-bootstrap';
-import api from '../services/api.js';
+import { authAPI } from '../services/api.js';
 import './Login.css';
 
 const Login = () => {
@@ -35,56 +35,21 @@ const Login = () => {
 
     try {
       if (isLogin) {
-        const response = await api.post('/auth/login', {
-          email: formData.email,
-          password: formData.password
-        });
-        localStorage.setItem('token', response.data.token);
+        const result = await authAPI.login(formData.email, formData.password);
         
-        // Token'dan rol bilgisini al ve rol kontrolü yap
-        try {
-          const payload = JSON.parse(atob(response.data.token.split('.')[1]));
-          
-          // JWT'de roller ClaimTypes.Role ile ekleniyor, bu "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" claim türü
-          const roleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
-          let roles = [];
-          
-          // Farklı role claim formatlarını kontrol et
-          if (payload[roleClaimType]) {
-            roles = Array.isArray(payload[roleClaimType]) ? payload[roleClaimType] : [payload[roleClaimType]];
-          } else if (payload.role) {
-            roles = Array.isArray(payload.role) ? payload.role : [payload.role];
-          } else if (payload.roles) {
-            roles = Array.isArray(payload.roles) ? payload.roles : [payload.roles];
-          }
-          
-          const hasAdminRole = roles.includes('Admin');
-          
-          // Rol ve seçilen kullanıcı tipi kontrolü
-          if (userType === 'admin') {
-            // Yönetici bölümü seçildi
-            if (hasAdminRole) {
-              navigate('/dashboard');
-            } else {
-              setError('Bu hesap yönetici değil. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
-              localStorage.removeItem('token');
-              return;
-            }
-          } else {
-            // Mağaza çalışanı bölümü seçildi
-            if (!hasAdminRole) {
-              navigate('/user-dashboard');
-            } else {
-              setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
-              localStorage.removeItem('token');
-              return;
-            }
-          }
-        } catch (error) {
-          console.error('Token decode error:', error);
-          setError('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
-          localStorage.removeItem('token');
+        if (result.error) {
+          setError('Giriş başarısız: ' + result.error.message);
+          return;
         }
+        
+        if (!result.data?.user) {
+          setError('Giriş başarısız: Kullanıcı bulunamadı');
+          return;
+        }
+        
+        // Supabase'de basit rol kontrolü - şimdilik herkesi dashboard'a yönlendir
+        console.log('User logged in:', result.data.user);
+        navigate('/dashboard');
       } else {
         // Kayıt işlemi - userType'a göre kayıt olur
         const registerData = {
@@ -97,25 +62,16 @@ const Login = () => {
           isAdminRegistration: userType === 'admin' // Admin kayıt mı?
         };
 
-        const response = await api.post('/auth/register', registerData);
-        localStorage.setItem('token', response.data.token);
+        const result = await authAPI.register(registerData);
         
-        // Admin onay bekleme mesajı göster
-        if (response.data.isAdminRequestPending) {
-          setError('Admin olma talebiniz alındı. Ana admin onayı bekleniyor. Onaylandıktan sonra yönetici olarak giriş yapabilirsiniz.');
-          // Kullanıcıyı normal kullanıcı dashboard'una yönlendir
-          setTimeout(() => {
-            navigate('/user-dashboard');
-          }, 3000);
+        if (result.error) {
+          setError('Kayıt başarısız: ' + result.error.message);
           return;
         }
         
-        // Kayıt sonrası yönlendirme
-        if (userType === 'admin') {
-          navigate('/dashboard');
-        } else {
-          navigate('/user-dashboard');
-        }
+        // Kayıt başarılı - dashboard'a yönlendir
+        console.log('User registered:', result.data);
+        navigate('/dashboard');
       }
     } catch (err) {
       // Validation hatalarını göster
