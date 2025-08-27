@@ -119,6 +119,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Static files (favicon.ico için)
+app.UseStaticFiles();
+
 app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
