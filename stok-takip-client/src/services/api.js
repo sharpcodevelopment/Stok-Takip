@@ -122,6 +122,10 @@ export const stockRequestsAPI = {
 
   async update(id, updates) {
     return await supabaseHelpers.updateStockRequest(id, updates);
+  },
+
+  async delete(id) {
+    return await supabaseHelpers.deleteStockRequest(id);
   }
 };
 
