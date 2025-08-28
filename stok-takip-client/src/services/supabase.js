@@ -145,54 +145,56 @@ export const supabaseHelpers = {
 
   // Stock Transactions
   async getStockTransactions() {
+    // Önce basit bir sorgu deneyelim
     const { data, error } = await supabase
       .from('stock_transactions')
-      .select(`
-        id,
-        product_id,
-        transaction_type,
-        quantity,
-        unit_price,
-        notes,
-        transaction_date,
-        created_at,
-        products (
-          name
-        )
-      `)
-      .order('transaction_date', { ascending: false });
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Stock transactions error:', error);
+      return { data: [], error };
+    }
     
     // Veri formatını frontend'e uygun hale getir
     const formattedData = data?.map(transaction => ({
       id: transaction.id,
-      productId: transaction.product_id,
-      transactionType: transaction.transaction_type,
+      productId: transaction.product_id || transaction.productId,
+      transactionType: transaction.transaction_type || transaction.transactionType,
       quantity: transaction.quantity,
-      unitPrice: transaction.unit_price,
+      unitPrice: transaction.unit_price || transaction.unitPrice,
       notes: transaction.notes,
-      transactionDate: transaction.transaction_date,
+      transactionDate: transaction.transaction_date || transaction.transactionDate,
       createdAt: transaction.created_at,
-      productName: transaction.products?.name || 'Bilinmeyen Ürün'
+      productName: 'Ürün Adı' // Şimdilik sabit
     })) || [];
     
     return { data: formattedData, error };
   },
 
   async addStockTransaction(transaction) {
-    // Veri formatını Supabase'e uygun hale getir
+    // Veri formatını Supabase'e uygun hale getir - esnek format
     const formattedTransaction = {
       product_id: transaction.productId,
       transaction_type: transaction.transactionType,
       quantity: transaction.quantity,
-      unit_price: transaction.unitPrice,
-      notes: transaction.notes,
-      transaction_date: new Date().toISOString()
+      unit_price: transaction.unitPrice || 0,
+      notes: transaction.notes || '',
+      transaction_date: new Date().toISOString(),
+      created_at: new Date().toISOString()
     };
+    
+    console.log('Adding transaction:', formattedTransaction);
     
     const { data, error } = await supabase
       .from('stock_transactions')
       .insert([formattedTransaction])
       .select();
+      
+    if (error) {
+      console.error('Add transaction error:', error);
+    }
+    
     return { data, error };
   },
 
