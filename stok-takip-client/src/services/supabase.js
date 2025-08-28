@@ -226,7 +226,7 @@ export const supabaseHelpers = {
       productName: request.products?.name || 'Bilinmeyen Ürün',
       quantity: request.quantity,
       priority: request.priority,
-      notes: request.notes,
+      notes: request.notes || '', // notes kolonu yoksa boş string
       status: request.status,
       requestedById: request.requested_by_id || request.requestedById,
       createdAt: request.created_at,
@@ -240,17 +240,14 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
-    // Veri formatını Supabase'e uygun hale getir
+    // Veri formatını Supabase'e uygun hale getir - notes kolonu yok
     const formattedRequest = {
       product_id: request.productId,
       quantity: request.quantity,
       priority: request.priority || 'normal',
-      notes: request.notes || '',
       requested_by_id: request.requestedById,
       status: 'pending'
     };
-    
-    console.log('Adding stock request:', formattedRequest);
     
     const { data, error } = await supabase
       .from('stock_requests')
@@ -265,12 +262,12 @@ export const supabaseHelpers = {
   },
 
   async updateStockRequest(id, updates) {
-    // Veri formatını Supabase'e uygun hale getir
+    // Veri formatını Supabase'e uygun hale getir - notes kolonu yok
     const formattedUpdates = {};
     
     if (updates.quantity !== undefined) formattedUpdates.quantity = updates.quantity;
     if (updates.priority !== undefined) formattedUpdates.priority = updates.priority;
-    if (updates.notes !== undefined) formattedUpdates.notes = updates.notes;
+    // notes kolonu yok - atla
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
     if (updates.approvedById !== undefined) formattedUpdates.approved_by_id = updates.approvedById;
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
