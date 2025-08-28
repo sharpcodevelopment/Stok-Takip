@@ -275,6 +275,10 @@ const api = {
       const result = await productsAPI.delete(id);
       return { data: result.data };
     }
+    if (url.includes('/stockrequests/')) {
+      const result = await stockRequestsAPI.delete(id);
+      return { data: result.data };
+    }
     
     console.warn('Supabase API endpoint not supported:', url);
     return { data: null };
