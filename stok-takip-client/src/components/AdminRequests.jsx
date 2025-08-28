@@ -26,8 +26,9 @@ const AdminRequests = () => {
       const response = await api.get('/auth/profile');
       setUser(response.data);
       
-      // Sadece SuperAdmin erişebilir
-      if (!response.data.isSuperAdmin) {
+      // Admin rolü kontrolü
+      const userRole = response.data?.user_metadata?.role;
+      if (userRole !== 'admin') {
         setError('Bu sayfaya erişim yetkiniz bulunmuyor.');
         navigate('/dashboard');
       }

@@ -39,25 +39,15 @@ export const authAPI = {
 
   getUserRole() {
     const user = this.getCurrentUser();
-    console.log('Current user:', user);
-    console.log('User metadata:', user?.user_metadata);
-    const role = user?.user_metadata?.role || 'user';
-    console.log('User role:', role);
-    return role;
+    return user?.user_metadata?.role || 'user';
   },
 
   isAdmin() {
-    const role = this.getUserRole();
-    const isAdmin = role === 'admin';
-    console.log('Is admin check:', role, isAdmin);
-    return isAdmin;
+    return this.getUserRole() === 'admin';
   },
 
   isUser() {
-    const role = this.getUserRole();
-    const isUser = role === 'user';
-    console.log('Is user check:', role, isUser);
-    return isUser;
+    return this.getUserRole() === 'user';
   }
 };
 
