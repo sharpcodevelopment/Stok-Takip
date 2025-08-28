@@ -41,23 +41,78 @@ export const supabaseHelpers = {
   async getProducts() {
     const { data, error } = await supabase
       .from('products')
-      .select('*')
+      .select(`
+        id,
+        name,
+        description,
+        category_id,
+        price,
+        stock_quantity,
+        minimum_stock_level,
+        size,
+        color,
+        is_active,
+        created_at
+      `)
+      .eq('is_active', true)
       .order('created_at', { ascending: false });
-    return { data, error };
+    
+    // Veri formatını frontend'e uygun hale getir
+    const formattedData = data?.map(product => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      categoryId: product.category_id,
+      price: product.price,
+      stockQuantity: product.stock_quantity,
+      minStockLevel: product.minimum_stock_level,
+      size: product.size,
+      color: product.color,
+      isActive: product.is_active,
+      createdAt: product.created_at
+    })) || [];
+    
+    return { data: formattedData, error };
   },
 
   async addProduct(product) {
+    // Veri formatını Supabase'e uygun hale getir
+    const formattedProduct = {
+      name: product.name,
+      description: product.description,
+      category_id: product.categoryId,
+      price: product.price,
+      stock_quantity: product.stockQuantity,
+      minimum_stock_level: product.minStockLevel || 10,
+      size: product.size,
+      color: product.color,
+      is_active: true
+    };
+    
     const { data, error } = await supabase
       .from('products')
-      .insert([product])
+      .insert([formattedProduct])
       .select();
     return { data, error };
   },
 
   async updateProduct(id, updates) {
+    // Veri formatını Supabase'e uygun hale getir
+    const formattedUpdates = {
+      name: updates.name,
+      description: updates.description,
+      category_id: updates.categoryId,
+      price: updates.price,
+      stock_quantity: updates.stockQuantity,
+      minimum_stock_level: updates.minStockLevel || updates.minimum_stock_level,
+      size: updates.size,
+      color: updates.color,
+      is_active: updates.isActive !== undefined ? updates.isActive : true
+    };
+    
     const { data, error } = await supabase
       .from('products')
-      .update(updates)
+      .update(formattedUpdates)
       .eq('id', id)
       .select();
     return { data, error };
@@ -93,19 +148,50 @@ export const supabaseHelpers = {
     const { data, error } = await supabase
       .from('stock_transactions')
       .select(`
-        *,
+        id,
+        product_id,
+        transaction_type,
+        quantity,
+        unit_price,
+        notes,
+        transaction_date,
+        created_at,
         products (
           name
         )
       `)
       .order('transaction_date', { ascending: false });
-    return { data, error };
+    
+    // Veri formatını frontend'e uygun hale getir
+    const formattedData = data?.map(transaction => ({
+      id: transaction.id,
+      productId: transaction.product_id,
+      transactionType: transaction.transaction_type,
+      quantity: transaction.quantity,
+      unitPrice: transaction.unit_price,
+      notes: transaction.notes,
+      transactionDate: transaction.transaction_date,
+      createdAt: transaction.created_at,
+      productName: transaction.products?.name || 'Bilinmeyen Ürün'
+    })) || [];
+    
+    return { data: formattedData, error };
   },
 
   async addStockTransaction(transaction) {
+    // Veri formatını Supabase'e uygun hale getir
+    const formattedTransaction = {
+      product_id: transaction.productId,
+      transaction_type: transaction.transactionType,
+      quantity: transaction.quantity,
+      unit_price: transaction.unitPrice,
+      notes: transaction.notes,
+      transaction_date: new Date().toISOString()
+    };
+    
     const { data, error } = await supabase
       .from('stock_transactions')
-      .insert([transaction])
+      .insert([formattedTransaction])
       .select();
     return { data, error };
   },
