@@ -213,21 +213,67 @@ export const supabaseHelpers = {
         )
       `)
       .order('created_at', { ascending: false });
-    return { data, error };
+    
+    if (error) {
+      console.error('Stock requests error:', error);
+      return { data: [], error };
+    }
+    
+    // Veri formatını frontend'e uygun hale getir
+    const formattedData = data?.map(request => ({
+      id: request.id,
+      productId: request.product_id || request.productId,
+      productName: request.products?.name || 'Bilinmeyen Ürün',
+      quantity: request.quantity,
+      priority: request.priority,
+      notes: request.notes,
+      status: request.status,
+      requestedById: request.requested_by_id || request.requestedById,
+      createdAt: request.created_at,
+      updatedAt: request.updated_at,
+      approvedById: request.approved_by_id || request.approvedById,
+      approvedAt: request.approved_at || request.approvedAt,
+      rejectionReason: request.rejection_reason || request.rejectionReason
+    })) || [];
+    
+    return { data: formattedData, error };
   },
 
   async addStockRequest(request) {
+    // Veri formatını Supabase'e uygun hale getir
+    const formattedRequest = {
+      product_id: request.productId,
+      quantity: request.quantity,
+      priority: request.priority || 'normal',
+      notes: request.notes || '',
+      requested_by_id: request.requestedById,
+      status: 'pending'
+    };
+    
     const { data, error } = await supabase
       .from('stock_requests')
-      .insert([request])
+      .insert([formattedRequest])
       .select();
     return { data, error };
   },
 
   async updateStockRequest(id, updates) {
+    // Veri formatını Supabase'e uygun hale getir
+    const formattedUpdates = {};
+    
+    if (updates.quantity !== undefined) formattedUpdates.quantity = updates.quantity;
+    if (updates.priority !== undefined) formattedUpdates.priority = updates.priority;
+    if (updates.notes !== undefined) formattedUpdates.notes = updates.notes;
+    if (updates.status !== undefined) formattedUpdates.status = updates.status;
+    if (updates.approvedById !== undefined) formattedUpdates.approved_by_id = updates.approvedById;
+    if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
+    
+    // updated_at alanını güncelle
+    formattedUpdates.updated_at = new Date().toISOString();
+    
     const { data, error } = await supabase
       .from('stock_requests')
-      .update(updates)
+      .update(formattedUpdates)
       .eq('id', id)
       .select();
     return { data, error };
