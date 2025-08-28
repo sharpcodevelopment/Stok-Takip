@@ -1,35 +1,60 @@
-// Supabase-based API service
-import { supabase, supabaseHelpers } from './supabase.js';
+// Backend API service
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Auth functions
 export const authAPI = {
   async login(email, password) {
-    const result = await supabaseHelpers.signIn(email, password);
-    if (result.data?.user) {
-      localStorage.setItem('user', JSON.stringify(result.data.user));
-      localStorage.setItem('session', JSON.stringify(result.data.session));
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      const result = await response.json();
+      
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('Login error:', error);
+      return { error: { message: 'Login failed' } };
     }
-    return result;
   },
 
   async register(userData) {
-    // userType'a göre role belirle
-    const role = userData.isAdminRegistration ? 'admin' : 'user';
-    
-    const result = await supabaseHelpers.signUp(userData.email, userData.password, {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      phoneNumber: userData.phoneNumber,
-      role: role // Role bilgisini ekle
-    });
-    return result;
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      
+      const result = await response.json();
+      
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('Register error:', error);
+      return { error: { message: 'Registration failed' } };
+    }
   },
 
   async logout() {
-    const result = await supabaseHelpers.signOut();
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('session');
-    return result;
+    return { success: true };
   },
 
   getCurrentUser() {
@@ -37,271 +62,148 @@ export const authAPI = {
     return user ? JSON.parse(user) : null;
   },
 
+  getToken() {
+    return localStorage.getItem('token');
+  },
+
   getUserRole() {
     const user = this.getCurrentUser();
-    return user?.user_metadata?.role || 'user'; // default user
+    return user?.roles?.[0] || 'user';
   },
 
   isAdmin() {
-    return this.getUserRole() === 'admin';
+    return this.getUserRole() === 'Admin';
   },
 
   isUser() {
-    return this.getUserRole() === 'user';
+    return this.getUserRole() === 'User';
   }
 };
 
-// Categories API
-export const categoriesAPI = {
-  async getAll() {
-    return await supabaseHelpers.getCategories();
-  },
-
-  async create(category) {
-    return await supabaseHelpers.addCategory(category);
-  }
-};
-
-// Products API
-export const productsAPI = {
-  async getAll(filters = {}) {
-    return await supabaseHelpers.getProducts();
-  },
-
-  async getById(id) {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name)')
-      .eq('id', id)
-      .single();
-    return { data, error };
-  },
-
-  async create(product) {
-    return await supabaseHelpers.addProduct(product);
-  },
-
-  async update(id, product) {
-    return await supabaseHelpers.updateProduct(id, product);
-  },
-
-  async delete(id) {
-    return await supabaseHelpers.deleteProduct(id);
-  },
-
-  async getLowStock() {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, categories(name)')
-      .lte('stock_quantity', supabase.raw('minimum_stock_level'))
-      .eq('is_active', true);
-    return { data, error };
-  }
-};
-
-// Stock Transactions API
-export const stockTransactionsAPI = {
-  async getAll() {
-    return await supabaseHelpers.getStockTransactions();
-  },
-
-  async create(transaction) {
-    return await supabaseHelpers.addStockTransaction(transaction);
-  }
-};
-
-// Stock Requests API
-export const stockRequestsAPI = {
-  async getAll() {
-    return await supabaseHelpers.getStockRequests();
-  },
-
-  async create(request) {
-    return await supabaseHelpers.addStockRequest(request);
-  },
-
-  async update(id, updates) {
-    return await supabaseHelpers.updateStockRequest(id, updates);
-  }
-};
-
-// Dashboard API
-export const dashboardAPI = {
-  async getStats() {
-    try {
-      // Products count
-      const { count: productsCount } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true);
-
-      // Categories count
-      const { count: categoriesCount } = await supabase
-        .from('categories')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true);
-
-      // Transactions count
-      const { count: transactionsCount } = await supabase
-        .from('stock_transactions')
-        .select('*', { count: 'exact', head: true });
-
-      // Low stock count  
-      const { count: lowStockCount } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true })
-        .lte('stock_quantity', supabase.raw('minimum_stock_level'))
-        .eq('is_active', true);
-
-      // Pending requests count
-      const { count: pendingRequestsCount } = await supabase
-        .from('stock_requests')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'Pending');
-
-      return {
-        data: {
-          totalProducts: productsCount || 0,
-          totalCategories: categoriesCount || 0,
-          totalTransactions: transactionsCount || 0,
-          lowStockProducts: lowStockCount || 0,
-          pendingRequests: pendingRequestsCount || 0
-        },
-        error: null
-      };
-    } catch (error) {
-      return { data: null, error };
-    }
-  }
-};
+// Backend API endpoints will be handled by the main api object
 
 // Legacy axios-style API object for backward compatibility
 const api = {
   async get(url) {
-    console.log('Legacy API GET:', url);
+    console.log('Backend API GET:', url);
     
-    if (url.includes('/auth/profile')) {
-      // Supabase'den current user bilgisi al
-      const user = authAPI.getCurrentUser();
-      return { data: user || {} };
+    const token = authAPI.getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
-    if (url.includes('/dashboard/stats')) {
-      const result = await dashboardAPI.getStats();
-      return { data: result.data || {} };
-    }
-    if (url.includes('/products')) {
-      const result = await productsAPI.getAll();
-      return { data: result.data || [] };
-    }
-    if (url.includes('/categories')) {
-      const result = await categoriesAPI.getAll();
-      return { data: result.data || [] };
-    }
-    if (url.includes('/stocktransactions')) {
-      const result = await stockTransactionsAPI.getAll();
-      return { data: result.data || [] };
-    }
-    if (url.includes('/stockrequests')) {
-      const result = await stockRequestsAPI.getAll();
-      return { data: result.data || [] };
-    }
-    if (url.includes('/auth/admin-requests')) {
-      // Admin requests - şimdilik boş array döndür
-      return { data: [] };
-    }
-    if (url.includes('/products/low-stock')) {
-      const result = await productsAPI.getLowStock();
-      return { data: result.data || [] };
-    }
-    if (url.includes('/auth/users')) {
-      // Supabase'den kullanıcıları al
-      try {
-        const { data: users, error } = await supabase.auth.admin.listUsers();
-        if (error) throw error;
-        
-        // .NET formatına dönüştür
-        const formattedUsers = users.users.map(user => ({
-          id: user.id,
-          email: user.email,
-          firstName: user.user_metadata?.firstName || 'N/A',
-          lastName: user.user_metadata?.lastName || 'N/A',
-          phoneNumber: user.user_metadata?.phoneNumber || '',
-          roles: [user.user_metadata?.role || 'user'],
-          isSuperAdmin: user.user_metadata?.role === 'admin',
-          createdAt: user.created_at
-        }));
-        
-        return { data: formattedUsers };
-      } catch (error) {
-        console.error('Users fetch error:', error);
-        return { data: [] };
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}${url}`, {
+        method: 'GET',
+        headers,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
+      const data = await response.json();
+      return { data };
+    } catch (error) {
+      console.error('API GET error:', error);
+      return { data: null, error };
     }
-    
-    console.warn('Legacy API endpoint not supported:', url);
-    return { data: [] };
   },
 
   async post(url, data) {
-    console.log('Legacy API POST:', url, data);
+    console.log('Backend API POST:', url, data);
     
-    if (url.includes('/auth/login')) {
-      return await authAPI.login(data.email, data.password);
-    }
-    if (url.includes('/auth/register')) {
-      return await authAPI.register(data);
-    }
-    if (url.includes('/categories')) {
-      const result = await categoriesAPI.create(data);
-      return { data: result.data };
-    }
-    if (url.includes('/products')) {
-      const result = await productsAPI.create(data);
-      return { data: result.data };
-    }
-    if (url.includes('/stocktransactions')) {
-      const result = await stockTransactionsAPI.create(data);
-      return { data: result.data };
-    }
-    if (url.includes('/stockrequests')) {
-      const result = await stockRequestsAPI.create(data);
-      return { data: result.data };
+    const token = authAPI.getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     
-    console.warn('Legacy API endpoint not supported:', url);
-    return { data: null };
+    try {
+      const response = await fetch(`${API_BASE_URL}${url}`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      return { data: result };
+    } catch (error) {
+      console.error('API POST error:', error);
+      return { data: null, error };
+    }
   },
 
   async put(url, data) {
-    console.log('Legacy API PUT:', url, data);
+    console.log('Backend API PUT:', url, data);
     
-    const id = url.split('/').pop();
+    const token = authAPI.getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+    };
     
-    if (url.includes('/products/')) {
-      const result = await productsAPI.update(id, data);
-      return { data: result.data };
-    }
-    if (url.includes('/stockrequests/')) {
-      const result = await stockRequestsAPI.update(id, data);
-      return { data: result.data };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     
-    console.warn('Legacy API endpoint not supported:', url);
-    return { data: null };
+    try {
+      const response = await fetch(`${API_BASE_URL}${url}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      return { data: result };
+    } catch (error) {
+      console.error('API PUT error:', error);
+      return { data: null, error };
+    }
   },
 
   async delete(url) {
-    console.log('Legacy API DELETE:', url);
+    console.log('Backend API DELETE:', url);
     
-    const id = url.split('/').pop();
+    const token = authAPI.getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+    };
     
-    if (url.includes('/products/')) {
-      const result = await productsAPI.delete(id);
-      return { data: result.data };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     
-    console.warn('Legacy API endpoint not supported:', url);
-    return { data: null };
+    try {
+      const response = await fetch(`${API_BASE_URL}${url}`, {
+        method: 'DELETE',
+        headers,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      return { data: result };
+    } catch (error) {
+      console.error('API DELETE error:', error);
+      return { data: null, error };
+    }
   }
 };
 
