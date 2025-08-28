@@ -240,22 +240,12 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
-    // Önce tablo yapısını kontrol et
-    const { data: tableInfo, error: tableError } = await supabase
-      .from('stock_requests')
-      .select('*')
-      .limit(1);
-    
-    console.log('Table structure check:', tableInfo);
-    console.log('Table error:', tableError);
-    
-    // Sadece id ve product_id ile deneyelim
+    // Sadece product_id ile deneyelim
     const formattedRequest = {
-      product_id: request.productId,
-      requested_by_id: request.requestedById
+      product_id: request.productId
     };
     
-    console.log('Trying with minimal data:', formattedRequest);
+    console.log('Trying with only product_id:', formattedRequest);
     
     const { data, error } = await supabase
       .from('stock_requests')
