@@ -145,11 +145,11 @@ export const supabaseHelpers = {
 
   // Stock Transactions
   async getStockTransactions() {
-    // Önce basit bir sorgu deneyelim
+    // created_at kolonu yok, transaction_date kullan
     const { data, error } = await supabase
       .from('stock_transactions')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('transaction_date', { ascending: false });
     
     if (error) {
       console.error('Stock transactions error:', error);
@@ -165,7 +165,7 @@ export const supabaseHelpers = {
       unitPrice: transaction.unit_price || transaction.unitPrice,
       notes: transaction.notes,
       transactionDate: transaction.transaction_date || transaction.transactionDate,
-      createdAt: transaction.created_at,
+      createdAt: transaction.transaction_date, // created_at yerine transaction_date kullan
       productName: 'Ürün Adı' // Şimdilik sabit
     })) || [];
     
@@ -173,15 +173,14 @@ export const supabaseHelpers = {
   },
 
   async addStockTransaction(transaction) {
-    // Veri formatını Supabase'e uygun hale getir - esnek format
+    // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
       product_id: transaction.productId,
       transaction_type: transaction.transactionType,
       quantity: transaction.quantity,
       unit_price: transaction.unitPrice || 0,
       notes: transaction.notes || '',
-      transaction_date: new Date().toISOString(),
-      created_at: new Date().toISOString()
+      transaction_date: new Date().toISOString()
     };
     
     console.log('Adding transaction:', formattedTransaction);
