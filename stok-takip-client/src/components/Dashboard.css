@@ -202,6 +202,10 @@
   color: #58d68d; 
   text-shadow: 0 0 20px rgba(88, 214, 141, 0.6);
 }
+.stat-icon.admin-requests { 
+  color: #e74c3c; 
+  text-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
+}
 
 .stat-number {
   font-size: 3rem;

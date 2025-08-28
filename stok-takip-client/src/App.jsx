@@ -11,6 +11,7 @@ import Categories from './components/Categories.jsx';
 import StockTransactions from './components/StockTransactions.jsx';
 import UserManagement from './components/UserManagement.jsx';
 import StockRequestManagement from './components/StockRequestManagement.jsx';
+import AdminRequests from './components/AdminRequests.jsx';
 import { authAPI } from './services/api.js';
 import './App.css';
 
@@ -66,6 +67,7 @@ function App() {
           <Route path="/categories" element={<AdminRoute><Categories /></AdminRoute>} />
           <Route path="/transactions" element={<AdminRoute><StockTransactions /></AdminRoute>} />
           <Route path="/user-management" element={<AdminRoute><UserManagement /></AdminRoute>} />
+          <Route path="/admin-requests" element={<AdminRoute><AdminRequests /></AdminRoute>} />
           <Route path="/stock-requests" element={<AdminRoute><StockRequestManagement /></AdminRoute>} />
           
           {/* User Routes */}

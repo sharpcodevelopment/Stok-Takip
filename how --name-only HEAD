@@ -1,0 +1,10 @@
+[33m19cf370[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Fix dashboard stats and user management data display
+[33m5600117[m Add role-based authentication and routing
+[33m8e59730[m Fix API endpoints and column names for Supabase
+[33m2ad9043[m Fix authentication routes for Supabase session
+[33m5c0c32a[m Fix dashboard authentication - add profile and stats API support
+[33m30aa2a0[m Add legacy API support for backward compatibility
+[33m9f58a93[m Add Netlify redirects and fix SPA routing
+[33mb484111[m Remove submodule reference and duplicate Stok-Takip folder
+[33m90e90c6[m Add PostgreSQL support for Railway production deployment
+[33md462e91[m favicon güncellemesi favicon3

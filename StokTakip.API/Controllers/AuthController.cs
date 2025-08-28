@@ -174,11 +174,22 @@ namespace StokTakip.API.Controllers
             if (user == null)
                 return NotFound(new { message = "Kullanıcı bulunamadı" });
 
+            // Kendisini onaylamaya çalışıyor mu kontrol et
+            if (user.Id == currentUser.Id)
+                return BadRequest(new { message = "Kendinizi onaylayamazsınız" });
+
             if (!user.IsAdminRequestPending)
                 return BadRequest(new { message = "Bu kullanıcının admin olma talebi bulunmuyor" });
 
             if (approvalDto.IsApproved)
             {
+                // Kullanıcının zaten admin olup olmadığını kontrol et
+                var userRoles = await _userManager.GetRolesAsync(user);
+                if (userRoles.Contains("Admin"))
+                {
+                    return BadRequest(new { message = "Bu kullanıcı zaten admin rolüne sahip" });
+                }
+                
                 // Admin olarak onayla
                 user.IsAdminRequestPending = false;
                 var result = await _userManager.UpdateAsync(user);
@@ -186,6 +197,10 @@ namespace StokTakip.API.Controllers
                 {
                     // Admin rolünü ekle
                     await _userManager.AddToRoleAsync(user, "Admin");
+                    
+                    // Email bildirimi gönder (opsiyonel)
+                    // await _emailService.SendAdminApprovalEmailAsync(user.Email, user.FirstName);
+                    
                     return Ok(new { message = "Kullanıcı admin olarak onaylandı" });
                 }
                 return BadRequest(new { message = "Onay işlemi sırasında hata oluştu" });
@@ -198,6 +213,9 @@ namespace StokTakip.API.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
+                    // Email bildirimi gönder (opsiyonel)
+                    // await _emailService.SendAdminRejectionEmailAsync(user.Email, user.FirstName, approvalDto.RejectionReason);
+                    
                     return Ok(new { message = "Admin olma talebi reddedildi" });
                 }
                 return BadRequest(new { message = "Red işlemi sırasında hata oluştu" });

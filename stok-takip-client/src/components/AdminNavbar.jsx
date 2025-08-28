@@ -102,8 +102,8 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               Stok Hareketleri
             </Nav.Link>
             <Nav.Link 
-              onClick={() => navigate('/user-management')} 
-              className={`position-relative ${isActive('/user-management') ? 'active' : ''}`}
+              onClick={() => navigate('/admin-requests')} 
+              className={`position-relative ${isActive('/admin-requests') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
@@ -113,8 +113,8 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 padding: '8px 12px'
               }}
             >
-              <i className="fas fa-users me-1"></i>
-              Kullanıcı Yönetimi
+              <i className="fas fa-user-shield me-1"></i>
+              Admin Talepleri
               {adminRequests > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
                   {adminRequests}

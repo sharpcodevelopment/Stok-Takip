@@ -13,10 +13,14 @@ export const authAPI = {
   },
 
   async register(userData) {
+    // userType'a göre role belirle
+    const role = userData.isAdminRegistration ? 'admin' : 'user';
+    
     const result = await supabaseHelpers.signUp(userData.email, userData.password, {
       firstName: userData.firstName,
       lastName: userData.lastName,
-      phoneNumber: userData.phoneNumber
+      phoneNumber: userData.phoneNumber,
+      role: role // Role bilgisini ekle
     });
     return result;
   },

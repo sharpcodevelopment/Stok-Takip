@@ -150,7 +150,7 @@ const Dashboard = () => {
 
         {/* Statistics Cards */}
         <Row className="mb-4">
-          <Col xs={12} sm={6} md={4}>
+          <Col xs={12} sm={6} md={3}>
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon products">
@@ -161,7 +161,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={4}>
+          <Col xs={12} sm={6} md={3}>
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon categories">
@@ -172,7 +172,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={12} md={4}>
+          <Col xs={12} sm={6} md={3}>
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon low-stock">
@@ -180,6 +180,17 @@ const Dashboard = () => {
                 </div>
                 <div className="stat-number">{stats.totalTransactions}</div>
                 <div className="stat-label">Toplam Hareket</div>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col xs={12} sm={6} md={3}>
+            <Card className="stat-card">
+              <Card.Body>
+                <div className="stat-icon admin-requests">
+                  <i className="fas fa-user-shield"></i>
+                </div>
+                <div className="stat-number">{adminRequests}</div>
+                <div className="stat-label">Admin Talepleri</div>
               </Card.Body>
             </Card>
           </Col>

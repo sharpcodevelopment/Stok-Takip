@@ -102,6 +102,13 @@ const UserDashboard = () => {
               <p className="welcome-subtitle">
                 Stok takip sistemini görüntülemek için aşağıdaki seçenekleri kullanabilirsiniz.
               </p>
+                             {user?.isAdminRequestPending && (
+                               <Alert variant="warning">
+                                 <i className="fas fa-clock me-2"></i>
+                                 <strong>Admin Onay Talebi:</strong> Admin olma talebiniz alındı ve onay bekleniyor. 
+                                 Onaylandıktan sonra yönetici paneline erişim sağlayabileceksiniz.
+                               </Alert>
+                             )}
                              <Alert variant="info">
                  <i className="fas fa-info-circle me-2"></i>
                  <strong>Mağaza Çalışanı:</strong> Sadece görüntüleme yetkiniz bulunmaktadır. 

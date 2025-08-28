@@ -92,9 +92,19 @@ const Login = () => {
           return;
         }
         
-        // Kayıt başarılı - dashboard'a yönlendir
+        // Kayıt başarılı - response'a göre yönlendir
         console.log('User registered:', result.data);
-        navigate('/dashboard');
+        
+        // Response'a göre yönlendirme
+        if (result.data.isAdminRequestPending) {
+          // Admin kayıt talebi beklemede - kullanıcı dashboard'una yönlendir
+          alert('✅ Admin olma talebiniz başarıyla alındı!\n\n📋 Durum: Ana admin onayı bekleniyor\n👤 Şimdilik: Normal kullanıcı olarak giriş yapabilirsiniz\n📧 Bildirim: Onay durumu hakkında bilgilendirileceksiniz');
+          navigate('/user-dashboard');
+        } else {
+          // Normal kullanıcı kaydı
+          alert('✅ Kayıt başarılı! Mağaza çalışanı olarak giriş yapabilirsiniz.');
+          navigate('/user-dashboard');
+        }
       }
     } catch (err) {
       // Validation hatalarını göster
