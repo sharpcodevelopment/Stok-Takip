@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#81C784;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4CAF50;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="15" fill="url(#grad1)" stroke="#1B5E20" stroke-width="1"/>
+  
+  <!-- Main box -->
+  <rect x="8" y="12" width="16" height="12" fill="url(#grad2)" stroke="#1B5E20" stroke-width="1" rx="2"/>
+  
+  <!-- Box lid -->
+  <rect x="6" y="10" width="20" height="4" fill="url(#grad2)" stroke="#1B5E20" stroke-width="1" rx="2"/>
+  
+  <!-- Box lines for 3D effect -->
+  <line x1="8" y1="12" x2="6" y2="10" stroke="#1B5E20" stroke-width="1"/>
+  <line x1="24" y1="12" x2="26" y2="10" stroke="#1B5E20" stroke-width="1"/>
+  <line x1="24" y1="24" x2="26" y2="14" stroke="#1B5E20" stroke-width="1"/>
+  
+  <!-- Inventory lines -->
+  <line x1="10" y1="16" x2="22" y2="16" stroke="#1B5E20" stroke-width="1.5"/>
+  <line x1="10" y1="19" x2="18" y2="19" stroke="#1B5E20" stroke-width="1.5"/>
+  <line x1="10" y1="22" x2="20" y2="22" stroke="#1B5E20" stroke-width="1.5"/>
+  
+  <!-- Small inventory dots -->
+  <circle cx="12" cy="14" r="1" fill="#1B5E20"/>
+  <circle cx="15" cy="14" r="1" fill="#1B5E20"/>
+  <circle cx="18" cy="14" r="1" fill="#1B5E20"/>
+</svg>
