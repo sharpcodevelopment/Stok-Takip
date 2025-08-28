@@ -145,18 +145,21 @@ export const supabaseHelpers = {
 
   // Stock Transactions
   async getStockTransactions() {
-    // created_at kolonu yok, transaction_date kullan
+    // Ürün adını da al
     const { data, error } = await supabase
       .from('stock_transactions')
-      .select('*')
+      .select(`
+        *,
+        products (
+          name
+        )
+      `)
       .order('transaction_date', { ascending: false });
     
     if (error) {
       console.error('Stock transactions error:', error);
       return { data: [], error };
     }
-    
-    console.log('Raw stock transactions:', data);
     
     // Veri formatını frontend'e uygun hale getir
     const formattedData = data?.map(transaction => ({
@@ -168,10 +171,8 @@ export const supabaseHelpers = {
       notes: transaction.notes,
       transactionDate: transaction.transaction_date || transaction.transactionDate,
       createdAt: transaction.transaction_date, // created_at yerine transaction_date kullan
-      productName: 'Ürün Adı' // Şimdilik sabit
+      productName: transaction.products?.name || 'Bilinmeyen Ürün'
     })) || [];
-    
-    console.log('Formatted stock transactions:', formattedData);
     
     return { data: formattedData, error };
   },
