@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
+import { formatDateForDisplayShort } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -264,15 +265,7 @@ const Dashboard = () => {
                            {transaction.productName} - {transaction.quantity} adet
                          </div>
                          <div className="recent-time">
-                           {transaction.transactionDate || transaction.date ? 
-                             new Date(transaction.transactionDate || transaction.date).toLocaleString('tr-TR', {
-                               month: 'short',
-                               day: 'numeric',
-                               hour: '2-digit',
-                               minute: '2-digit',
-                               timeZone: 'Europe/Istanbul'
-                             }) : 'Yakın zamanda'
-                           }
+                           {formatDateForDisplayShort(transaction.transactionDate || transaction.date) || 'Yakın zamanda'}
                          </div>
                        </div>
                      </div>

@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Table, Badge, Alert, Modal, Form } f
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
+import { formatDateForDisplay } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const StockTransactions = () => {
@@ -308,16 +309,7 @@ const StockTransactions = () => {
                     </td>
                     <td>{transaction.notes || transaction.description}</td>
                     <td>
-                      {transaction.transactionDate || transaction.date ? 
-                        new Date(transaction.transactionDate || transaction.date).toLocaleString('tr-TR', {
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          timeZone: 'Europe/Istanbul'
-                        }) : '-'
-                      }
+                      {formatDateForDisplay(transaction.transactionDate || transaction.date)}
                     </td>
                   </tr>
                 ))}

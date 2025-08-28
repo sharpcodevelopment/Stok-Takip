@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Table, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
+import { formatDateForDisplay } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const Products = () => {
@@ -160,14 +161,7 @@ const Products = () => {
                               if (isNaN(date.getTime())) {
                                 return '-';
                               }
-                              return date.toLocaleString('tr-TR', {
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                timeZone: 'Europe/Istanbul'
-                              });
+                              return formatDateForDisplay(date);
                             } catch (error) {
                               return '-';
                             }
@@ -179,14 +173,7 @@ const Products = () => {
                                 if (isNaN(date.getTime())) {
                                   return '-';
                                 }
-                                return date.toLocaleString('tr-TR', {
-                                  year: 'numeric',
-                                  month: '2-digit',
-                                  day: '2-digit',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                  timeZone: 'Europe/Istanbul'
-                                });
+                                return formatDateForDisplay(date);
                               } catch (error) {
                                 return '-';
                               }

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { getCurrentTurkeyTime } from '../utils/dateUtils.js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ehordwomcshznizvoxdk.supabase.co';
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVob3Jkd29tY3Noem5penZveGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzMjcxMjUsImV4cCI6MjA3MTkwMzEyNX0.GguhWjIghvUR5RgF-t2rhHJF1JMyOF_BQ4k6n46pQGA';
@@ -77,8 +78,7 @@ export const supabaseHelpers = {
 
   async addProduct(product) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const now = new Date();
-    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    const turkeyTime = getCurrentTurkeyTime();
     
     // Veri formatını Supabase'e uygun hale getir
     const formattedProduct = {
@@ -143,8 +143,7 @@ export const supabaseHelpers = {
 
   async addCategory(category) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const now = new Date();
-    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    const turkeyTime = getCurrentTurkeyTime();
     
     const formattedCategory = {
       ...category,
@@ -194,8 +193,7 @@ export const supabaseHelpers = {
 
   async addStockTransaction(transaction) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const now = new Date();
-    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    const turkeyTime = getCurrentTurkeyTime();
     
     // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
@@ -259,8 +257,7 @@ export const supabaseHelpers = {
 
   async addStockRequest(request) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const now = new Date();
-    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    const turkeyTime = getCurrentTurkeyTime();
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -294,8 +291,7 @@ export const supabaseHelpers = {
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
     
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const now = new Date();
-    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    const turkeyTime = getCurrentTurkeyTime();
     
     // updated_at alanını güncelle
     formattedUpdates.updated_at = turkeyTime.toISOString();
