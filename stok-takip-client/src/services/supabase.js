@@ -264,11 +264,9 @@ export const supabaseHelpers = {
     // Veri formatını Supabase'e uygun hale getir - sadece temel kolonlar
     const formattedUpdates = {};
     
-    if (updates.quantity !== undefined) formattedUpdates.quantity = updates.quantity;
-    // priority kolonu yok - atla
-    // notes kolonu yok - atla
+    if (updates.quantity !== undefined) formattedUpdates.requested_quantity = updates.quantity;
+    if (updates.notes !== undefined) formattedUpdates.request_reason = updates.notes;
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
-    if (updates.approvedById !== undefined) formattedUpdates.approved_by_id = updates.approvedById;
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
     
     // updated_at alanını güncelle
@@ -280,5 +278,13 @@ export const supabaseHelpers = {
       .eq('id', id)
       .select();
     return { data, error };
+  },
+
+  async deleteStockRequest(id) {
+    const { error } = await supabase
+      .from('stock_requests')
+      .delete()
+      .eq('id', id);
+    return { error };
   }
 };
