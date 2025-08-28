@@ -78,16 +78,7 @@ export const supabaseHelpers = {
   async addProduct(product) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyTimeString = now.toLocaleString('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Europe/Istanbul'
-    });
-    const turkeyTime = new Date(turkeyTimeString);
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
     
     // Veri formatını Supabase'e uygun hale getir
     const formattedProduct = {
@@ -153,16 +144,7 @@ export const supabaseHelpers = {
   async addCategory(category) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyTimeString = now.toLocaleString('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Europe/Istanbul'
-    });
-    const turkeyTime = new Date(turkeyTimeString);
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
     
     const formattedCategory = {
       ...category,
@@ -213,16 +195,7 @@ export const supabaseHelpers = {
   async addStockTransaction(transaction) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyTimeString = now.toLocaleString('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Europe/Istanbul'
-    });
-    const turkeyTime = new Date(turkeyTimeString);
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
     
     // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
@@ -287,16 +260,7 @@ export const supabaseHelpers = {
   async addStockRequest(request) {
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyTimeString = now.toLocaleString('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Europe/Istanbul'
-    });
-    const turkeyTime = new Date(turkeyTimeString);
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -331,16 +295,7 @@ export const supabaseHelpers = {
     
     // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyTimeString = now.toLocaleString('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Europe/Istanbul'
-    });
-    const turkeyTime = new Date(turkeyTimeString);
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
     
     // updated_at alanını güncelle
     formattedUpdates.updated_at = turkeyTime.toISOString();
