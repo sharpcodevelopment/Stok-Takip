@@ -16,6 +16,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
   const fetchUserProfile = async () => {
     try {
       const response = await api.get('/auth/profile');
+      console.log('User profile response:', response.data);
       setUser(response.data);
     } catch (error) {
       console.error('Kullanıcı bilgileri alınamadı:', error);
@@ -186,7 +187,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
                 </div>
                 <div className="text-start d-none d-sm-block">
                   <div className="fw-semibold" style={{fontSize: '14px'}}>
-                    {user?.firstName} {user?.lastName}
+                    {user?.firstName || user?.first_name || 'Kullanıcı'} {user?.lastName || user?.last_name || ''}
                   </div>
                   <div style={{fontSize: '12px', color: '#ffffff', opacity: '0.8'}}>
                     Mağaza Çalışanı
