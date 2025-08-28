@@ -161,13 +161,11 @@ export const supabaseHelpers = {
       return { data: [], error };
     }
     
-    console.log('Raw stock transactions:', data);
-    
     // Veri formatını frontend'e uygun hale getir
     const formattedData = data?.map(transaction => ({
       id: transaction.id,
       productId: transaction.product_id || transaction.productId,
-      transactionType: transaction.transaction_type || transaction.transactionType,
+      transactionType: Number(transaction.transaction_type || transaction.transactionType), // Number'a çevir
       quantity: transaction.quantity,
       unitPrice: transaction.unit_price || transaction.unitPrice,
       notes: transaction.notes,
@@ -175,8 +173,6 @@ export const supabaseHelpers = {
       createdAt: transaction.transaction_date, // created_at yerine transaction_date kullan
       productName: transaction.products?.name || 'Bilinmeyen Ürün'
     })) || [];
-    
-    console.log('Formatted stock transactions:', formattedData);
     
     return { data: formattedData, error };
   },
