@@ -133,37 +133,46 @@ export const stockRequestsAPI = {
 export const dashboardAPI = {
   async getStats() {
     try {
-      // Products count
+      // Products count - is_active kontrolünü kaldır
       const { count: productsCount, error: productsError } = await supabase
         .from('products')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true);
+        .select('*', { count: 'exact', head: true });
 
-      if (productsError) throw productsError;
+      if (productsError) {
+        console.log('Products error:', productsError);
+        throw productsError;
+      }
 
-      // Categories count
+      // Categories count - is_active kontrolünü kaldır
       const { count: categoriesCount, error: categoriesError } = await supabase
         .from('categories')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true);
+        .select('*', { count: 'exact', head: true });
 
-      if (categoriesError) throw categoriesError;
+      if (categoriesError) {
+        console.log('Categories error:', categoriesError);
+        throw categoriesError;
+      }
 
       // Transactions count
       const { count: transactionsCount, error: transactionsError } = await supabase
         .from('stock_transactions')
         .select('*', { count: 'exact', head: true });
 
-      if (transactionsError) throw transactionsError;
+      if (transactionsError) {
+        console.log('Transactions error:', transactionsError);
+        throw transactionsError;
+      }
 
       // Low stock count  
       const { count: lowStockCount, error: lowStockError } = await supabase
         .from('products')
         .select('*', { count: 'exact', head: true })
-        .lte('stock_quantity', supabase.raw('minimum_stock_level'))
-        .eq('is_active', true);
+        .lte('stock_quantity', supabase.raw('minimum_stock_level'));
 
-      if (lowStockError) throw lowStockError;
+      if (lowStockError) {
+        console.log('Low stock error:', lowStockError);
+        throw lowStockError;
+      }
 
       // Pending requests count
       const { count: pendingRequestsCount, error: requestsError } = await supabase
@@ -171,7 +180,18 @@ export const dashboardAPI = {
         .select('*', { count: 'exact', head: true })
         .eq('status', 'pending');
 
-      if (requestsError) throw requestsError;
+      if (requestsError) {
+        console.log('Requests error:', requestsError);
+        throw requestsError;
+      }
+
+      console.log('Dashboard stats:', {
+        productsCount,
+        categoriesCount,
+        transactionsCount,
+        lowStockCount,
+        pendingRequestsCount
+      });
 
       return {
         data: {
@@ -184,6 +204,7 @@ export const dashboardAPI = {
         error: null
       };
     } catch (error) {
+      console.log('Dashboard API error:', error);
       return { 
         data: {
           totalProducts: 0,

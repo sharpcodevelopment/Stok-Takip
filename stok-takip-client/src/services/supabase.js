@@ -86,7 +86,9 @@ export const supabaseHelpers = {
       minimum_stock_level: product.minStockLevel || 10,
       size: product.size,
       color: product.color,
-      is_active: true
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
     
     const { data, error } = await supabase
@@ -136,9 +138,15 @@ export const supabaseHelpers = {
   },
 
   async addCategory(category) {
+    const formattedCategory = {
+      ...category,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
     const { data, error } = await supabase
       .from('categories')
-      .insert([category])
+      .insert([formattedCategory])
       .select();
     return { data, error };
   },
@@ -243,7 +251,9 @@ export const supabaseHelpers = {
       product_id: request.productId,
       requested_quantity: request.quantity,
       request_reason: request.notes || '',
-      status: 'pending'
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
     
     const { data, error } = await supabase
