@@ -193,6 +193,12 @@ const api = {
       const result = await dashboardAPI.getStats();
       return { data: result.data || {} };
     }
+    if (url.includes('/products/') && !url.includes('/products/low-stock')) {
+      // Ürün detayı için
+      const id = url.split('/').pop();
+      const result = await productsAPI.getById(id);
+      return { data: result.data };
+    }
     if (url.includes('/products')) {
       const result = await productsAPI.getAll();
       return { data: result.data || [] };

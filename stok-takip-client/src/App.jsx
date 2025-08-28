@@ -5,6 +5,7 @@ import Login from './components/Login.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import UserDashboard from './components/UserDashboard.jsx';
 import UserProducts from './components/UserProducts.jsx';
+import UserProductDetail from './components/UserProductDetail.jsx';
 import UserRequests from './components/UserRequests.jsx';
 import Products from './components/Products.jsx';
 import Categories from './components/Categories.jsx';
@@ -73,6 +74,7 @@ function App() {
           {/* User Routes */}
           <Route path="/user-dashboard" element={<UserRoute><UserDashboard /></UserRoute>} />
           <Route path="/user-products" element={<UserRoute><UserProducts /></UserRoute>} />
+          <Route path="/user-product-detail/:id" element={<UserRoute><UserProductDetail /></UserRoute>} />
           <Route path="/user-requests" element={<UserRoute><UserRequests /></UserRoute>} />
           
           <Route path="/" element={<Navigate to="/login" />} />
