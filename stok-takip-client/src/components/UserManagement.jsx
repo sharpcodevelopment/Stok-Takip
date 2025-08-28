@@ -240,13 +240,14 @@ const UserManagement = () => {
                         <td>{request.email}</td>
                         <td>{request.phoneNumber || '-'}</td>
                         <td>
-                          {new Date(request.adminRequestDate).toLocaleString('tr-TR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                                          {new Date(request.adminRequestDate).toLocaleString('tr-TR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  timeZone: 'Europe/Istanbul'
+                })}
                         </td>
                         <td>
                           <div className="btn-group" role="group">
@@ -313,13 +314,14 @@ const UserManagement = () => {
                         <td>{getRoleBadge(userItem.roles, userItem.isSuperAdmin)}</td>
                         <td>{getAdminRequestStatus(userItem)}</td>
                         <td>
-                          {new Date(userItem.createdAt).toLocaleString('tr-TR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                                          {new Date(userItem.createdAt).toLocaleString('tr-TR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  timeZone: 'Europe/Istanbul'
+                })}
                         </td>
                         <td>
                           {user?.isSuperAdmin ? (

@@ -246,12 +246,14 @@ const UserRequests = () => {
                            {new Date(request.createdAt).toLocaleString('tr-TR', {
                              year: 'numeric',
                              month: '2-digit',
-                             day: '2-digit'
+                             day: '2-digit',
+                             timeZone: 'Europe/Istanbul'
                            })}
                            <div className="text-muted small">
                              {new Date(request.createdAt).toLocaleString('tr-TR', {
                                hour: '2-digit',
-                               minute: '2-digit'
+                               minute: '2-digit',
+                               timeZone: 'Europe/Istanbul'
                              })}
                            </div>
                          </td>

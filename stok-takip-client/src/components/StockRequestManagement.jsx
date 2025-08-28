@@ -199,13 +199,14 @@ const StockRequestManagement = () => {
                         <td>
                           {(() => {
                             const date = new Date(request.createdAt);
-                            return date.toLocaleString('tr-TR', {
-                              year: 'numeric',
-                              month: '2-digit',
-                              day: '2-digit',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            });
+                                return date.toLocaleString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Europe/Istanbul'
+    });
                           })()}
                         </td>
                         <td>
