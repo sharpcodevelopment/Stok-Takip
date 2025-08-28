@@ -47,13 +47,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
+                fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
-                margin: '0 4px',
-                padding: '8px 12px'
+                margin: '0 6px',
+                padding: '12px 20px'
               }}
             >
-              <i className="fas fa-tachometer-alt me-1"></i>
+              <i className="fas fa-tachometer-alt me-2"></i>
               Dashboard
             </Nav.Link>
             <Nav.Link 
@@ -62,13 +63,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
+                fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
-                margin: '0 4px',
-                padding: '8px 12px'
+                margin: '0 6px',
+                padding: '12px 20px'
               }}
             >
-              <i className="fas fa-box me-1"></i>
+              <i className="fas fa-box me-2"></i>
               Ürünler
             </Nav.Link>
             <Nav.Link 
@@ -77,13 +79,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
+                fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
-                margin: '0 4px',
-                padding: '8px 12px'
+                margin: '0 6px',
+                padding: '12px 20px'
               }}
             >
-              <i className="fas fa-tags me-1"></i>
+              <i className="fas fa-tags me-2"></i>
               Kategoriler
             </Nav.Link>
             <Nav.Link 
@@ -92,13 +95,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
+                fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
-                margin: '0 4px',
-                padding: '8px 12px'
+                margin: '0 6px',
+                padding: '12px 20px'
               }}
             >
-              <i className="fas fa-exchange-alt me-1"></i>
+              <i className="fas fa-exchange-alt me-2"></i>
               Stok Hareketleri
             </Nav.Link>
             <Nav.Link 
@@ -107,13 +111,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
+                fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
-                margin: '0 4px',
-                padding: '8px 12px'
+                margin: '0 6px',
+                padding: '12px 20px'
               }}
             >
-              <i className="fas fa-user-shield me-1"></i>
+              <i className="fas fa-user-shield me-2"></i>
               Admin Talepleri
               {adminRequests > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
@@ -127,13 +132,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
+                fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
-                margin: '0 4px',
-                padding: '8px 12px'
+                margin: '0 6px',
+                padding: '12px 20px'
               }}
             >
-              <i className="fas fa-clipboard-list me-1"></i>
+              <i className="fas fa-clipboard-list me-2"></i>
               Stok Talepleri
               {pendingRequests > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

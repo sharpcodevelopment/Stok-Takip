@@ -30,13 +30,15 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
   };
 
   const getMenuClass = (menuName) => {
-    return activeMenu === menuName ? 'text-white fw-semibold me-2' : 'fw-semibold me-2';
+    return activeMenu === menuName ? 'text-white fw-semibold me-3' : 'fw-semibold me-3';
   };
 
   const getMenuStyle = (menuName) => {
     if (activeMenu === menuName) {
       return {
         color: '#ffffff', 
+        fontSize: '1.1rem',
+        padding: '12px 20px',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: 'translateY(0)',
         textShadow: '0 2px 4px rgba(0,0,0,0.3)'
@@ -44,6 +46,8 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
     } else {
       return {
         color: '#adb5bd', 
+        fontSize: '1.1rem',
+        padding: '12px 20px',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: 'translateY(0)'
       };
