@@ -77,8 +77,8 @@ export const supabaseHelpers = {
   },
 
   async addProduct(product) {
-    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const turkeyTime = getCurrentTurkeyTime();
+    // Sunucudan Türkiye saatini al
+    const turkeyTime = await this.getTurkeyTime();
     
     // Veri formatını Supabase'e uygun hale getir
     const formattedProduct = {
@@ -142,8 +142,8 @@ export const supabaseHelpers = {
   },
 
   async addCategory(category) {
-    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const turkeyTime = getCurrentTurkeyTime();
+    // Sunucudan Türkiye saatini al
+    const turkeyTime = await this.getTurkeyTime();
     
     const formattedCategory = {
       ...category,
@@ -192,8 +192,8 @@ export const supabaseHelpers = {
   },
 
   async addStockTransaction(transaction) {
-    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const turkeyTime = getCurrentTurkeyTime();
+    // Sunucudan Türkiye saatini al
+    const turkeyTime = await this.getTurkeyTime();
     
     // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
@@ -256,8 +256,8 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
-    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const turkeyTime = getCurrentTurkeyTime();
+    // Sunucudan Türkiye saatini al
+    const turkeyTime = await this.getTurkeyTime();
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -290,8 +290,8 @@ export const supabaseHelpers = {
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
     
-    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
-    const turkeyTime = getCurrentTurkeyTime();
+    // Sunucudan Türkiye saatini al
+    const turkeyTime = await this.getTurkeyTime();
     
     // updated_at alanını güncelle
     formattedUpdates.updated_at = turkeyTime.toISOString();
@@ -310,5 +310,27 @@ export const supabaseHelpers = {
       .delete()
       .eq('id', id);
     return { error };
+  },
+
+  // Server time functions
+  async getServerTime() {
+    // Supabase'den sunucu saatini al
+    const { data, error } = await supabase.rpc('get_current_time');
+    if (error) {
+      // Fallback: Client-side Turkey time
+      return getCurrentTurkeyTime();
+    }
+    return new Date(data);
+  },
+
+  async getTurkeyTime() {
+    try {
+      // Önce sunucu saatini dene
+      const serverTime = await this.getServerTime();
+      return serverTime;
+    } catch (error) {
+      // Fallback: Client-side Turkey time
+      return getCurrentTurkeyTime();
+    }
   }
 };

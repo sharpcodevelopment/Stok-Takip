@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Table, Badge, Alert, Modal, Form } f
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
+import { formatDateForDisplay } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const UserManagement = () => {
@@ -240,14 +241,7 @@ const UserManagement = () => {
                         <td>{request.email}</td>
                         <td>{request.phoneNumber || '-'}</td>
                         <td>
-                                          {new Date(request.adminRequestDate).toLocaleString('tr-TR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  timeZone: 'Europe/Istanbul'
-                })}
+                          {formatDateForDisplay(request.adminRequestDate)}
                         </td>
                         <td>
                           <div className="btn-group" role="group">
@@ -314,14 +308,7 @@ const UserManagement = () => {
                         <td>{getRoleBadge(userItem.roles, userItem.isSuperAdmin)}</td>
                         <td>{getAdminRequestStatus(userItem)}</td>
                         <td>
-                                          {new Date(userItem.createdAt).toLocaleString('tr-TR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  timeZone: 'Europe/Istanbul'
-                })}
+                          {formatDateForDisplay(userItem.createdAt)}
                         </td>
                         <td>
                           {user?.isSuperAdmin ? (
