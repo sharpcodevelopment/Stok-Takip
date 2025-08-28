@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [pendingRequests, setPendingRequests] = useState(0);
-  const [adminRequests, setAdminRequests] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const Dashboard = () => {
     fetchRecentTransactions();
     fetchLowStockProducts();
     fetchPendingRequests();
-    fetchAdminRequests();
   }, []);
 
   // Dashboard güncelleme kontrolü
@@ -96,19 +95,11 @@ const Dashboard = () => {
     }
   };
 
-  const fetchAdminRequests = async () => {
-    try {
-      const response = await api.get('/auth/admin-requests');
-      setAdminRequests(response.data?.length || 0);
-    } catch (error) {
-      console.error('Admin talepleri alınamadı:', error);
-      setAdminRequests(0);
-    }
-  };
+
 
   return (
     <div className="dashboard-container">
-      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests} />
+      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={0} />
 
       {/* Main Content */}
       <Container>
@@ -140,7 +131,7 @@ const Dashboard = () => {
 
         {/* Statistics Cards */}
         <Row className="mb-4">
-          <Col xs={12} sm={6} md={3} className="mb-3">
+          <Col xs={12} sm={6} md={4} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon products">
@@ -151,7 +142,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={3} className="mb-3">
+          <Col xs={12} sm={6} md={4} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon categories">
@@ -162,7 +153,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={3} className="mb-3">
+          <Col xs={12} sm={6} md={4} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon low-stock">
@@ -173,21 +164,10 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={3} className="mb-3">
-            <Card className="stat-card">
-              <Card.Body>
-                <div className="stat-icon admin-requests">
-                  <i className="fas fa-user-shield"></i>
-                </div>
-                <div className="stat-number">{adminRequests}</div>
-                <div className="stat-label">Admin Talepleri</div>
-              </Card.Body>
-            </Card>
-          </Col>
         </Row>
 
         {/* Quick Actions */}
-        <Row>
+        <Row className="mb-4">
           <Col xs={12} lg={6}>
             <Card className="action-card">
               <Card.Header>
