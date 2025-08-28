@@ -188,7 +188,7 @@ export const supabaseHelpers = {
       transaction_date: new Date().toISOString()
     };
     
-    console.log('Adding transaction:', formattedTransaction);
+
     
     const { data, error } = await supabase
       .from('stock_transactions')

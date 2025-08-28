@@ -48,10 +48,7 @@ const Login = () => {
         }
         
         // Rol kontrolü ve yönlendirme
-        console.log('User logged in:', result.data.user);
-        
         const userRole = result.data.user?.user_metadata?.role || 'user';
-        console.log('User role:', userRole);
         
         // Rol ve seçilen kullanıcı tipi kontrolü
         if (userType === 'admin') {
@@ -93,7 +90,6 @@ const Login = () => {
         }
         
         // Kayıt başarılı - response'a göre yönlendir
-        console.log('User registered:', result.data);
         
         // Response'a göre yönlendirme
         if (result.data.isAdminRequestPending) {

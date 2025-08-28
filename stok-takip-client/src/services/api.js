@@ -178,7 +178,7 @@ export const dashboardAPI = {
 // Legacy axios-style API object for backward compatibility
 const api = {
   async get(url) {
-    console.log('Supabase API GET:', url);
+
     
     if (url.includes('/auth/profile')) {
       // Supabase'den current user bilgisi al
@@ -219,7 +219,7 @@ const api = {
   },
 
   async post(url, data) {
-    console.log('Supabase API POST:', url, data);
+
     
     if (url.includes('/auth/login')) {
       return await authAPI.login(data.email, data.password);
@@ -249,7 +249,7 @@ const api = {
   },
 
   async put(url, data) {
-    console.log('Supabase API PUT:', url, data);
+
     
     const id = url.split('/').pop();
     
@@ -267,7 +267,7 @@ const api = {
   },
 
   async delete(url) {
-    console.log('Supabase API DELETE:', url);
+
     
     const id = url.split('/').pop();
     
