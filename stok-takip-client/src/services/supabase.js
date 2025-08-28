@@ -250,10 +250,17 @@ export const supabaseHelpers = {
       status: 'pending'
     };
     
+    console.log('Adding stock request:', formattedRequest);
+    
     const { data, error } = await supabase
       .from('stock_requests')
       .insert([formattedRequest])
       .select();
+      
+    if (error) {
+      console.error('Add stock request error:', error);
+    }
+    
     return { data, error };
   },
 
