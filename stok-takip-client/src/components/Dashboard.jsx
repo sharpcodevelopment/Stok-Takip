@@ -106,16 +106,6 @@ const Dashboard = () => {
     }
   };
 
-  const fetchLowStockProducts = async () => {
-    try {
-      const response = await api.get('/products/low-stock');
-      setLowStockProducts(response.data || []);
-    } catch (error) {
-      console.error('Düşük stok ürünleri alınamadı:', error);
-      setLowStockProducts([]);
-    }
-  };
-
   return (
     <div className="dashboard-container">
       <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests} />
