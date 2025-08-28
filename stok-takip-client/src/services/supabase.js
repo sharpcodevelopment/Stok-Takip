@@ -224,28 +224,29 @@ export const supabaseHelpers = {
       id: request.id,
       productId: request.product_id || request.productId,
       productName: request.products?.name || 'Bilinmeyen Ürün',
-      quantity: request.quantity,
-      priority: request.priority || 'normal', // priority kolonu yoksa default
-      notes: request.notes || '', // notes kolonu yoksa boş string
+      quantity: request.requested_quantity || request.quantity,
+      priority: 'normal', // priority kolonu yok
+      notes: request.request_reason || request.notes || '',
       status: request.status,
-      requestedById: request.requested_by_id || request.requestedById,
+      requestedById: '', // requested_by_id kolonu yok
       createdAt: request.created_at,
       updatedAt: request.updated_at,
-      approvedById: request.approved_by_id || request.approvedById,
-      approvedAt: request.approved_at || request.approvedAt,
-      rejectionReason: request.rejection_reason || request.rejectionReason
+      approvedById: '', // approved_by_id kolonu yok
+      approvedAt: null, // approved_at kolonu yok
+      rejectionReason: request.rejection_reason || ''
     })) || [];
     
     return { data: formattedData, error };
   },
 
   async addStockRequest(request) {
-    // Sadece product_id ile deneyelim
+    // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
-      product_id: request.productId
+      product_id: request.productId,
+      requested_quantity: request.quantity,
+      request_reason: request.notes || '',
+      status: 'pending'
     };
-    
-    console.log('Trying with only product_id:', formattedRequest);
     
     const { data, error } = await supabase
       .from('stock_requests')
