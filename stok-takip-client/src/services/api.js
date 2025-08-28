@@ -134,34 +134,44 @@ export const dashboardAPI = {
   async getStats() {
     try {
       // Products count
-      const { count: productsCount } = await supabase
+      const { count: productsCount, error: productsError } = await supabase
         .from('products')
         .select('*', { count: 'exact', head: true })
         .eq('is_active', true);
 
+      if (productsError) throw productsError;
+
       // Categories count
-      const { count: categoriesCount } = await supabase
+      const { count: categoriesCount, error: categoriesError } = await supabase
         .from('categories')
         .select('*', { count: 'exact', head: true })
         .eq('is_active', true);
 
+      if (categoriesError) throw categoriesError;
+
       // Transactions count
-      const { count: transactionsCount } = await supabase
+      const { count: transactionsCount, error: transactionsError } = await supabase
         .from('stock_transactions')
         .select('*', { count: 'exact', head: true });
 
+      if (transactionsError) throw transactionsError;
+
       // Low stock count  
-      const { count: lowStockCount } = await supabase
+      const { count: lowStockCount, error: lowStockError } = await supabase
         .from('products')
         .select('*', { count: 'exact', head: true })
         .lte('stock_quantity', supabase.raw('minimum_stock_level'))
         .eq('is_active', true);
 
+      if (lowStockError) throw lowStockError;
+
       // Pending requests count
-      const { count: pendingRequestsCount } = await supabase
+      const { count: pendingRequestsCount, error: requestsError } = await supabase
         .from('stock_requests')
         .select('*', { count: 'exact', head: true })
-        .eq('status', 'Pending');
+        .eq('status', 'pending');
+
+      if (requestsError) throw requestsError;
 
       return {
         data: {
@@ -174,7 +184,16 @@ export const dashboardAPI = {
         error: null
       };
     } catch (error) {
-      return { data: null, error };
+      return { 
+        data: {
+          totalProducts: 0,
+          totalCategories: 0,
+          totalTransactions: 0,
+          lowStockProducts: 0,
+          pendingRequests: 0
+        }, 
+        error 
+      };
     }
   }
 };

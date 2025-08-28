@@ -10,7 +10,9 @@ const Dashboard = () => {
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalCategories: 0,
-    totalTransactions: 0
+    totalTransactions: 0,
+    lowStockProducts: 0,
+    pendingRequests: 0
   });
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
@@ -24,6 +26,15 @@ const Dashboard = () => {
     fetchRecentTransactions();
     fetchLowStockProducts();
     fetchPendingRequests();
+
+    // Gerçek zamanlı veri güncellemesi için interval
+    const interval = setInterval(() => {
+      fetchStats();
+      fetchRecentTransactions();
+      fetchPendingRequests();
+    }, 30000); // 30 saniyede bir güncelle
+
+    return () => clearInterval(interval);
   }, []);
 
   // Dashboard güncelleme kontrolü
@@ -48,13 +59,26 @@ const Dashboard = () => {
     try {
       // Dashboard istatistiklerini al
       const response = await api.get('/dashboard/stats');
-      setStats(response.data);
+      if (response.data) {
+        setStats(response.data);
+      } else {
+        // Varsayılan değerler
+        setStats({
+          totalProducts: 0,
+          totalCategories: 0,
+          totalTransactions: 0,
+          lowStockProducts: 0,
+          pendingRequests: 0
+        });
+      }
     } catch (error) {
       // İstatistikler alınamadı - hata durumunda varsayılan değerler
       setStats({
         totalProducts: 0,
         totalCategories: 0,
-        totalTransactions: 0
+        totalTransactions: 0,
+        lowStockProducts: 0,
+        pendingRequests: 0
       });
     }
   };
