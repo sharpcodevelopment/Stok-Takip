@@ -231,11 +231,11 @@ const Dashboard = () => {
                    recentTransactions.map((transaction) => (
                      <div key={transaction.id} className="recent-item">
                        <div className="recent-icon">
-                         <i className={`fas ${transaction.transactionType === 0 || transaction.type === 'in' ? 'fa-arrow-down text-success' : 'fa-arrow-up text-danger'}`}></i>
+                         <i className={`fas ${transaction.transactionType === 0 ? 'fa-arrow-down text-success' : 'fa-arrow-up text-danger'}`}></i>
                        </div>
                        <div className="recent-content">
                          <div className="recent-title">
-                           {transaction.transactionType === 0 || transaction.type === 'in' ? 'Stok Girişi' : 'Stok Çıkışı'}
+                           {transaction.transactionType === 0 ? 'Stok Girişi' : 'Stok Çıkışı'}
                          </div>
                          <div className="recent-desc">
                            {transaction.productName} - {transaction.quantity} adet

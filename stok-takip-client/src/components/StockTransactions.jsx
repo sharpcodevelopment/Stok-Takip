@@ -302,7 +302,7 @@ const StockTransactions = () => {
                   <tr key={transaction.id}>
                     <td>{transaction.id}</td>
                     <td>{getProductName(transaction.productId)}</td>
-                    <td>{getTransactionTypeBadge(transaction.type)}</td>
+                    <td>{getTransactionTypeBadge(transaction.transactionType)}</td>
                     <td>
                       <span className="fw-bold">{transaction.quantity}</span>
                     </td>
