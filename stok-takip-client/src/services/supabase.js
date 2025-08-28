@@ -76,6 +76,10 @@ export const supabaseHelpers = {
   },
 
   async addProduct(product) {
+    // Türkiye saat diliminde şu anki tarih ve saat
+    const now = new Date();
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    
     // Veri formatını Supabase'e uygun hale getir
     const formattedProduct = {
       name: product.name,
@@ -87,8 +91,8 @@ export const supabaseHelpers = {
       size: product.size,
       color: product.color,
       is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      created_at: turkeyTime.toISOString(),
+      updated_at: turkeyTime.toISOString()
     };
     
     const { data, error } = await supabase
@@ -138,10 +142,14 @@ export const supabaseHelpers = {
   },
 
   async addCategory(category) {
+    // Türkiye saat diliminde şu anki tarih ve saat
+    const now = new Date();
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    
     const formattedCategory = {
       ...category,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      created_at: turkeyTime.toISOString(),
+      updated_at: turkeyTime.toISOString()
     };
     
     const { data, error } = await supabase
@@ -185,6 +193,10 @@ export const supabaseHelpers = {
   },
 
   async addStockTransaction(transaction) {
+    // Türkiye saat diliminde şu anki tarih ve saat
+    const now = new Date();
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    
     // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
       product_id: transaction.productId,
@@ -192,7 +204,7 @@ export const supabaseHelpers = {
       quantity: transaction.quantity,
       unit_price: transaction.unitPrice || 0,
       notes: transaction.notes || '',
-      transaction_date: new Date().toISOString()
+      transaction_date: turkeyTime.toISOString()
     };
     
 
@@ -246,14 +258,18 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
+    // Türkiye saat diliminde şu anki tarih ve saat
+    const now = new Date();
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
       product_id: request.productId,
       requested_quantity: request.quantity,
       request_reason: request.notes || '',
       status: 'pending',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      created_at: turkeyTime.toISOString(),
+      updated_at: turkeyTime.toISOString()
     };
     
     const { data, error } = await supabase
@@ -277,8 +293,12 @@ export const supabaseHelpers = {
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
     
+    // Türkiye saat diliminde şu anki tarih ve saat
+    const now = new Date();
+    const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+    
     // updated_at alanını güncelle
-    formattedUpdates.updated_at = new Date().toISOString();
+    formattedUpdates.updated_at = turkeyTime.toISOString();
     
     const { data, error } = await supabase
       .from('stock_requests')

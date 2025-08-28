@@ -138,41 +138,33 @@ export const dashboardAPI = {
         .from('products')
         .select('*', { count: 'exact', head: true });
 
-      if (productsError) {
-        console.log('Products error:', productsError);
-        throw productsError;
-      }
+      if (productsError) throw productsError;
 
       // Categories count - is_active kontrolünü kaldır
       const { count: categoriesCount, error: categoriesError } = await supabase
         .from('categories')
         .select('*', { count: 'exact', head: true });
 
-      if (categoriesError) {
-        console.log('Categories error:', categoriesError);
-        throw categoriesError;
-      }
+      if (categoriesError) throw categoriesError;
 
       // Transactions count
       const { count: transactionsCount, error: transactionsError } = await supabase
         .from('stock_transactions')
         .select('*', { count: 'exact', head: true });
 
-      if (transactionsError) {
-        console.log('Transactions error:', transactionsError);
-        throw transactionsError;
-      }
+      if (transactionsError) throw transactionsError;
 
-      // Low stock count  
-      const { count: lowStockCount, error: lowStockError } = await supabase
+      // Low stock count - raw yerine manuel kontrol
+      const { data: allProducts, error: productsDataError } = await supabase
         .from('products')
-        .select('*', { count: 'exact', head: true })
-        .lte('stock_quantity', supabase.raw('minimum_stock_level'));
+        .select('stock_quantity, minimum_stock_level')
+        .eq('is_active', true);
 
-      if (lowStockError) {
-        console.log('Low stock error:', lowStockError);
-        throw lowStockError;
-      }
+      if (productsDataError) throw productsDataError;
+
+      const lowStockCount = allProducts?.filter(product => 
+        product.stock_quantity <= product.minimum_stock_level
+      ).length || 0;
 
       // Pending requests count
       const { count: pendingRequestsCount, error: requestsError } = await supabase
@@ -180,18 +172,7 @@ export const dashboardAPI = {
         .select('*', { count: 'exact', head: true })
         .eq('status', 'pending');
 
-      if (requestsError) {
-        console.log('Requests error:', requestsError);
-        throw requestsError;
-      }
-
-      console.log('Dashboard stats:', {
-        productsCount,
-        categoriesCount,
-        transactionsCount,
-        lowStockCount,
-        pendingRequestsCount
-      });
+      if (requestsError) throw requestsError;
 
       return {
         data: {
@@ -204,7 +185,6 @@ export const dashboardAPI = {
         error: null
       };
     } catch (error) {
-      console.log('Dashboard API error:', error);
       return { 
         data: {
           totalProducts: 0,
