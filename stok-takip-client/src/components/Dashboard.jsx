@@ -140,7 +140,7 @@ const Dashboard = () => {
 
         {/* Statistics Cards */}
         <Row className="mb-4">
-          <Col xs={12} sm={6} md={3}>
+          <Col xs={12} sm={6} md={3} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon products">
@@ -151,7 +151,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={3}>
+          <Col xs={12} sm={6} md={3} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon categories">
@@ -162,7 +162,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={3}>
+          <Col xs={12} sm={6} md={3} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon low-stock">
@@ -173,7 +173,7 @@ const Dashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col xs={12} sm={6} md={3}>
+          <Col xs={12} sm={6} md={3} className="mb-3">
             <Card className="stat-card">
               <Card.Body>
                 <div className="stat-icon admin-requests">
@@ -242,7 +242,7 @@ const Dashboard = () => {
             </Card>
           </Col>
           <Col xs={12} lg={6}>
-            <Card className="recent-card">
+            <Card className="recent-card h-100">
               <Card.Header>
                 <h5><i className="fas fa-clock me-2"></i>Son İşlemler</h5>
               </Card.Header>
@@ -288,7 +288,7 @@ const Dashboard = () => {
         {lowStockProducts.length > 0 && (
           <Row className="mb-4">
             <Col>
-              <Card className="border-warning">
+              <Card className="stock-warning-card">
                 <Card.Header className="bg-warning text-dark">
                   <h5 className="mb-0">
                     <i className="fas fa-exclamation-triangle me-2"></i>
@@ -340,7 +340,8 @@ const Dashboard = () => {
                   </div>
                   <div className="text-center mt-3">
                     <Button 
-                      variant="outline-warning" 
+                      variant="warning" 
+                      className="stock-warning-btn"
                       onClick={() => navigate('/products')}
                     >
                       <i className="fas fa-eye me-2"></i>
