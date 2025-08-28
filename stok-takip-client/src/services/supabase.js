@@ -225,7 +225,7 @@ export const supabaseHelpers = {
       productId: request.product_id || request.productId,
       productName: request.products?.name || 'Bilinmeyen Ürün',
       quantity: request.quantity,
-      priority: request.priority,
+      priority: request.priority || 'normal', // priority kolonu yoksa default
       notes: request.notes || '', // notes kolonu yoksa boş string
       status: request.status,
       requestedById: request.requested_by_id || request.requestedById,
@@ -240,11 +240,10 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
-    // Veri formatını Supabase'e uygun hale getir - notes kolonu yok
+    // Veri formatını Supabase'e uygun hale getir - sadece temel kolonlar
     const formattedRequest = {
       product_id: request.productId,
       quantity: request.quantity,
-      priority: request.priority || 'normal',
       requested_by_id: request.requestedById,
       status: 'pending'
     };
@@ -262,11 +261,11 @@ export const supabaseHelpers = {
   },
 
   async updateStockRequest(id, updates) {
-    // Veri formatını Supabase'e uygun hale getir - notes kolonu yok
+    // Veri formatını Supabase'e uygun hale getir - sadece temel kolonlar
     const formattedUpdates = {};
     
     if (updates.quantity !== undefined) formattedUpdates.quantity = updates.quantity;
-    if (updates.priority !== undefined) formattedUpdates.priority = updates.priority;
+    // priority kolonu yok - atla
     // notes kolonu yok - atla
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
     if (updates.approvedById !== undefined) formattedUpdates.approved_by_id = updates.approvedById;
