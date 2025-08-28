@@ -157,7 +157,6 @@ export const supabaseHelpers = {
       .order('transaction_date', { ascending: false });
     
     if (error) {
-      console.error('Stock transactions error:', error);
       return { data: [], error };
     }
     
@@ -196,7 +195,7 @@ export const supabaseHelpers = {
       .select();
       
     if (error) {
-      console.error('Add transaction error:', error);
+      // Add transaction error
     }
     
     return { data, error };
@@ -215,7 +214,6 @@ export const supabaseHelpers = {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('Stock requests error:', error);
       return { data: [], error };
     }
     
@@ -254,7 +252,7 @@ export const supabaseHelpers = {
       .select();
       
     if (error) {
-      console.error('Add stock request error:', error);
+      // Add stock request error
     }
     
     return { data, error };

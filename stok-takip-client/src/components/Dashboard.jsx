@@ -40,7 +40,7 @@ const Dashboard = () => {
       const response = await api.get('/auth/profile');
       setUser(response.data);
     } catch (error) {
-      console.error('Kullanıcı bilgileri alınamadı:', error);
+      // Kullanıcı bilgileri alınamadı
     }
   };
 
@@ -50,8 +50,7 @@ const Dashboard = () => {
       const response = await api.get('/dashboard/stats');
       setStats(response.data);
     } catch (error) {
-      console.error('İstatistikler alınamadı:', error);
-      // Hata durumunda varsayılan değerler
+      // İstatistikler alınamadı - hata durumunda varsayılan değerler
       setStats({
         totalProducts: 0,
         totalCategories: 0,
@@ -67,7 +66,7 @@ const Dashboard = () => {
 
       setRecentTransactions(transactions);
     } catch (error) {
-      console.error('Son işlemler alınamadı:', error);
+      // Son işlemler alınamadı
       setRecentTransactions([]);
     }
   };
@@ -78,7 +77,7 @@ const Dashboard = () => {
       const products = response.data || [];
       setLowStockProducts(products);
     } catch (error) {
-      console.error('Düşük stoklu ürünler alınamadı:', error);
+      // Düşük stoklu ürünler alınamadı
       setLowStockProducts([]);
     }
   };
@@ -90,7 +89,7 @@ const Dashboard = () => {
       const pendingCount = requests.filter(request => request.status === 'Pending').length;
       setPendingRequests(pendingCount);
     } catch (error) {
-      console.error('Bekleyen talepler alınamadı:', error);
+      // Bekleyen talepler alınamadı
       setPendingRequests(0);
     }
   };

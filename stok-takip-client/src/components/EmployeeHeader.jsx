@@ -16,10 +16,9 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
   const fetchUserProfile = async () => {
     try {
       const response = await api.get('/auth/profile');
-      console.log('User profile response:', response.data);
       setUser(response.data);
     } catch (error) {
-      console.error('Kullanıcı bilgileri alınamadı:', error);
+      // Kullanıcı bilgileri alınamadı
     }
   };
 

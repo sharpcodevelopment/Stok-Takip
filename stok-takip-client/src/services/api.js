@@ -224,7 +224,6 @@ const api = {
       return { data: result.data || [] };
     }
     
-    console.warn('Supabase API endpoint not supported:', url);
     return { data: [] };
   },
 
@@ -254,7 +253,6 @@ const api = {
       return { data: result.data };
     }
     
-    console.warn('Supabase API endpoint not supported:', url);
     return { data: null };
   },
 
@@ -272,7 +270,6 @@ const api = {
       return { data: result.data };
     }
     
-    console.warn('Supabase API endpoint not supported:', url);
     return { data: null };
   },
 
@@ -290,7 +287,6 @@ const api = {
       return { data: result.data };
     }
     
-    console.warn('Supabase API endpoint not supported:', url);
     return { data: null };
   }
 };

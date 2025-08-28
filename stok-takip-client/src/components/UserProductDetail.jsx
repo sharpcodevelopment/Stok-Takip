@@ -23,7 +23,7 @@ const UserProductDetail = () => {
       const response = await api.get('/auth/profile');
       setUser(response.data);
     } catch (error) {
-      console.error('Kullanıcı bilgileri alınamadı:', error);
+      // Kullanıcı bilgileri alınamadı
     }
   };
 
@@ -33,7 +33,6 @@ const UserProductDetail = () => {
       const response = await api.get(`/products/${id}`);
       setProduct(response.data);
     } catch (error) {
-      console.error('Ürün detayları alınamadı:', error);
       setError('Ürün detayları yüklenirken hata oluştu.');
     } finally {
       setLoading(false);
