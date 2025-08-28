@@ -161,6 +161,8 @@ export const supabaseHelpers = {
       return { data: [], error };
     }
     
+    console.log('Raw stock transactions:', data);
+    
     // Veri formatını frontend'e uygun hale getir
     const formattedData = data?.map(transaction => ({
       id: transaction.id,
@@ -173,6 +175,8 @@ export const supabaseHelpers = {
       createdAt: transaction.transaction_date, // created_at yerine transaction_date kullan
       productName: transaction.products?.name || 'Bilinmeyen Ürün'
     })) || [];
+    
+    console.log('Formatted stock transactions:', formattedData);
     
     return { data: formattedData, error };
   },
