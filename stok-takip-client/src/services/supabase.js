@@ -76,11 +76,23 @@ export const supabaseHelpers = {
   },
 
   async addProduct(product) {
-    // Türkiye saat diliminde şu anki tarih ve saat
+    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyOffset = 3 * 60; // Türkiye UTC+3
-    const localOffset = now.getTimezoneOffset(); // Yerel offset (dakika)
-    const turkeyTime = new Date(now.getTime() + (localOffset + turkeyOffset) * 60000);
+    const turkeyTimeString = now.toLocaleString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Europe/Istanbul'
+    });
+    
+    // String'i ISO formatına çevir
+    const [datePart, timePart] = turkeyTimeString.split(' ');
+    const [day, month, year] = datePart.split('.');
+    const [hour, minute, second] = timePart.split(':');
+    const turkeyTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
     
     // Veri formatını Supabase'e uygun hale getir
     const formattedProduct = {
@@ -144,11 +156,23 @@ export const supabaseHelpers = {
   },
 
   async addCategory(category) {
-    // Türkiye saat diliminde şu anki tarih ve saat
+    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyOffset = 3 * 60; // Türkiye UTC+3
-    const localOffset = now.getTimezoneOffset(); // Yerel offset (dakika)
-    const turkeyTime = new Date(now.getTime() + (localOffset + turkeyOffset) * 60000);
+    const turkeyTimeString = now.toLocaleString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Europe/Istanbul'
+    });
+    
+    // String'i ISO formatına çevir
+    const [datePart, timePart] = turkeyTimeString.split(' ');
+    const [day, month, year] = datePart.split('.');
+    const [hour, minute, second] = timePart.split(':');
+    const turkeyTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
     
     const formattedCategory = {
       ...category,
@@ -197,11 +221,23 @@ export const supabaseHelpers = {
   },
 
   async addStockTransaction(transaction) {
-    // Türkiye saat diliminde şu anki tarih ve saat
+    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyOffset = 3 * 60; // Türkiye UTC+3
-    const localOffset = now.getTimezoneOffset(); // Yerel offset (dakika)
-    const turkeyTime = new Date(now.getTime() + (localOffset + turkeyOffset) * 60000);
+    const turkeyTimeString = now.toLocaleString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Europe/Istanbul'
+    });
+    
+    // String'i ISO formatına çevir
+    const [datePart, timePart] = turkeyTimeString.split(' ');
+    const [day, month, year] = datePart.split('.');
+    const [hour, minute, second] = timePart.split(':');
+    const turkeyTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
     
     // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
@@ -264,11 +300,23 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
-    // Türkiye saat diliminde şu anki tarih ve saat
+    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyOffset = 3 * 60; // Türkiye UTC+3
-    const localOffset = now.getTimezoneOffset(); // Yerel offset (dakika)
-    const turkeyTime = new Date(now.getTime() + (localOffset + turkeyOffset) * 60000);
+    const turkeyTimeString = now.toLocaleString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Europe/Istanbul'
+    });
+    
+    // String'i ISO formatına çevir
+    const [datePart, timePart] = turkeyTimeString.split(' ');
+    const [day, month, year] = datePart.split('.');
+    const [hour, minute, second] = timePart.split(':');
+    const turkeyTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -301,11 +349,23 @@ export const supabaseHelpers = {
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
     
-    // Türkiye saat diliminde şu anki tarih ve saat
+    // Dashboard'da kullanılan aynı yöntem - Türkiye saat dilimi
     const now = new Date();
-    const turkeyOffset = 3 * 60; // Türkiye UTC+3
-    const localOffset = now.getTimezoneOffset(); // Yerel offset (dakika)
-    const turkeyTime = new Date(now.getTime() + (localOffset + turkeyOffset) * 60000);
+    const turkeyTimeString = now.toLocaleString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Europe/Istanbul'
+    });
+    
+    // String'i ISO formatına çevir
+    const [datePart, timePart] = turkeyTimeString.split(' ');
+    const [day, month, year] = datePart.split('.');
+    const [hour, minute, second] = timePart.split(':');
+    const turkeyTime = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
     
     // updated_at alanını güncelle
     formattedUpdates.updated_at = turkeyTime.toISOString();
