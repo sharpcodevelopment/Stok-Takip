@@ -1320,6 +1320,12 @@
     position: relative !important;
   }
   
+  /* Dropdown menü öğelerini de yukarı çek */
+  .dropdown-item {
+    z-index: 999999 !important;
+    position: relative !important;
+  }
+  
   /* Navbar'ın z-index'ini düşür */
   .navbar {
     z-index: 1000 !important;
