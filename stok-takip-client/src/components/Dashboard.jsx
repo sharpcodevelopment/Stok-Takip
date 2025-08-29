@@ -60,8 +60,10 @@ const Dashboard = () => {
   const fetchUserProfile = async () => {
     try {
       const response = await api.get('/auth/profile');
+      console.log('Dashboard - Kullanıcı bilgileri:', response.data);
       setUser(response.data);
     } catch (error) {
+      console.error('Kullanıcı bilgileri alınamadı:', error);
       // Kullanıcı bilgileri alınamadı
     }
   };
