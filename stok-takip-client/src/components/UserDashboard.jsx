@@ -53,7 +53,18 @@ const UserDashboard = () => {
   const fetchUserRequests = async () => {
     try {
       const response = await api.get('/stockrequests');
-      setUserRequests(response.data || []);
+      const allRequests = response.data || [];
+      
+      // Sadece mevcut kullanıcının taleplerini filtrele
+      const currentUser = await api.get('/auth/profile');
+      const currentUserEmail = currentUser.data?.email;
+      
+      const userRequests = allRequests.filter(request => 
+        request.requestedByName === (currentUser.data?.user_metadata?.firstName + ' ' + currentUser.data?.user_metadata?.lastName) ||
+        request.requestedByName === currentUserEmail
+      );
+      
+      setUserRequests(userRequests);
     } catch (error) {
       console.error('Kullanıcı talepleri alınamadı:', error);
       setUserRequests([]);

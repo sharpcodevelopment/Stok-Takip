@@ -332,13 +332,13 @@ export const supabaseHelpers = {
     // Client-side Türkiye saatini kullan
     const turkeyTime = getCurrentTurkeyTimeISO();
     
-         // Mevcut kullanıcıyı al
-     const { data: { user } } = await supabase.auth.getUser();
-     const currentUser = user;
-     
-     // Kullanıcı bilgilerini debug et
-     console.log('Mevcut kullanıcı bilgileri:', currentUser);
-     console.log('Kullanıcı metadata:', currentUser?.user_metadata);
+               // Mevcut kullanıcıyı al
+      const { data: { user } } = await supabase.auth.getUser();
+      const currentUser = user;
+      
+      // Kullanıcı adı soyadını al
+      const userName = currentUser?.user_metadata?.firstName + ' ' + currentUser?.user_metadata?.lastName;
+      console.log('Stok talebi oluşturan kullanıcı:', userName);
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {

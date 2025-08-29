@@ -182,14 +182,14 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 >
                   <i className="fas fa-user-shield text-white" style={{fontSize: '14px'}}></i>
                 </div>
-                <div className="text-start d-none d-sm-block">
-                  <div style={{fontSize: '14px', color: '#ffffff', fontWeight: '500'}}>
-                    {user?.firstName || 'Admin'} {user?.lastName || 'Kullanıcı'}
-                  </div>
-                  <div style={{fontSize: '12px', color: '#e9ecef', opacity: '0.9'}}>
-                    Sistem Yöneticisi
-                  </div>
-                </div>
+                                 <div className="text-start d-none d-sm-block">
+                   <div style={{fontSize: '14px', color: '#ffffff', fontWeight: '500'}}>
+                     {user?.user_metadata?.firstName || user?.firstName || 'Admin'} {user?.user_metadata?.lastName || user?.lastName || 'Kullanıcı'}
+                   </div>
+                   <div style={{fontSize: '12px', color: '#e9ecef', opacity: '0.9'}}>
+                     {user?.user_metadata?.role === 'admin' ? 'Sistem Yöneticisi' : 'Mağaza Çalışanı'}
+                   </div>
+                 </div>
               </Dropdown.Toggle>
 
               <Dropdown.Menu 

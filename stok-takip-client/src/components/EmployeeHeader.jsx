@@ -186,7 +186,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
                 </div>
                 <div className="text-start d-none d-sm-block">
                   <div className="fw-semibold" style={{fontSize: '14px'}}>
-                    {user?.firstName || user?.first_name || 'Kullanıcı'} {user?.lastName || user?.last_name || ''}
+                    {user?.user_metadata?.firstName || user?.firstName || user?.first_name || 'Kullanıcı'} {user?.user_metadata?.lastName || user?.lastName || user?.last_name || ''}
                   </div>
                   <div style={{fontSize: '12px', color: '#ffffff', opacity: '0.8'}}>
                     Mağaza Çalışanı
