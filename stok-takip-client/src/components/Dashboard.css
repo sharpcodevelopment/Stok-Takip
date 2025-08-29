@@ -1340,6 +1340,12 @@
   /* Bootstrap'in kapanma animasyonunu engelle */
   .navbar-collapse.collapse {
     transition: none !important;
+    animation: none !important;
+  }
+  
+  /* Bootstrap'in tüm kapanma davranışlarını engelle */
+  .navbar-collapse.collapsing {
+    animation: none !important;
   }
   
   /* Menü tamamen gizli başlangıç durumu */
@@ -1356,7 +1362,10 @@
   }
   
   /* Header daraldığında menü yavaşça kaybolur - tüm durumlar için */
-  .navbar:not(.expanded) .navbar-collapse {
+  .navbar:not(.expanded) .navbar-collapse,
+  .navbar:not(.expanded) .navbar-collapse.show,
+  .navbar:not(.expanded) .navbar-collapse.collapse,
+  .navbar:not(.expanded) .navbar-collapse.collapsing {
     animation: menuHide 2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
   }
   
