@@ -387,6 +387,7 @@ export const supabaseHelpers = {
     
     console.log('updateStockRequest çağrısı:', { id, updates, formattedUpdates });
     
+    // Önce stok talebini güncelle
     const { data, error } = await supabase
       .from('stock_requests')
       .update(formattedUpdates)
@@ -394,6 +395,44 @@ export const supabaseHelpers = {
       .select();
     
     console.log('updateStockRequest sonucu:', { data, error });
+    
+    // Eğer talep onaylandıysa (approved) ve hata yoksa, ürün stok miktarını azalt
+    if (updates.status === 'approved' && !error && data && data.length > 0) {
+      const request = data[0];
+      const productId = request.product_id;
+      const requestedQuantity = request.requested_quantity;
+      
+      console.log('Stok talebi onaylandı, ürün stok miktarı azaltılıyor:', { productId, requestedQuantity });
+      
+      // Ürünün mevcut stok miktarını al
+      const { data: productData, error: productError } = await supabase
+        .from('products')
+        .select('stock_quantity')
+        .eq('id', productId)
+        .single();
+      
+      if (productError) {
+        console.error('Ürün stok miktarı alınamadı:', productError);
+        return { data, error: productError };
+      }
+      
+      const currentStock = productData.stock_quantity;
+      const newStock = currentStock - requestedQuantity;
+      
+      // Stok miktarını güncelle
+      const { error: updateStockError } = await supabase
+        .from('products')
+        .update({ stock_quantity: newStock })
+        .eq('id', productId);
+      
+      if (updateStockError) {
+        console.error('Ürün stok miktarı güncellenemedi:', updateStockError);
+        return { data, error: updateStockError };
+      }
+      
+      console.log('Ürün stok miktarı başarıyla güncellendi:', { currentStock, newStock });
+    }
+    
     return { data, error };
   },
 
