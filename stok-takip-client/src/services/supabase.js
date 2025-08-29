@@ -193,12 +193,15 @@ export const supabaseHelpers = {
       updated_at: turkeyTime
     };
     
-    console.log('Supabase updateCategory çağrısı:', { id, formattedUpdates });
+    // ID'yi number'a çevir
+    const numericId = parseInt(id);
+    
+    console.log('Supabase updateCategory çağrısı:', { id: numericId, formattedUpdates });
     
     const { data, error } = await supabase
       .from('categories')
       .update(formattedUpdates)
-      .eq('id', id)
+      .eq('id', numericId)
       .select();
     
     console.log('Supabase updateCategory sonucu:', { data, error });
@@ -206,10 +209,13 @@ export const supabaseHelpers = {
   },
 
   async deleteCategory(id) {
+    // ID'yi number'a çevir
+    const numericId = parseInt(id);
+    
     const { error } = await supabase
       .from('categories')
       .delete()
-      .eq('id', id);
+      .eq('id', numericId);
     return { error };
   },
 
