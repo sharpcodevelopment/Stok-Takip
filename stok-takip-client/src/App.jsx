@@ -69,6 +69,12 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/user-dashboard" />;
   }
   
+  // Admin talebi bekleyen kullanıcıları kontrol et
+  const userData = user ? JSON.parse(user) : null;
+  if (userData?.user_metadata?.isAdminRequestPending) {
+    return <Navigate to="/user-dashboard" />;
+  }
+  
   return children;
 };
 
@@ -79,9 +85,13 @@ const UserRoute = ({ children }) => {
   
   if (!(token || (user && session))) return <Navigate to="/login" />;
   
-  // Rol kontrolü - sadece user'lar erişebilir (admin'ler user dashboard'a giremez)
+  // Rol kontrolü - user'lar ve admin talebi bekleyen kullanıcılar erişebilir
   if (!authAPI.isUser()) {
-    return <Navigate to="/dashboard" />;
+    // Admin talebi bekleyen kullanıcıları kontrol et
+    const userData = user ? JSON.parse(user) : null;
+    if (!userData?.user_metadata?.isAdminRequestPending) {
+      return <Navigate to="/dashboard" />;
+    }
   }
   
   return children;

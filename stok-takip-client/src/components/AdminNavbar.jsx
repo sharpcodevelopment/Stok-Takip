@@ -151,31 +151,34 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               <i className="fas fa-exchange-alt me-2"></i>
               Stok Hareketleri
             </Nav.Link>
-            <Nav.Link 
-              onClick={() => {
-                navigate('/admin-requests');
-                handleNavLinkClick();
-              }}
-              className={`position-relative ${isActive('/admin-requests') ? 'active' : ''}`}
-              style={{
-                color: '#e9ecef',
-                fontWeight: '500',
-                fontSize: '1.1rem',
-                transition: 'all 0.3s ease',
-                borderRadius: '8px',
-                margin: '0 6px',
-                padding: '12px 20px',
-                marginBottom: '0.5rem'
-              }}
-            >
-              <i className="fas fa-user-shield me-2"></i>
-              Admin Talepleri
-              {adminRequests > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                  {adminRequests}
-                </span>
-              )}
-            </Nav.Link>
+            {/* Sadece ana admin'e Admin Talepleri menüsünü göster */}
+            {user?.email === 'admin@stoktakip.com' && (
+              <Nav.Link 
+                onClick={() => {
+                  navigate('/admin-requests');
+                  handleNavLinkClick();
+                }}
+                className={`position-relative ${isActive('/admin-requests') ? 'active' : ''}`}
+                style={{
+                  color: '#e9ecef',
+                  fontWeight: '500',
+                  fontSize: '1.1rem',
+                  transition: 'all 0.3s ease',
+                  borderRadius: '8px',
+                  margin: '0 6px',
+                  padding: '12px 20px',
+                  marginBottom: '0.5rem'
+                }}
+              >
+                <i className="fas fa-user-shield me-2"></i>
+                Admin Talepleri
+                {adminRequests > 0 && (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                    {adminRequests}
+                  </span>
+                )}
+              </Nav.Link>
+            )}
             <Nav.Link 
               onClick={() => {
                 navigate('/stock-requests');

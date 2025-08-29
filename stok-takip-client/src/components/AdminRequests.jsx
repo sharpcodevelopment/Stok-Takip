@@ -28,10 +28,12 @@ const AdminRequests = () => {
       const response = await api.get('/auth/profile');
       setUser(response.data);
       
-      // Admin rolü kontrolü
+      // Sadece ana admin kontrolü
+      const userEmail = response.data?.email;
       const userRole = response.data?.user_metadata?.role;
-      if (userRole !== 'admin') {
-        setError('Bu sayfaya erişim yetkiniz bulunmuyor.');
+      
+      if (userRole !== 'admin' || userEmail !== 'admin@stoktakip.com') {
+        setError('Bu sayfaya sadece ana admin erişebilir.');
         navigate('/dashboard');
       }
     } catch (error) {
@@ -82,8 +84,8 @@ const AdminRequests = () => {
       setIsApproving(true);
       const approvalData = {
         userId: selectedRequest.id,
-        isApproved: !rejectionReason, // Eğer rejection reason varsa reddediliyor
-        rejectionReason: rejectionReason || null
+        isApproved: rejectionReason.trim() === '', // Eğer rejection reason boşsa onaylanıyor
+        rejectionReason: rejectionReason.trim() || null
       };
 
       await api.post('/auth/approve-admin', approvalData);
@@ -223,39 +225,42 @@ const AdminRequests = () => {
       <Modal show={showApprovalModal} onHide={() => setShowApprovalModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {rejectionReason ? 'Admin Talebini Reddet' : 'Admin Talebini Onayla'}
+            <i className={`fas fa-${rejectionReason.trim() ? 'times-circle text-danger' : 'check-circle text-success'} me-2`}></i>
+            {rejectionReason.trim() ? 'Admin Talebini Reddet' : 'Admin Talebini Onayla'}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {selectedRequest && (
             <div>
-              <p>
+              <Alert variant={rejectionReason.trim() ? "warning" : "info"}>
+                <i className={`fas fa-${rejectionReason.trim() ? 'exclamation-triangle' : 'info-circle'} me-2`}></i>
                 <strong>{selectedRequest.firstName} {selectedRequest.lastName}</strong> 
                 ({selectedRequest.email}) kullanıcısının admin olma talebini 
-                {rejectionReason ? ' reddetmek' : ' onaylamak'} istediğinizden emin misiniz?
-              </p>
+                {rejectionReason.trim() ? ' reddetmek' : ' onaylamak'} istediğinizden emin misiniz?
+              </Alert>
               
-              {rejectionReason && (
-                <Form.Group className="mb-3">
-                  <Form.Label>Red Nedeni (Opsiyonel)</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    value={rejectionReason}
-                    onChange={(e) => setRejectionReason(e.target.value)}
-                    placeholder="Red nedeni yazabilirsiniz..."
-                  />
-                </Form.Group>
-              )}
+              <Form.Group className="mb-3">
+                <Form.Label>
+                  {rejectionReason.trim() ? 'Red Nedeni (Opsiyonel)' : 'Onay Notu (Opsiyonel)'}
+                </Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value)}
+                  placeholder={rejectionReason.trim() ? "Red nedeni yazabilirsiniz..." : "Onay notu yazabilirsiniz..."}
+                />
+              </Form.Group>
             </div>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowApprovalModal(false)}>
+            <i className="fas fa-times me-2"></i>
             İptal
           </Button>
           <Button 
-            variant={rejectionReason ? "danger" : "success"}
+            variant={rejectionReason.trim() ? "danger" : "success"}
             onClick={handleApprovalSubmit}
             disabled={isApproving}
           >
@@ -266,8 +271,8 @@ const AdminRequests = () => {
               </>
             ) : (
               <>
-                <i className={`fas fa-${rejectionReason ? 'times' : 'check'} me-2`}></i>
-                {rejectionReason ? 'Reddet' : 'Onayla'}
+                <i className={`fas fa-${rejectionReason.trim() ? 'times' : 'check'} me-2`}></i>
+                {rejectionReason.trim() ? 'Reddet' : 'Onayla'}
               </>
             )}
           </Button>

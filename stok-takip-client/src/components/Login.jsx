@@ -97,7 +97,9 @@ const Login = () => {
           alert('✅ Admin olma talebiniz başarıyla alındı!\n\n📋 Durum: Ana admin onayı bekleniyor\n👤 Şimdilik: Normal kullanıcı olarak giriş yapabilirsiniz\n📧 Bildirim: Onay durumu hakkında bilgilendirileceksiniz');
           navigate('/user-dashboard');
         } else {
-          // Normal kullanıcı kaydı
+          // Normal kullanıcı kaydı - direkt mağaza paneline yönlendir
+          alert('✅ Kayıt başarılı!\n\n👤 Hesap türü: Mağaza Çalışanı\n🏪 Panel: Mağaza Paneli\n📋 Durum: Sisteme giriş yapabilirsiniz');
+          navigate('/user-dashboard');
           alert('✅ Kayıt başarılı! Mağaza çalışanı olarak giriş yapabilirsiniz.');
           navigate('/user-dashboard');
         }
