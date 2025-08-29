@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Table, Badge, Alert, Modal, Form } f
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
-import { formatDateForDisplay } from '../utils/dateUtils.js';
+import { formatDateForDisplay, getRelativeTimeString } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const UserManagement = () => {
@@ -241,7 +241,7 @@ const UserManagement = () => {
                         <td>{request.email}</td>
                         <td>{request.phoneNumber || '-'}</td>
                         <td>
-                          {formatDateForDisplay(request.adminRequestDate)}
+                          {getRelativeTimeString(request.adminRequestDate)}
                         </td>
                         <td>
                           <div className="btn-group" role="group">
@@ -308,7 +308,7 @@ const UserManagement = () => {
                         <td>{getRoleBadge(userItem.roles, userItem.isSuperAdmin)}</td>
                         <td>{getAdminRequestStatus(userItem)}</td>
                         <td>
-                          {formatDateForDisplay(userItem.createdAt)}
+                          {getRelativeTimeString(userItem.createdAt)}
                         </td>
                         <td>
                           {user?.isSuperAdmin ? (

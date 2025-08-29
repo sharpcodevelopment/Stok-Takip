@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { getCurrentTurkeyTime } from '../utils/dateUtils.js';
+import { getCurrentTurkeyTime, getCurrentTurkeyTimeISO } from '../utils/dateUtils.js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ehordwomcshznizvoxdk.supabase.co';
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVob3Jkd29tY3Noem5penZveGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzMjcxMjUsImV4cCI6MjA3MTkwMzEyNX0.GguhWjIghvUR5RgF-t2rhHJF1JMyOF_BQ4k6n46pQGA';
@@ -77,8 +77,8 @@ export const supabaseHelpers = {
   },
 
   async addProduct(product) {
-    // Sunucudan Türkiye saatini al
-    const turkeyTime = await this.getTurkeyTime();
+    // Client-side Türkiye saatini kullan
+    const turkeyTime = getCurrentTurkeyTimeISO();
     
     // Veri formatını Supabase'e uygun hale getir
     const formattedProduct = {
@@ -91,8 +91,8 @@ export const supabaseHelpers = {
       size: product.size,
       color: product.color,
       is_active: true,
-      created_at: turkeyTime.toISOString(),
-      updated_at: turkeyTime.toISOString()
+      created_at: turkeyTime,
+      updated_at: turkeyTime
     };
     
     const { data, error } = await supabase
@@ -142,13 +142,13 @@ export const supabaseHelpers = {
   },
 
   async addCategory(category) {
-    // Sunucudan Türkiye saatini al
-    const turkeyTime = await this.getTurkeyTime();
+    // Client-side Türkiye saatini kullan
+    const turkeyTime = getCurrentTurkeyTimeISO();
     
     const formattedCategory = {
       ...category,
-      created_at: turkeyTime.toISOString(),
-      updated_at: turkeyTime.toISOString()
+      created_at: turkeyTime,
+      updated_at: turkeyTime
     };
     
     const { data, error } = await supabase
@@ -192,8 +192,8 @@ export const supabaseHelpers = {
   },
 
   async addStockTransaction(transaction) {
-    // Sunucudan Türkiye saatini al
-    const turkeyTime = await this.getTurkeyTime();
+    // Client-side Türkiye saatini kullan
+    const turkeyTime = getCurrentTurkeyTimeISO();
     
     // Veri formatını Supabase'e uygun hale getir - created_at kolonu yok
     const formattedTransaction = {
@@ -202,7 +202,7 @@ export const supabaseHelpers = {
       quantity: transaction.quantity,
       unit_price: transaction.unitPrice || 0,
       notes: transaction.notes || '',
-      transaction_date: turkeyTime.toISOString()
+      transaction_date: turkeyTime
     };
     
 
@@ -256,8 +256,8 @@ export const supabaseHelpers = {
   },
 
   async addStockRequest(request) {
-    // Sunucudan Türkiye saatini al
-    const turkeyTime = await this.getTurkeyTime();
+    // Client-side Türkiye saatini kullan
+    const turkeyTime = getCurrentTurkeyTimeISO();
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -265,8 +265,8 @@ export const supabaseHelpers = {
       requested_quantity: request.quantity,
       request_reason: request.notes || '',
       status: 'pending',
-      created_at: turkeyTime.toISOString(),
-      updated_at: turkeyTime.toISOString()
+      created_at: turkeyTime,
+      updated_at: turkeyTime
     };
     
     const { data, error } = await supabase
@@ -290,11 +290,11 @@ export const supabaseHelpers = {
     if (updates.status !== undefined) formattedUpdates.status = updates.status;
     if (updates.rejectionReason !== undefined) formattedUpdates.rejection_reason = updates.rejectionReason;
     
-    // Sunucudan Türkiye saatini al
-    const turkeyTime = await this.getTurkeyTime();
+    // Client-side Türkiye saatini kullan
+    const turkeyTime = getCurrentTurkeyTimeISO();
     
     // updated_at alanını güncelle
-    formattedUpdates.updated_at = turkeyTime.toISOString();
+    formattedUpdates.updated_at = turkeyTime;
     
     const { data, error } = await supabase
       .from('stock_requests')
@@ -312,25 +312,12 @@ export const supabaseHelpers = {
     return { error };
   },
 
-  // Server time functions
-  async getServerTime() {
-    // Supabase'den sunucu saatini al
-    const { data, error } = await supabase.rpc('get_current_time');
-    if (error) {
-      // Fallback: Client-side Turkey time
-      return getCurrentTurkeyTime();
-    }
-    return new Date(data);
+  // Client-side time functions
+  getTurkeyTime() {
+    return getCurrentTurkeyTime();
   },
 
-  async getTurkeyTime() {
-    try {
-      // Önce sunucu saatini dene
-      const serverTime = await this.getServerTime();
-      return serverTime;
-    } catch (error) {
-      // Fallback: Client-side Turkey time
-      return getCurrentTurkeyTime();
-    }
+  getTurkeyTimeISO() {
+    return getCurrentTurkeyTimeISO();
   }
 };

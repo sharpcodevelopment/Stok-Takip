@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
-import { formatDateForDisplayShort } from '../utils/dateUtils.js';
+import { formatDateForDisplayShort, getRelativeTimeString } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [pendingRequests, setPendingRequests] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const navigate = useNavigate();
 
@@ -36,6 +37,15 @@ const Dashboard = () => {
     }, 30000); // 30 saniyede bir güncelle
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Gerçek zamanlı saat güncellemesi
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000); // Her saniye güncelle
+
+    return () => clearInterval(timeInterval);
   }, []);
 
   // Dashboard güncelleme kontrolü
@@ -139,15 +149,18 @@ const Dashboard = () => {
               </p>
                              <div className="current-time">
                  <i className="fas fa-clock me-2"></i>
-                 {new Date().toLocaleString('tr-TR', {
-                   weekday: 'long',
-                   year: 'numeric',
-                   month: 'long',
-                   day: 'numeric',
-                   hour: '2-digit',
-                   minute: '2-digit',
-                   timeZone: 'Europe/Istanbul'
-                 })}
+                 <span id="current-time-display">
+                   {currentTime.toLocaleString('tr-TR', {
+                     weekday: 'long',
+                     year: 'numeric',
+                     month: 'long',
+                     day: 'numeric',
+                     hour: '2-digit',
+                     minute: '2-digit',
+                     second: '2-digit',
+                     timeZone: 'Europe/Istanbul'
+                   })}
+                 </span>
                </div>
             </div>
           </Col>
@@ -265,7 +278,7 @@ const Dashboard = () => {
                            {transaction.productName} - {transaction.quantity} adet
                          </div>
                          <div className="recent-time">
-                           {formatDateForDisplayShort(transaction.transactionDate || transaction.date) || 'Yakın zamanda'}
+                           {getRelativeTimeString(transaction.transactionDate || transaction.date) || 'Yakın zamanda'}
                          </div>
                        </div>
                      </div>

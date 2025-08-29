@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Table, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
-import { formatDateForDisplay } from '../utils/dateUtils.js';
+import { formatDateForDisplay, getRelativeTimeString } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const Products = () => {
@@ -161,7 +161,7 @@ const Products = () => {
                               if (isNaN(date.getTime())) {
                                 return '-';
                               }
-                              return formatDateForDisplay(date);
+                              return getRelativeTimeString(date);
                             } catch (error) {
                               return '-';
                             }
@@ -169,15 +169,15 @@ const Products = () => {
                           (product.createdAt ? 
                             (() => {
                               try {
-                                const date = new Date(product.createdAt);
-                                if (isNaN(date.getTime())) {
-                                  return '-';
-                                }
-                                return formatDateForDisplay(date);
-                              } catch (error) {
+                              const date = new Date(product.createdAt);
+                              if (isNaN(date.getTime())) {
                                 return '-';
                               }
-                            })() : '-'
+                              return getRelativeTimeString(date);
+                            } catch (error) {
+                              return '-';
+                            }
+                          })() : '-'
                           )
                         }
                     </td>

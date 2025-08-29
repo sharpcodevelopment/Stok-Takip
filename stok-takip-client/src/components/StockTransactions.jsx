@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Table, Badge, Alert, Modal, Form } f
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
-import { formatDateForDisplay } from '../utils/dateUtils.js';
+import { formatDateForDisplay, getRelativeTimeString } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const StockTransactions = () => {
@@ -309,7 +309,7 @@ const StockTransactions = () => {
                     </td>
                     <td>{transaction.notes || transaction.description}</td>
                     <td>
-                      {formatDateForDisplay(transaction.transactionDate || transaction.date)}
+                      {getRelativeTimeString(transaction.transactionDate || transaction.date)}
                     </td>
                   </tr>
                 ))}
