@@ -1317,6 +1317,11 @@
     animation: headerCollapse 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
+  /* Header kapanma animasyonunu zorla uygula */
+  .navbar.collapsing {
+    animation: headerCollapse 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
   @keyframes headerExpand {
     0% {
       transform: translateY(0);
@@ -1358,6 +1363,13 @@
   .navbar-collapse.collapsing {
     transition: none !important;
     height: auto !important;
+    animation: none !important;
+  }
+  
+  /* Bootstrap'in kapanma animasyonunu engelle */
+  .navbar-collapse.collapse {
+    transition: none !important;
+    animation: none !important;
   }
   
   /* Menü tamamen gizli başlangıç durumu */
@@ -1373,13 +1385,8 @@
     animation: menuReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  /* Header daraldığında menü yavaşça kaybolur */
-  .navbar:not(.expanded) .navbar-collapse.show {
-    animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  
-  /* Header daraldığında menü gizli kalır */
-  .navbar:not(.expanded) .navbar-collapse.collapse:not(.show) {
+  /* Header daraldığında menü yavaşça kaybolur - tüm durumlar için */
+  .navbar:not(.expanded) .navbar-collapse {
     animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
@@ -1405,10 +1412,10 @@
       max-height: 500px;
       visibility: visible;
     }
-    50% {
-      opacity: 0.5;
-      transform: translateY(-50px);
-      max-height: 250px;
+    20% {
+      opacity: 0.8;
+      transform: translateY(-20px);
+      max-height: 400px;
       visibility: visible;
     }
     100% {
