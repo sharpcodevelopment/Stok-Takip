@@ -194,15 +194,17 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
               <Dropdown.Toggle 
                 variant="outline-light" 
                 id="user-dropdown"
-                className="border-0 d-flex align-items-center"
+                className="border-0 d-flex align-items-center admin-dropdown-toggle"
                 style={{
                   borderRadius: '25px', 
                   padding: '8px 16px',
-                  transition: 'all 0.2s ease',
-                  transform: 'translateY(0)',
+                  color: '#ffffff',
+                  fontWeight: '600',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: 'rgba(255, 255, 255, 0.05)'
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: 'translateY(0)'
                 }}
               >
                 <div 
@@ -227,11 +229,18 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu 
-                className="shadow border-0"
+                className="shadow border-0" 
+                style={{
+                  borderRadius: '12px', 
+                  minWidth: '160px',
+                  zIndex: 99999,
+                  marginTop: '8px',
+                  position: 'absolute'
+                }}
               >
                 <Dropdown.Header className="text-muted small px-3 py-1">
-                  <i className="fas fa-user me-2"></i>
-                  Hesap
+                  <i className="fas fa-user-shield me-2"></i>
+                  Yönetici
                 </Dropdown.Header>
                 
                 <Dropdown.Item onClick={() => navigate('/user-profile')} className="px-3 py-1" style={{fontSize: '14px'}}>
