@@ -138,7 +138,32 @@ export const supabaseHelpers = {
       .from('categories')
       .select('*')
       .order('name', { ascending: true });
-    return { data, error };
+    
+    if (error) {
+      return { data: [], error };
+    }
+    
+    // Her kategori için ürün sayısını al
+    const categoriesWithProductCount = await Promise.all(
+      data?.map(async (category) => {
+        const { count, error: countError } = await supabase
+          .from('products')
+          .select('*', { count: 'exact', head: true })
+          .eq('category_id', category.id)
+          .eq('is_active', true);
+        
+        return {
+          id: category.id,
+          name: category.name,
+          description: category.description,
+          createdAt: category.created_at,
+          updatedAt: category.updated_at,
+          productCount: count || 0
+        };
+      }) || []
+    );
+    
+    return { data: categoriesWithProductCount, error };
   },
 
   async addCategory(category) {

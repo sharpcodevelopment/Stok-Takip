@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Table, Modal, Form, Alert } from 're
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api.js';
 import AdminNavbar from './AdminNavbar.jsx';
+import { formatDateForDisplay } from '../utils/dateUtils.js';
 import './Dashboard.css';
 
 const Categories = () => {
@@ -166,20 +167,11 @@ const Categories = () => {
                     <td>{category.id}</td>
                     <td>{category.name}</td>
                     <td>{category.description}</td>
-                                         <td>
-                       <span className="badge bg-info">{category.productCount}</span>
+                     <td>
+                       <span className="badge bg-info">{category.productCount || 0}</span>
                      </td>
                      <td>
-                       {category.createdAt ? 
-                                         new Date(category.createdAt).toLocaleString('tr-TR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  timeZone: 'Europe/Istanbul'
-                }) : '-'
-                       }
+                       {formatDateForDisplay(category.createdAt)}
                      </td>
                      <td>
                        <Button size="sm" variant="outline-primary" className="me-2" onClick={() => handleEdit(category)}>
