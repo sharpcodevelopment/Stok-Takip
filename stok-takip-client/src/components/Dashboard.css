@@ -1348,7 +1348,7 @@
     }
   }
   
-  /* Bootstrap'in varsayılan animasyonunu tamamen devre dışı bırak */
+  /* Bootstrap'in varsayılan animasyonunu devre dışı bırak */
   .navbar-collapse {
     transition: none !important;
     height: auto !important;
@@ -1357,19 +1357,11 @@
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
-    display: block !important;
   }
   
   .navbar-collapse.collapsing {
     transition: none !important;
     height: auto !important;
-    animation: none !important;
-  }
-  
-  /* Bootstrap'in kapanma animasyonunu engelle */
-  .navbar-collapse.collapse {
-    transition: none !important;
-    animation: none !important;
   }
   
   /* Menü tamamen gizli başlangıç durumu */
@@ -1385,8 +1377,8 @@
     animation: menuReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  /* Header daraldığında menü yavaşça kaybolur - tüm durumlar için */
-  .navbar:not(.expanded) .navbar-collapse {
+  /* Header daraldığında menü yavaşça kaybolur */
+  .navbar:not(.expanded) .navbar-collapse.show {
     animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
