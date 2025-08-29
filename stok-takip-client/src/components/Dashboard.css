@@ -1382,6 +1382,12 @@
       max-height: 500px;
       visibility: visible;
     }
+    50% {
+      opacity: 0.5;
+      transform: translateY(-50px);
+      max-height: 250px;
+      visibility: visible;
+    }
     100% {
       opacity: 0;
       transform: translateY(-100px);
