@@ -144,7 +144,7 @@ const Dashboard = () => {
           <Col>
             <div className="welcome-section">
               <h1 className="welcome-title">
-                Hoş Geldiniz, {user?.firstName || 'Kullanıcı'}!
+                Hoş Geldiniz, {user?.user_metadata?.firstName || user?.firstName || 'Kullanıcı'} {user?.user_metadata?.lastName || user?.lastName || ''}!
               </h1>
               <p className="welcome-subtitle">
                 Stok takip sisteminizi yönetmek için aşağıdaki seçenekleri kullanabilirsiniz.

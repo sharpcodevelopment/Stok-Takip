@@ -1303,9 +1303,9 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Header alanının yavaş yavaş aşağı kayması için */
+  /* Header ve menünün birlikte yavaş yavaş aşağı açılması */
   .navbar {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .navbar.expanded {
@@ -1317,24 +1317,24 @@
     transform: translateY(0);
   }
   
-  /* Navbar collapse animasyonu */
+  /* Navbar collapse animasyonu - header ile birlikte */
+  .navbar-collapse {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
   .navbar-collapse.collapsing {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
   .navbar-collapse.show {
-    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: none;
+    opacity: 1;
+    transform: translateY(0);
   }
   
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .navbar-collapse.collapse:not(.show) {
+    opacity: 0;
+    transform: translateY(-10px);
   }
   
   .navbar-nav .nav-link {

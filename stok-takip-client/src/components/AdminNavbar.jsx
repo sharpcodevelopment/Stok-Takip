@@ -41,8 +41,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-        transform: isExpanded ? 'translateY(0)' : 'translateY(0)'
+        transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
       <Container>
@@ -74,9 +73,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
         <Navbar.Collapse 
           id="basic-navbar-nav"
           style={{
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-            transform: isExpanded ? 'translateY(0)' : 'translateY(-10px)',
-            opacity: isExpanded ? 1 : 0.95
+            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
         >
           <Nav className="me-auto flex-column flex-lg-row" style={{ marginTop: '1rem', marginBottom: '1rem' }}>

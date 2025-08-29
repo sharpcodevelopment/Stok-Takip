@@ -111,9 +111,9 @@ const UserDashboard = () => {
         <Row className="mb-4">
           <Col>
             <div className="welcome-section">
-              <h1 className="welcome-title">
-                Hoş Geldiniz, {user?.firstName || 'Kullanıcı'}!
-              </h1>
+                             <h1 className="welcome-title">
+                 Hoş Geldiniz, {user?.user_metadata?.firstName || user?.firstName || 'Kullanıcı'} {user?.user_metadata?.lastName || user?.lastName || ''}!
+               </h1>
               <p className="welcome-subtitle">
                 Stok takip sistemini görüntülemek için aşağıdaki seçenekleri kullanabilirsiniz.
               </p>
