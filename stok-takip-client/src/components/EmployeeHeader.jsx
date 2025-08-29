@@ -231,9 +231,13 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
                 style={{
                   borderRadius: '12px', 
                   minWidth: '160px',
-                  zIndex: 99999,
-                  marginTop: '8px',
-                  position: 'absolute'
+                  zIndex: 999999,
+                  position: 'fixed',
+                  top: '190px',
+                  right: '20px',
+                  background: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
                 }}
               >
                 <Dropdown.Header className="text-muted small px-3 py-1">
