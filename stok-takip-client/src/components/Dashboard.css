@@ -1333,6 +1333,10 @@
       transform: translateY(0);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
+    50% {
+      transform: translateY(0);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    }
     100% {
       transform: translateY(0);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -1374,6 +1378,11 @@
     animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
+  /* Header daraldığında menü gizli kalır */
+  .navbar:not(.expanded) .navbar-collapse.collapse:not(.show) {
+    animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
   @keyframes menuReveal {
     0% {
       opacity: 0;
@@ -1394,6 +1403,12 @@
       opacity: 1;
       transform: translateY(0);
       max-height: 500px;
+      visibility: visible;
+    }
+    50% {
+      opacity: 0.5;
+      transform: translateY(-50px);
+      max-height: 250px;
       visibility: visible;
     }
     100% {
