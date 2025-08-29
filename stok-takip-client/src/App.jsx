@@ -23,7 +23,7 @@ const LoadingSpinner = () => (
     left: 0,
     width: '100%',
     height: '100%',
-    background: 'linear-gradient(135deg, #1a1d23 0%, #2c3e50 50%, #34495e 100%)',
+    background: '#2c3e50',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -34,16 +34,16 @@ const LoadingSpinner = () => (
       color: 'white'
     }}>
       <div style={{
-        width: '50px',
-        height: '50px',
-        border: '3px solid rgba(255,255,255,0.3)',
-        borderTop: '3px solid #ffffff',
+        width: '60px',
+        height: '60px',
+        border: '4px solid #ffffff',
+        borderTop: '4px solid transparent',
         borderRadius: '50%',
-        animation: 'spin 1s linear infinite',
+        animation: 'rotate 1s linear infinite',
         margin: '0 auto 20px'
       }}></div>
-      <h4 style={{ margin: 0, color: '#ffffff' }}>Yükleniyor...</h4>
-      <p style={{ margin: '10px 0 0 0', color: '#adb5bd' }}>Stok Takip Sistemi</p>
+      <h4 style={{ margin: 0, color: '#ffffff', fontSize: '18px' }}>Yükleniyor...</h4>
+      <p style={{ margin: '10px 0 0 0', color: '#bdc3c7', fontSize: '14px' }}>Stok Takip Sistemi</p>
     </div>
   </div>
 );
@@ -91,19 +91,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Mobilde güvenilir loading kontrolü
-    const handleLoad = () => {
+    // Basit loading kontrolü - 1 saniye sonra kapat
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    };
+    }, 1000);
 
-    // Sayfa zaten yüklendiyse hemen başlat
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      // Sayfa yüklenme olayını dinle
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
-    }
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
