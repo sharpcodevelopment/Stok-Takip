@@ -5,12 +5,12 @@ import api from '../services/api.js';
 
 const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
   const [user, setUser] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserProfile();
-
   }, []);
 
   const fetchUserProfile = async () => {
@@ -22,11 +22,17 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
     }
   };
 
-
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleNavLinkClick = () => {
+    setIsExpanded(false);
   };
 
   const getMenuClass = (menuName) => {
@@ -58,11 +64,16 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
     <Navbar 
       expand="lg" 
       className="shadow-lg mb-4" 
+      expanded={isExpanded}
+      onToggle={handleToggle}
       style={{
         background: 'linear-gradient(135deg, #343a40 0%, #495057 100%)',
         borderBottom: '3px solid rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(20px)',
-        borderRadius: '0 0 20px 20px'
+        borderRadius: '0 0 20px 20px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000
       }}
     >
       <Container>
@@ -80,15 +91,35 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
           <span className="text-white" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}> Paneli</span>
         </Navbar.Brand>
         
-        <Navbar.Toggle aria-controls="employee-navbar-nav" />
+        <Navbar.Toggle 
+          aria-controls="employee-navbar-nav"
+          style={{
+            border: 'none',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            transition: 'all 0.3s ease',
+            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'
+          }}
+        />
         
-        <Navbar.Collapse id="employee-navbar-nav">
+        <Navbar.Collapse 
+          id="employee-navbar-nav"
+          style={{
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transform: isExpanded ? 'translateY(0)' : 'translateY(-10px)',
+            opacity: isExpanded ? 1 : 0.95
+          }}
+        >
           {/* Ana Menü */}
-          <Nav className="me-auto flex-column flex-lg-row">
+          <Nav className="me-auto flex-column flex-lg-row" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
             <Nav.Link 
-              onClick={() => navigate('/user-dashboard')} 
+              onClick={() => {
+                navigate('/user-dashboard');
+                handleNavLinkClick();
+              }}
               className={getMenuClass('dashboard')}
-              style={{...getMenuStyle('dashboard'), borderRadius: '8px'}}
+              style={{...getMenuStyle('dashboard'), borderRadius: '8px', marginBottom: '0.5rem'}}
               onMouseEnter={(e) => {
                 if (activeMenu !== 'dashboard') {
                   e.target.style.color = '#ffffff';
@@ -109,9 +140,12 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
             </Nav.Link>
             
             <Nav.Link 
-              onClick={() => navigate('/user-products')}
+              onClick={() => {
+                navigate('/user-products');
+                handleNavLinkClick();
+              }}
               className={getMenuClass('products')}
-              style={{...getMenuStyle('products'), borderRadius: '8px'}}
+              style={{...getMenuStyle('products'), borderRadius: '8px', marginBottom: '0.5rem'}}
               onMouseEnter={(e) => {
                 if (activeMenu !== 'products') {
                   e.target.style.color = '#ffffff';
@@ -132,9 +166,12 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
             </Nav.Link>
             
             <Nav.Link 
-              onClick={() => navigate('/user-requests')}
+              onClick={() => {
+                navigate('/user-requests');
+                handleNavLinkClick();
+              }}
               className={getMenuClass('requests')}
-              style={{...getMenuStyle('requests'), borderRadius: '8px'}}
+              style={{...getMenuStyle('requests'), borderRadius: '8px', marginBottom: '0.5rem'}}
               onMouseEnter={(e) => {
                 if (activeMenu !== 'requests') {
                   e.target.style.color = '#ffffff';
@@ -156,7 +193,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
           </Nav>
 
           {/* Sağ Taraf - Kullanıcı Bilgileri */}
-          <Nav className="align-items-center">
+          <Nav className="align-items-center" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
             {/* Kullanıcı Dropdown */}
             <Dropdown align="end">
               <Dropdown.Toggle 

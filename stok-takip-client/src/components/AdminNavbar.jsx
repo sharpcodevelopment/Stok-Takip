@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, Nav, Dropdown, Container } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isExpanded, setIsExpanded] = useState(false);
   
   // Kullanıcı bilgilerini debug et
   console.log('AdminNavbar - Kullanıcı bilgileri:', user);
@@ -16,17 +17,30 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
     navigate('/login');
   };
 
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleNavLinkClick = () => {
+    setIsExpanded(false);
+  };
+
   const isActive = (path) => location.pathname === path;
 
   return (
     <Navbar 
       expand="lg" 
       className="shadow-lg mb-4" 
+      expanded={isExpanded}
+      onToggle={handleToggle}
       style={{
         background: 'linear-gradient(135deg, #343a40 0%, #495057 100%)',
         borderBottom: '3px solid rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(20px)',
-        borderRadius: '0 0 20px 20px'
+        borderRadius: '0 0 20px 20px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000
       }}
     >
       <Container>
@@ -43,11 +57,33 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
           <span className="text-white" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}>Yönetici</span>
           <span className="text-white" style={{textShadow: '0 2px 4px rgba(0,0,0,0.3)'}}> Paneli</span>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+        
+        <Navbar.Toggle 
+          aria-controls="basic-navbar-nav"
+          style={{
+            border: 'none',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            transition: 'all 0.3s ease',
+            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'
+          }}
+        />
+        
+        <Navbar.Collapse 
+          id="basic-navbar-nav"
+          style={{
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            transform: isExpanded ? 'translateY(0)' : 'translateY(-10px)',
+            opacity: isExpanded ? 1 : 0.95
+          }}
+        >
+          <Nav className="me-auto flex-column flex-lg-row" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
             <Nav.Link 
-              onClick={() => navigate('/dashboard')} 
+              onClick={() => {
+                navigate('/dashboard');
+                handleNavLinkClick();
+              }}
               className={`position-relative ${isActive('/dashboard') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
@@ -56,14 +92,18 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
                 margin: '0 6px',
-                padding: '12px 20px'
+                padding: '12px 20px',
+                marginBottom: '0.5rem'
               }}
             >
               <i className="fas fa-tachometer-alt me-2"></i>
               Dashboard
             </Nav.Link>
             <Nav.Link 
-              onClick={() => navigate('/products')} 
+              onClick={() => {
+                navigate('/products');
+                handleNavLinkClick();
+              }}
               className={`position-relative ${isActive('/products') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
@@ -72,14 +112,18 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
                 margin: '0 6px',
-                padding: '12px 20px'
+                padding: '12px 20px',
+                marginBottom: '0.5rem'
               }}
             >
               <i className="fas fa-box me-2"></i>
               Ürünler
             </Nav.Link>
             <Nav.Link 
-              onClick={() => navigate('/categories')} 
+              onClick={() => {
+                navigate('/categories');
+                handleNavLinkClick();
+              }}
               className={`position-relative ${isActive('/categories') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
@@ -88,14 +132,18 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
                 margin: '0 6px',
-                padding: '12px 20px'
+                padding: '12px 20px',
+                marginBottom: '0.5rem'
               }}
             >
               <i className="fas fa-tags me-2"></i>
               Kategoriler
             </Nav.Link>
             <Nav.Link 
-              onClick={() => navigate('/transactions')} 
+              onClick={() => {
+                navigate('/transactions');
+                handleNavLinkClick();
+              }}
               className={`position-relative ${isActive('/transactions') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
@@ -104,14 +152,18 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
                 margin: '0 6px',
-                padding: '12px 20px'
+                padding: '12px 20px',
+                marginBottom: '0.5rem'
               }}
             >
               <i className="fas fa-exchange-alt me-2"></i>
               Stok Hareketleri
             </Nav.Link>
             <Nav.Link 
-              onClick={() => navigate('/admin-requests')} 
+              onClick={() => {
+                navigate('/admin-requests');
+                handleNavLinkClick();
+              }}
               className={`position-relative ${isActive('/admin-requests') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
@@ -120,7 +172,8 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
                 margin: '0 6px',
-                padding: '12px 20px'
+                padding: '12px 20px',
+                marginBottom: '0.5rem'
               }}
             >
               <i className="fas fa-user-shield me-2"></i>
@@ -132,7 +185,10 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               )}
             </Nav.Link>
             <Nav.Link 
-              onClick={() => navigate('/stock-requests')} 
+              onClick={() => {
+                navigate('/stock-requests');
+                handleNavLinkClick();
+              }}
               className={`position-relative ${isActive('/stock-requests') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
@@ -141,7 +197,8 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 transition: 'all 0.3s ease',
                 borderRadius: '8px',
                 margin: '0 6px',
-                padding: '12px 20px'
+                padding: '12px 20px',
+                marginBottom: '0.5rem'
               }}
             >
               <i className="fas fa-clipboard-list me-2"></i>
@@ -153,7 +210,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               )}
             </Nav.Link>
           </Nav>
-          <Nav>
+          <Nav className="align-items-center" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
             <Dropdown align="end">
               <Dropdown.Toggle 
                 variant="outline-light" 
