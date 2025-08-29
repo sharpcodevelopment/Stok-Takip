@@ -1305,19 +1305,24 @@
   
   /* Dropdown menü z-index düzeltmesi */
   .navbar .dropdown-menu {
-    z-index: 99999 !important;
+    z-index: 999999 !important;
     position: absolute !important;
   }
   
   .navbar .dropdown {
-    z-index: 99999 !important;
+    z-index: 999999 !important;
     position: relative !important;
   }
   
   /* Dropdown toggle butonunu da yukarı çek */
   .navbar .dropdown-toggle {
-    z-index: 99999 !important;
+    z-index: 999999 !important;
     position: relative !important;
+  }
+  
+  /* Navbar'ın z-index'ini düşür */
+  .navbar {
+    z-index: 1000 !important;
   }
   
   /* Header ve menünün birlikte yavaş yavaş aşağı kayarak açılması */
