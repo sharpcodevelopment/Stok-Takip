@@ -1307,10 +1307,10 @@
   .navbar .dropdown-menu {
     z-index: 999999 !important;
     position: absolute !important;
-    top: 100% !important;
+    top: 0 !important;
     left: auto !important;
     right: 0 !important;
-    margin-top: 5px !important;
+    margin-top: 0 !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
