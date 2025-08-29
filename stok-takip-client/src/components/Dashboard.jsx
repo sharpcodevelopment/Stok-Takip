@@ -206,45 +206,55 @@ const Dashboard = () => {
         {/* Quick Actions */}
         <Row className="mb-4">
           <Col xs={12} lg={6}>
-            <Card className="action-card h-100">
+            <Card className="action-card">
               <Card.Header>
                 <h5><i className="fas fa-plus-circle me-2"></i>Hızlı İşlemler</h5>
               </Card.Header>
-              <Card.Body className="d-flex flex-column justify-content-center">
-                <div className="quick-actions-grid">
-                  <Button 
-                    variant="primary" 
-                    className="quick-action-btn mb-3"
-                    onClick={() => navigate('/products')}
-                  >
-                    <i className="fas fa-plus me-2"></i>
-                    Yeni Ürün Ekle
-                  </Button>
-                  <Button 
-                    variant="success" 
-                    className="quick-action-btn mb-3"
-                    onClick={() => navigate('/categories')}
-                  >
-                    <i className="fas fa-plus me-2"></i>
-                    Yeni Kategori
-                  </Button>
-                  <Button 
-                    variant="info" 
-                    className="quick-action-btn mb-3"
-                    onClick={() => navigate('/transactions')}
-                  >
-                    <i className="fas fa-plus me-2"></i>
-                    Stok Girişi
-                  </Button>
-                  <Button 
-                    variant="warning" 
-                    className="quick-action-btn mb-3"
-                    onClick={() => navigate('/transactions')}
-                  >
-                    <i className="fas fa-minus me-2"></i>
-                    Stok Çıkışı
-                  </Button>
-                </div>
+              <Card.Body>
+                <Row>
+                  <Col xs={12} sm={6}>
+                    <Button 
+                      variant="primary" 
+                      className="w-100 mb-2"
+                      onClick={() => navigate('/products')}
+                    >
+                      <i className="fas fa-plus me-2"></i>
+                      Yeni Ürün Ekle
+                    </Button>
+                  </Col>
+                  <Col xs={12} sm={6}>
+                    <Button 
+                      variant="success" 
+                      className="w-100 mb-2"
+                      onClick={() => navigate('/categories')}
+                    >
+                      <i className="fas fa-plus me-2"></i>
+                      Yeni Kategori
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12} sm={6}>
+                    <Button 
+                      variant="info" 
+                      className="w-100 mb-2"
+                      onClick={() => navigate('/transactions')}
+                    >
+                      <i className="fas fa-plus me-2"></i>
+                      Stok Girişi
+                    </Button>
+                  </Col>
+                  <Col xs={12} sm={6}>
+                    <Button 
+                      variant="warning" 
+                      className="w-100 mb-2"
+                      onClick={() => navigate('/transactions')}
+                    >
+                      <i className="fas fa-minus me-2"></i>
+                      Stok Çıkışı
+                    </Button>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           </Col>
