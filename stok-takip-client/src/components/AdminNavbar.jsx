@@ -30,7 +30,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
   return (
     <Navbar 
       expand="lg" 
-      className="shadow-lg mb-4" 
+      className={`shadow-lg mb-4 ${isExpanded ? 'expanded' : ''}`}
       expanded={isExpanded}
       onToggle={handleToggle}
       style={{
@@ -40,7 +40,9 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
         borderRadius: '0 0 20px 20px',
         position: 'sticky',
         top: 0,
-        zIndex: 1000
+        zIndex: 1000,
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: isExpanded ? 'translateY(0)' : 'translateY(0)'
       }}
     >
       <Container>

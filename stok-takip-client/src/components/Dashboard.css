@@ -1300,6 +1300,41 @@
     margin-top: 1rem;
     padding: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Header alanının yavaş yavaş aşağı kayması için */
+  .navbar {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .navbar.expanded {
+    transform: translateY(0);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar:not(.expanded) {
+    transform: translateY(0);
+  }
+  
+  /* Navbar collapse animasyonu */
+  .navbar-collapse.collapsing {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .navbar-collapse.show {
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .navbar-nav .nav-link {
