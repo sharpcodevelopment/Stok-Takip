@@ -316,7 +316,7 @@ export const supabaseHelpers = {
       notes: request.request_reason || request.notes || '',
       status: request.status,
       requestedById: request.requested_by_id || '',
-             requestedByName: 'Mağaza Çalışanı', // Geçici olarak sabit değer
+             requestedByName: request.requested_by_name || 'Bilinmeyen Kullanıcı', // Kullanıcı adı soyadını göster
       createdAt: request.created_at,
       updatedAt: request.updated_at,
       approvedById: request.approved_by_id || '',
@@ -332,9 +332,13 @@ export const supabaseHelpers = {
     // Client-side Türkiye saatini kullan
     const turkeyTime = getCurrentTurkeyTimeISO();
     
-    // Mevcut kullanıcıyı al
-    const { data: { user } } = await supabase.auth.getUser();
-    const currentUser = user;
+         // Mevcut kullanıcıyı al
+     const { data: { user } } = await supabase.auth.getUser();
+     const currentUser = user;
+     
+     // Kullanıcı bilgilerini debug et
+     console.log('Mevcut kullanıcı bilgileri:', currentUser);
+     console.log('Kullanıcı metadata:', currentUser?.user_metadata);
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -344,7 +348,7 @@ export const supabaseHelpers = {
       status: 'pending',
       created_at: turkeyTime,
       updated_at: turkeyTime,
-      // requested_by_name kolonu yok, şimdilik kullanıcı bilgisini kaydetmiyoruz
+      requested_by_name: currentUser?.user_metadata?.firstName + ' ' + currentUser?.user_metadata?.lastName || currentUser?.email || 'Bilinmeyen Kullanıcı' // Kullanıcı adı soyadını kaydet
     };
     
     const { data, error } = await supabase
