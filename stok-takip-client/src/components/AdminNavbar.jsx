@@ -7,10 +7,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
   const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // Kullanıcı bilgilerini debug et
-  console.log('AdminNavbar - Kullanıcı bilgileri:', user);
-  console.log('AdminNavbar - Kullanıcı firstName:', user?.firstName);
-  console.log('AdminNavbar - Kullanıcı lastName:', user?.lastName);
+
 
   const handleLogout = () => {
     localStorage.removeItem('token');
