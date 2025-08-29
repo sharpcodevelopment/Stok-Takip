@@ -1358,6 +1358,7 @@
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
+    z-index: 999999 !important;
   }
   
   .navbar-collapse.collapsing {
@@ -1376,11 +1377,13 @@
     transform: translateY(-100px);
     max-height: 0;
     visibility: hidden;
+    z-index: 999999 !important;
   }
   
   /* Header genişlediğinde menü yavaşça görünür */
   .navbar.expanded .navbar-collapse.show {
     animation: menuReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    z-index: 999999 !important;
   }
   
   /* Header daraldığında menü yavaşça kaybolur */
