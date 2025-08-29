@@ -332,6 +332,10 @@ export const supabaseHelpers = {
     // Client-side Türkiye saatini kullan
     const turkeyTime = getCurrentTurkeyTimeISO();
     
+    // Mevcut kullanıcıyı al
+    const { data: { user } } = await supabase.auth.getUser();
+    const currentUser = user;
+    
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
       product_id: request.productId,
@@ -339,7 +343,8 @@ export const supabaseHelpers = {
       request_reason: request.notes || '',
       status: 'pending',
       created_at: turkeyTime,
-      updated_at: turkeyTime
+      updated_at: turkeyTime,
+      requested_by_name: currentUser?.email || 'Bilinmeyen Kullanıcı' // Kullanıcı email'ini kaydet
     };
     
     const { data, error } = await supabase
