@@ -299,6 +299,19 @@ const api = {
       console.log('API PUT - Kategori güncelleme sonucu:', result);
       return { data: result.data };
     }
+    if (url.includes('/stockrequests/') && url.includes('/approve')) {
+      // Onaylama işlemi
+      const result = await stockRequestsAPI.update(id, { status: 'approved' });
+      return { data: result.data };
+    }
+    if (url.includes('/stockrequests/') && url.includes('/reject')) {
+      // Reddetme işlemi
+      const result = await stockRequestsAPI.update(id, { 
+        status: 'rejected',
+        rejectionReason: data.reason 
+      });
+      return { data: result.data };
+    }
     if (url.includes('/stockrequests/')) {
       const result = await stockRequestsAPI.update(id, data);
       return { data: result.data };

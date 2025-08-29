@@ -311,9 +311,11 @@ export const supabaseHelpers = {
       notes: request.request_reason || request.notes || '',
       status: request.status,
       requestedById: '', // requested_by_id kolonu yok
+      requestedByName: 'Sistem', // Şimdilik sabit değer
       createdAt: request.created_at,
       updatedAt: request.updated_at,
       approvedById: '', // approved_by_id kolonu yok
+      approvedByName: '', // approved_by_name kolonu yok
       approvedAt: null, // approved_at kolonu yok
       rejectionReason: request.rejection_reason || ''
     })) || [];
@@ -362,11 +364,15 @@ export const supabaseHelpers = {
     // updated_at alanını güncelle
     formattedUpdates.updated_at = turkeyTime;
     
+    console.log('updateStockRequest çağrısı:', { id, updates, formattedUpdates });
+    
     const { data, error } = await supabase
       .from('stock_requests')
       .update(formattedUpdates)
       .eq('id', id)
       .select();
+    
+    console.log('updateStockRequest sonucu:', { data, error });
     return { data, error };
   },
 
