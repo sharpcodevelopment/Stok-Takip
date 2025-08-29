@@ -37,18 +37,13 @@ export const formatDateForDisplayShort = (dateString) => {
 };
 
 export const getCurrentTurkeyTime = () => {
-  const now = new Date();
-  // Türkiye saat dilimini kullanarak şu anki zamanı al
-  const turkeyTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
-  return turkeyTime;
+  return new Date();
 };
 
 export const getCurrentTurkeyTimeISO = () => {
   const now = new Date();
-  // UTC offset'i Türkiye için ayarla (UTC+3)
-  const turkeyOffset = 3 * 60; // 3 saat = 180 dakika
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-  const turkeyTime = new Date(utc + (turkeyOffset * 60000));
+  // Türkiye saati için UTC+3
+  const turkeyTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
   return turkeyTime.toISOString();
 };
 
@@ -68,7 +63,7 @@ export const getRelativeTimeString = (dateString) => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return '-';
     
-    const now = getCurrentTurkeyTime();
+    const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
     
     if (diffInSeconds < 60) {
