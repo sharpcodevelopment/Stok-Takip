@@ -8,6 +8,7 @@ import './Dashboard.css';
 const AdminRequests = () => {
   const [user, setUser] = useState(null);
   const [adminRequests, setAdminRequests] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showApprovalModal, setShowApprovalModal] = useState(false);
@@ -19,6 +20,7 @@ const AdminRequests = () => {
   useEffect(() => {
     fetchUserProfile();
     fetchAdminRequests();
+    fetchPendingRequests();
   }, []);
 
   const fetchUserProfile = async () => {
@@ -48,6 +50,17 @@ const AdminRequests = () => {
       setError('Admin talepleri alınamadı.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPendingRequests = async () => {
+    try {
+      const response = await api.get('/stockrequests');
+      const requests = response.data || [];
+      const pendingCount = requests.filter(request => request.status === 'pending').length;
+      setPendingRequests(pendingCount);
+    } catch (error) {
+      console.error('Bekleyen talepler alınamadı:', error);
     }
   };
 
@@ -105,7 +118,7 @@ const AdminRequests = () => {
   if (error) {
     return (
       <div className="dashboard-container">
-        <AdminNavbar user={user} />
+        <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests.length} />
         <Container>
           <Alert variant="danger">
             <i className="fas fa-exclamation-triangle me-2"></i>
@@ -118,7 +131,7 @@ const AdminRequests = () => {
 
   return (
     <div className="dashboard-container">
-      <AdminNavbar user={user} />
+              <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests.length} />
 
       <Container>
         <Row className="mb-4">
