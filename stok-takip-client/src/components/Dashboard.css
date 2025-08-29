@@ -1303,6 +1303,15 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
+  /* Dropdown menü z-index düzeltmesi */
+  .navbar .dropdown-menu {
+    z-index: 9999 !important;
+  }
+  
+  .navbar .dropdown {
+    z-index: 9999 !important;
+  }
+  
   /* Header ve menünün birlikte yavaş yavaş aşağı kayarak açılması */
   .navbar {
     transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
