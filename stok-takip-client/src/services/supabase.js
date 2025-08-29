@@ -316,7 +316,7 @@ export const supabaseHelpers = {
       notes: request.request_reason || request.notes || '',
       status: request.status,
       requestedById: request.requested_by_id || '',
-      requestedByName: request.requested_by_name || 'Mağaza Çalışanı', // Eğer kolon varsa kullan
+      requestedByName: request.requested_by_name || '', // Eğer kolon varsa kullan
       createdAt: request.created_at,
       updatedAt: request.updated_at,
       approvedById: request.approved_by_id || '',

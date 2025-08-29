@@ -56,11 +56,6 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-tachometer-alt me-2"></i>
               Dashboard
-              {pendingRequests > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {pendingRequests}
-                </span>
-              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/products')} 
@@ -77,11 +72,6 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-box me-2"></i>
               Ürünler
-              {pendingRequests > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {pendingRequests}
-                </span>
-              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/categories')} 
@@ -98,11 +88,6 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-tags me-2"></i>
               Kategoriler
-              {pendingRequests > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {pendingRequests}
-                </span>
-              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/transactions')} 
@@ -119,11 +104,6 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-exchange-alt me-2"></i>
               Stok Hareketleri
-              {pendingRequests > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {pendingRequests}
-                </span>
-              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/admin-requests')} 
