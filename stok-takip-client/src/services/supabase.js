@@ -316,7 +316,7 @@ export const supabaseHelpers = {
       notes: request.request_reason || request.notes || '',
       status: request.status,
       requestedById: request.requested_by_id || '',
-      requestedByName: request.requested_by_name || '', // Eğer kolon varsa kullan
+             requestedByName: request.requested_by_name || request.requested_by_email || 'Bilinmeyen Kullanıcı', // Kullanıcı bilgisini göster
       createdAt: request.created_at,
       updatedAt: request.updated_at,
       approvedById: request.approved_by_id || '',
@@ -344,7 +344,7 @@ export const supabaseHelpers = {
       status: 'pending',
       created_at: turkeyTime,
       updated_at: turkeyTime,
-      requested_by_name: currentUser?.email || 'Bilinmeyen Kullanıcı' // Kullanıcı email'ini kaydet
+      requested_by_email: currentUser?.email || 'Bilinmeyen Kullanıcı' // Kullanıcı email'ini kaydet
     };
     
     const { data, error } = await supabase
