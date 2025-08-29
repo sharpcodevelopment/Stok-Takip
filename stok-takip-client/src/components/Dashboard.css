@@ -1307,7 +1307,7 @@
   .navbar .dropdown-menu {
     z-index: 999999 !important;
     position: absolute !important;
-    top: calc(100% - 20px) !important;
+    top: calc(100% - 50px) !important;
     left: auto !important;
     right: 0 !important;
     margin-top: 0 !important;
