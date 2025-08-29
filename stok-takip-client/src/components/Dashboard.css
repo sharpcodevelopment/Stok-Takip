@@ -1357,7 +1357,7 @@
   
   /* Header daraldığında menü yavaşça kaybolur - tüm durumlar için */
   .navbar:not(.expanded) .navbar-collapse {
-    animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    animation: menuHide 2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
   }
   
   @keyframes menuReveal {
