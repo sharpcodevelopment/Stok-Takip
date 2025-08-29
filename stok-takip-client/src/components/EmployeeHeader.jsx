@@ -98,8 +98,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
             padding: '8px 12px',
             borderRadius: '8px',
             background: 'rgba(255, 255, 255, 0.1)',
-            transition: 'all 0.3s ease',
-            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'
+            transition: 'all 0.3s ease'
           }}
         />
         
@@ -221,7 +220,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
                 >
                   <i className="fas fa-user text-white" style={{fontSize: '14px'}}></i>
                 </div>
-                <div className="text-start d-none d-sm-block">
+                <div className="text-start">
                   <div className="fw-semibold" style={{fontSize: '14px'}}>
                     {user?.user_metadata?.firstName || user?.firstName || user?.first_name || 'Kullanıcı'} {user?.user_metadata?.lastName || user?.lastName || user?.last_name || ''}
                   </div>

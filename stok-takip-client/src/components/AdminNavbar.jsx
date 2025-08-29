@@ -65,8 +65,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             padding: '8px 12px',
             borderRadius: '8px',
             background: 'rgba(255, 255, 255, 0.1)',
-            transition: 'all 0.3s ease',
-            transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)'
+            transition: 'all 0.3s ease'
           }}
         />
         
@@ -239,7 +238,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
                 >
                   <i className="fas fa-user-shield text-white" style={{fontSize: '14px'}}></i>
                 </div>
-                                 <div className="text-start d-none d-sm-block">
+                                 <div className="text-start">
                    <div style={{fontSize: '14px', color: '#ffffff', fontWeight: '500'}}>
                      {user?.user_metadata?.firstName || user?.firstName || 'Admin'} {user?.user_metadata?.lastName || user?.lastName || 'Kullanıcı'}
                    </div>
