@@ -74,7 +74,10 @@ const Categories = () => {
     try {
       if (editingCategory) {
         // Update category
-        await api.put(`/categories/${editingCategory.id}`, formData);
+        console.log('Güncellenecek kategori:', editingCategory);
+        console.log('Güncelleme verisi:', formData);
+        const response = await api.put(`/categories/${editingCategory.id}`, formData);
+        console.log('Güncelleme response:', response);
         setSuccess('Kategori başarıyla güncellendi');
       } else {
         // Add new category

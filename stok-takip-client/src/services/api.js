@@ -294,7 +294,9 @@ const api = {
       return { data: result.data };
     }
     if (url.includes('/categories/')) {
+      console.log('API PUT - Kategori güncelleme çağrısı:', { id, data });
       const result = await categoriesAPI.update(id, data);
+      console.log('API PUT - Kategori güncelleme sonucu:', result);
       return { data: result.data };
     }
     if (url.includes('/stockrequests/')) {

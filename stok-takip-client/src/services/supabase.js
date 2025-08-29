@@ -193,11 +193,15 @@ export const supabaseHelpers = {
       updated_at: turkeyTime
     };
     
+    console.log('Supabase updateCategory çağrısı:', { id, formattedUpdates });
+    
     const { data, error } = await supabase
       .from('categories')
       .update(formattedUpdates)
       .eq('id', id)
       .select();
+    
+    console.log('Supabase updateCategory sonucu:', { data, error });
     return { data, error };
   },
 
