@@ -1326,7 +1326,7 @@
   .employee-header .dropdown .dropdown-menu.show {
     z-index: 999999 !important;
     position: fixed !important;
-    top: 80px !important;
+    top: 75px !important;
     right: 20px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
