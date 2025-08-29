@@ -63,7 +63,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
   return (
     <Navbar 
       expand="lg" 
-      className={`shadow-lg mb-4 ${isExpanded ? 'expanded' : ''}`}
+      className={`employee-header shadow-lg mb-4 ${isExpanded ? 'expanded' : ''}`}
       expanded={isExpanded}
       onToggle={handleToggle}
       style={{

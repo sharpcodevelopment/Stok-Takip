@@ -27,7 +27,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
   return (
     <Navbar 
       expand="lg" 
-      className={`shadow-lg mb-4 ${isExpanded ? 'expanded' : ''}`}
+      className={`admin-navbar shadow-lg mb-4 ${isExpanded ? 'expanded' : ''}`}
       expanded={isExpanded}
       onToggle={handleToggle}
       style={{

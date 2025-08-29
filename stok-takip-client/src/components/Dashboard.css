@@ -1303,15 +1303,30 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Dropdown menü z-index düzeltmesi */
-  .navbar .dropdown-menu,
-  .navbar .dropdown-menu.show,
-  .dropdown-menu.show,
-  .navbar .dropdown .dropdown-menu,
-  .navbar .dropdown .dropdown-menu.show {
+  /* Yönetici paneli dropdown menü */
+  .admin-navbar .dropdown-menu,
+  .admin-navbar .dropdown-menu.show,
+  .admin-navbar .dropdown .dropdown-menu,
+  .admin-navbar .dropdown .dropdown-menu.show {
     z-index: 999999 !important;
     position: fixed !important;
     top: 200px !important;
+    right: 20px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  /* Mağaza paneli dropdown menü */
+  .employee-header .dropdown-menu,
+  .employee-header .dropdown-menu.show,
+  .employee-header .dropdown .dropdown-menu,
+  .employee-header .dropdown .dropdown-menu.show {
+    z-index: 999999 !important;
+    position: fixed !important;
+    top: 100px !important;
     right: 20px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
