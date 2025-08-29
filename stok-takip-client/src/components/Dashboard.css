@@ -1306,11 +1306,11 @@
   /* Dropdown menü z-index düzeltmesi */
   .navbar .dropdown-menu {
     z-index: 999999 !important;
-    position: fixed !important;
-    top: 100px !important;
+    position: absolute !important;
+    top: 100% !important;
     left: auto !important;
-    right: 20px !important;
-    margin-top: 10px !important;
+    right: 0 !important;
+    margin-top: 5px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
