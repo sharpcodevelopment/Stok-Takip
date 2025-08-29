@@ -336,8 +336,15 @@ export const supabaseHelpers = {
       const { data: { user } } = await supabase.auth.getUser();
       const currentUser = user;
       
-      // Kullanıcı adı soyadını al
-      const userName = currentUser?.user_metadata?.firstName + ' ' + currentUser?.user_metadata?.lastName;
+      // Kullanıcı adı soyadını al - genel çözüm
+      let userName = '';
+      if (currentUser?.user_metadata?.firstName && currentUser?.user_metadata?.lastName) {
+        userName = currentUser.user_metadata.firstName + ' ' + currentUser.user_metadata.lastName;
+      } else if (currentUser?.email) {
+        userName = currentUser.email;
+      } else {
+        userName = 'Bilinmeyen Kullanıcı';
+      }
       console.log('Stok talebi oluşturan kullanıcı:', userName);
     
     // Supabase tablo yapısına göre doğru kolonları kullan
@@ -348,7 +355,7 @@ export const supabaseHelpers = {
       status: 'pending',
       created_at: turkeyTime,
       updated_at: turkeyTime,
-      requested_by_name: currentUser?.user_metadata?.firstName + ' ' + currentUser?.user_metadata?.lastName || currentUser?.email || 'Bilinmeyen Kullanıcı' // Kullanıcı adı soyadını kaydet
+      requested_by_name: userName // Kullanıcı adı soyadını kaydet
     };
     
     const { data, error } = await supabase

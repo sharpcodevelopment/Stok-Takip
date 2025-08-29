@@ -55,14 +55,18 @@ const UserDashboard = () => {
       const response = await api.get('/stockrequests');
       const allRequests = response.data || [];
       
-      // Sadece mevcut kullanıcının taleplerini filtrele
+      // Sadece mevcut kullanıcının taleplerini filtrele - genel çözüm
       const currentUser = await api.get('/auth/profile');
       const currentUserEmail = currentUser.data?.email;
+      const currentUserName = currentUser.data?.user_metadata?.firstName + ' ' + currentUser.data?.user_metadata?.lastName;
       
-      const userRequests = allRequests.filter(request => 
-        request.requestedByName === (currentUser.data?.user_metadata?.firstName + ' ' + currentUser.data?.user_metadata?.lastName) ||
-        request.requestedByName === currentUserEmail
-      );
+      const userRequests = allRequests.filter(request => {
+        const requestByName = request.requestedByName || '';
+        return requestByName === currentUserName || 
+               requestByName === currentUserEmail ||
+               requestByName.includes(currentUserEmail) ||
+               (currentUserName !== 'undefined undefined' && requestByName.includes(currentUserName));
+      });
       
       setUserRequests(userRequests);
     } catch (error) {
