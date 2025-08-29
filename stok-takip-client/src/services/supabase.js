@@ -301,6 +301,11 @@ export const supabaseHelpers = {
       return { data: [], error };
     }
     
+    // İlk request'i logla (tablo yapısını görmek için)
+    if (data && data.length > 0) {
+      console.log('İlk stok talebi örneği:', data[0]);
+    }
+    
     // Veri formatını frontend'e uygun hale getir
     const formattedData = data?.map(request => ({
       id: request.id,
@@ -310,13 +315,13 @@ export const supabaseHelpers = {
       priority: 'normal', // priority kolonu yok
       notes: request.request_reason || request.notes || '',
       status: request.status,
-      requestedById: '', // requested_by_id kolonu yok
-      requestedByName: 'Sistem', // Şimdilik sabit değer
+      requestedById: request.requested_by_id || '',
+      requestedByName: request.requested_by_name || 'Sistem', // Eğer kolon varsa kullan
       createdAt: request.created_at,
       updatedAt: request.updated_at,
-      approvedById: '', // approved_by_id kolonu yok
-      approvedByName: '', // approved_by_name kolonu yok
-      approvedAt: null, // approved_at kolonu yok
+      approvedById: request.approved_by_id || '',
+      approvedByName: request.approved_by_name || '',
+      approvedAt: request.approved_at || null,
       rejectionReason: request.rejection_reason || ''
     })) || [];
     
