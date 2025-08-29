@@ -35,20 +35,30 @@ const Login = () => {
 
     try {
       if (isLogin) {
-        const result = await authAPI.login(formData.email, formData.password);
+        // Backend API'sini kullan
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password
+          })
+        });
         
-        if (result.error) {
-          setError('Giriş başarısız: ' + result.error.message);
-          return;
+        const result = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(result.message || 'Giriş başarısız');
         }
         
-        if (!result.data?.user) {
-          setError('Giriş başarısız: Kullanıcı bulunamadı');
-          return;
-        }
+        // Token'ı localStorage'a kaydet
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
         
         // Rol kontrolü ve yönlendirme
-        const userRole = result.data.user?.user_metadata?.role || 'user';
+        const userRole = result.user?.user_metadata?.role || 'user';
         
         // Rol ve seçilen kullanıcı tipi kontrolü
         if (userType === 'admin') {
@@ -57,7 +67,8 @@ const Login = () => {
             navigate('/dashboard');
           } else {
             setError('Bu hesap yönetici değil. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
-            await authAPI.logout();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
             return;
           }
         } else {
@@ -66,7 +77,8 @@ const Login = () => {
             navigate('/user-dashboard');
           } else {
             setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
-            await authAPI.logout();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
             return;
           }
         }
@@ -82,25 +94,31 @@ const Login = () => {
           isAdminRegistration: userType === 'admin' // Admin kayıt mı?
         };
 
-        const result = await authAPI.register(registerData);
+        // Backend API'sini kullan
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(registerData)
+        });
         
-        if (result.error) {
-          setError('Kayıt başarısız: ' + result.error.message);
-          return;
+        const result = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(result.message || 'Kayıt işlemi başarısız');
         }
         
         // Kayıt başarılı - response'a göre yönlendir
         
         // Response'a göre yönlendirme
-        if (result.data.isAdminRequestPending) {
+        if (result.isAdminRequestPending) {
           // Admin kayıt talebi beklemede - kullanıcı dashboard'una yönlendir
           alert('✅ Admin olma talebiniz başarıyla alındı!\n\n📋 Durum: Ana admin onayı bekleniyor\n👤 Şimdilik: Normal kullanıcı olarak giriş yapabilirsiniz\n📧 Bildirim: Onay durumu hakkında bilgilendirileceksiniz');
           navigate('/user-dashboard');
         } else {
           // Normal kullanıcı kaydı - direkt mağaza paneline yönlendir
           alert('✅ Kayıt başarılı!\n\n👤 Hesap türü: Mağaza Çalışanı\n🏪 Panel: Mağaza Paneli\n📋 Durum: Sisteme giriş yapabilirsiniz');
-          navigate('/user-dashboard');
-          alert('✅ Kayıt başarılı! Mağaza çalışanı olarak giriş yapabilirsiniz.');
           navigate('/user-dashboard');
         }
       }
