@@ -242,14 +242,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu 
-                className="shadow border-0" 
-                style={{
-                  borderRadius: '12px', 
-                  minWidth: '160px',
-                  zIndex: 99999,
-                  marginTop: '8px',
-                  position: 'absolute'
-                }}
+                className="shadow border-0"
               >
                 <Dropdown.Header className="text-muted small px-3 py-1">
                   <i className="fas fa-user-shield me-2"></i>

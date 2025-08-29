@@ -91,19 +91,31 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Sayfa yüklendiğinde hemen loading'i kapat
-    const handleLoad = () => {
-      setIsLoading(false);
+    // Mobilde daha güvenilir loading kontrolü
+    const checkReady = () => {
+      // DOM yüklendi mi?
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        // Ek güvenlik için kısa bir bekleme
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 100);
+      }
     };
 
-    // Sayfa zaten yüklendiyse hemen başlat
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      // Sayfa yüklenme olayını dinle
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
-    }
+    // İlk kontrol
+    checkReady();
+
+    // DOMContentLoaded olayını dinle
+    document.addEventListener('DOMContentLoaded', checkReady);
+    
+    // Load olayını da dinle (yedek)
+    window.addEventListener('load', checkReady);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('DOMContentLoaded', checkReady);
+      window.removeEventListener('load', checkReady);
+    };
   }, []);
 
   if (isLoading) {
