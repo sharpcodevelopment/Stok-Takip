@@ -91,30 +91,43 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Mobilde daha güvenilir loading kontrolü
+    // Mobilde kalıcı loading kontrolü
+    let loadingTimeout;
+    let checkInterval;
+
     const checkReady = () => {
-      // DOM yüklendi mi?
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        // Ek güvenlik için kısa bir bekleme
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 100);
+      // React component'leri yüklendi mi?
+      const appElement = document.querySelector('.App');
+      const routerElement = document.querySelector('[data-testid="router"]');
+      
+      // localStorage kontrolü - kullanıcı bilgileri var mı?
+      const hasUserData = localStorage.getItem('user') || localStorage.getItem('token') || localStorage.getItem('session');
+      
+      if (appElement && routerElement && hasUserData) {
+        clearTimeout(loadingTimeout);
+        clearInterval(checkInterval);
+        setIsLoading(false);
+        return true;
       }
+      return false;
     };
 
     // İlk kontrol
-    checkReady();
-
-    // DOMContentLoaded olayını dinle
-    document.addEventListener('DOMContentLoaded', checkReady);
-    
-    // Load olayını da dinle (yedek)
-    window.addEventListener('load', checkReady);
+    if (!checkReady()) {
+      // Her 50ms kontrol et
+      checkInterval = setInterval(checkReady, 50);
+      
+      // Maksimum 5 saniye bekle
+      loadingTimeout = setTimeout(() => {
+        clearInterval(checkInterval);
+        setIsLoading(false);
+      }, 5000);
+    }
 
     // Cleanup
     return () => {
-      document.removeEventListener('DOMContentLoaded', checkReady);
-      window.removeEventListener('load', checkReady);
+      clearTimeout(loadingTimeout);
+      clearInterval(checkInterval);
     };
   }, []);
 
@@ -123,7 +136,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router data-testid="router">
       <div className="App">
         <Routes>
           <Route path="/login" element={<Login />} />
