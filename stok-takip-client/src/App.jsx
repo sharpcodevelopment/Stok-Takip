@@ -16,38 +16,37 @@ import AdminRequests from './components/AdminRequests.jsx';
 import { authAPI } from './services/api.js';
 import './App.css';
 
-// LoadingSpinner component'ini kaldırdık - mobilde sorun yaratıyor
-// const LoadingSpinner = () => (
-//   <div style={{
-//     position: 'fixed',
-//     top: 0,
-//     left: 0,
-//     width: '100%',
-//     height: '100%',
-//     background: 'linear-gradient(135deg, #1a1d23 0%, #2c3e50 50%, #34495e 100%)',
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     zIndex: 99999
-//   }}>
-//     <div style={{
-//       textAlign: 'center',
-//       color: 'white'
-//     }}>
-//       <div style={{
-//         width: '50px',
-//         height: '50px',
-//         border: '3px solid rgba(255,255,255,0.3)',
-//         borderTop: '3px solid #ffffff',
-//         borderRadius: '50%',
-//         animation: 'spin 1s linear infinite',
-//         margin: '0 auto 20px'
-//       }}></div>
-//       <h4 style={{ margin: 0, color: '#ffffff' }}>Yükleniyor...</h4>
-//       <p style={{ margin: '10px 0 0 0', color: '#adb5bd' }}>Stok Takip Sistemi</p>
-//     </div>
-//   </div>
-// );
+const LoadingSpinner = () => (
+  <div style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(135deg, #1a1d23 0%, #2c3e50 50%, #34495e 100%)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 99999
+  }}>
+    <div style={{
+      textAlign: 'center',
+      color: 'white'
+    }}>
+      <div style={{
+        width: '50px',
+        height: '50px',
+        border: '3px solid rgba(255,255,255,0.3)',
+        borderTop: '3px solid #ffffff',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+        margin: '0 auto 20px'
+      }}></div>
+      <h4 style={{ margin: 0, color: '#ffffff' }}>Yükleniyor...</h4>
+      <p style={{ margin: '10px 0 0 0', color: '#adb5bd' }}>Stok Takip Sistemi</p>
+    </div>
+  </div>
+);
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -89,8 +88,27 @@ const UserRoute = ({ children }) => {
 };
 
 function App() {
-  // Loading state'ini tamamen kaldırdık - mobilde sorun yaratıyor
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Mobilde güvenilir loading kontrolü
+    const handleLoad = () => {
+      setIsLoading(false);
+    };
+
+    // Sayfa zaten yüklendiyse hemen başlat
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      // Sayfa yüklenme olayını dinle
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Router data-testid="router">
