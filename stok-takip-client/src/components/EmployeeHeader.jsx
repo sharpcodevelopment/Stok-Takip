@@ -74,7 +74,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        transition: 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
+        transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
       <Container>
@@ -105,9 +105,6 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
         
         <Navbar.Collapse 
           id="employee-navbar-nav"
-          style={{
-            transition: 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
         >
           {/* Ana Menü */}
           <Nav className="me-auto flex-column flex-lg-row" style={{ marginTop: '1rem', marginBottom: '1rem' }}>

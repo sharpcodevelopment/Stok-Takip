@@ -1303,9 +1303,9 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Header ve menünün birlikte yavaş yavaş aşağı açılması */
+  /* Header ve menünün birlikte yavaş yavaş aşağı kayarak açılması */
   .navbar {
-    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .navbar.expanded {
@@ -1317,24 +1317,49 @@
     transform: translateY(0);
   }
   
-  /* Navbar collapse animasyonu - header ile birlikte */
+  /* Bootstrap'in varsayılan animasyonunu devre dışı bırak */
   .navbar-collapse {
-    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: none !important;
   }
   
   .navbar-collapse.collapsing {
-    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: none !important;
+    height: auto !important;
   }
   
+  /* Kendi smooth animasyonumuz */
   .navbar-collapse.show {
-    animation: none;
-    opacity: 1;
-    transform: translateY(0);
+    animation: slideDownSmooth 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   .navbar-collapse.collapse:not(.show) {
-    opacity: 0;
-    transform: translateY(-10px);
+    animation: slideUpSmooth 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  @keyframes slideDownSmooth {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+      max-height: 0;
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+  }
+  
+  @keyframes slideUpSmooth {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-50px);
+      max-height: 0;
+    }
   }
   
   .navbar-nav .nav-link {
