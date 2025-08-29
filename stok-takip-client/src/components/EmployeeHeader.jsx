@@ -74,7 +74,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)'
+        transition: 'none'
       }}
     >
       <Container>

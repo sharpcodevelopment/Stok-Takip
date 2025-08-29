@@ -1305,16 +1305,38 @@
   
   /* Header ve menünün birlikte yavaş yavaş aşağı kayarak açılması */
   .navbar {
-    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none;
+    transform: translateY(0);
   }
   
   .navbar.expanded {
-    transform: translateY(0);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: headerExpand 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   .navbar:not(.expanded) {
-    transform: translateY(0);
+    animation: headerCollapse 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  @keyframes headerExpand {
+    0% {
+      transform: translateY(0);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+      transform: translateY(0);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  @keyframes headerCollapse {
+    0% {
+      transform: translateY(0);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+      transform: translateY(0);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
   }
   
   /* Bootstrap'in varsayılan animasyonunu tamamen devre dışı bırak */
@@ -1326,6 +1348,7 @@
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
+    display: block !important;
   }
   
   .navbar-collapse.collapsing {
@@ -1358,12 +1381,6 @@
       max-height: 0;
       visibility: hidden;
     }
-    50% {
-      opacity: 0;
-      transform: translateY(-50px);
-      max-height: 0;
-      visibility: hidden;
-    }
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -1378,12 +1395,6 @@
       transform: translateY(0);
       max-height: 500px;
       visibility: visible;
-    }
-    50% {
-      opacity: 0;
-      transform: translateY(-50px);
-      max-height: 0;
-      visibility: hidden;
     }
     100% {
       opacity: 0;
