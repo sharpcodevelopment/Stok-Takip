@@ -193,7 +193,7 @@ export const supabaseHelpers = {
     // ID'yi number'a çevir
     const numericId = parseInt(id);
     
-    console.log('Supabase updateCategory çağrısı:', { id: numericId, formattedUpdates });
+
     
     const { data, error } = await supabase
       .from('categories')
@@ -201,7 +201,7 @@ export const supabaseHelpers = {
       .eq('id', numericId)
       .select();
     
-    console.log('Supabase updateCategory sonucu:', { data, error });
+
     return { data, error };
   },
 
@@ -337,7 +337,7 @@ export const supabaseHelpers = {
       } else {
         userName = 'Bilinmeyen Kullanıcı';
       }
-      console.log('Stok talebi oluşturan kullanıcı:', userName);
+
     
     // Supabase tablo yapısına göre doğru kolonları kullan
     const formattedRequest = {
@@ -377,7 +377,7 @@ export const supabaseHelpers = {
     // updated_at alanını güncelle
     formattedUpdates.updated_at = turkeyTime;
     
-    console.log('updateStockRequest çağrısı:', { id, updates, formattedUpdates });
+
     
     // Önce stok talebini güncelle
     const { data, error } = await supabase
@@ -386,7 +386,7 @@ export const supabaseHelpers = {
       .eq('id', id)
       .select();
     
-    console.log('updateStockRequest sonucu:', { data, error });
+
     
     // Eğer talep onaylandıysa (approved) ve hata yoksa, ürün stok miktarını azalt
     if (updates.status === 'approved' && !error && data && data.length > 0) {
@@ -394,7 +394,7 @@ export const supabaseHelpers = {
       const productId = request.product_id;
       const requestedQuantity = request.requested_quantity;
       
-      console.log('Stok talebi onaylandı, ürün stok miktarı azaltılıyor:', { productId, requestedQuantity });
+
       
       // Ürünün mevcut stok miktarını al
       const { data: productData, error: productError } = await supabase
@@ -422,7 +422,7 @@ export const supabaseHelpers = {
         return { data, error: updateStockError };
       }
       
-      console.log('Ürün stok miktarı başarıyla güncellendi:', { currentStock, newStock });
+
     }
     
     return { data, error };
