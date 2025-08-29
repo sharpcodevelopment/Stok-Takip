@@ -59,6 +59,14 @@ export const categoriesAPI = {
 
   async create(category) {
     return await supabaseHelpers.addCategory(category);
+  },
+
+  async update(id, category) {
+    return await supabaseHelpers.updateCategory(id, category);
+  },
+
+  async delete(id) {
+    return await supabaseHelpers.deleteCategory(id);
   }
 };
 
@@ -285,6 +293,10 @@ const api = {
       const result = await productsAPI.update(id, data);
       return { data: result.data };
     }
+    if (url.includes('/categories/')) {
+      const result = await categoriesAPI.update(id, data);
+      return { data: result.data };
+    }
     if (url.includes('/stockrequests/')) {
       const result = await stockRequestsAPI.update(id, data);
       return { data: result.data };
@@ -300,6 +312,10 @@ const api = {
     
     if (url.includes('/products/')) {
       const result = await productsAPI.delete(id);
+      return { data: result.data };
+    }
+    if (url.includes('/categories/')) {
+      const result = await categoriesAPI.delete(id);
       return { data: result.data };
     }
     if (url.includes('/stockrequests/')) {

@@ -183,6 +183,32 @@ export const supabaseHelpers = {
     return { data, error };
   },
 
+  async updateCategory(id, updates) {
+    // Client-side Türkiye saatini kullan
+    const turkeyTime = getCurrentTurkeyTimeISO();
+    
+    const formattedUpdates = {
+      name: updates.name,
+      description: updates.description,
+      updated_at: turkeyTime
+    };
+    
+    const { data, error } = await supabase
+      .from('categories')
+      .update(formattedUpdates)
+      .eq('id', id)
+      .select();
+    return { data, error };
+  },
+
+  async deleteCategory(id) {
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id);
+    return { error };
+  },
+
   // Stock Transactions
   async getStockTransactions() {
     // Ürün adını da al
