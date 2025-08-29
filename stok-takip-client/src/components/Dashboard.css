@@ -1315,7 +1315,8 @@
   }
 
   /* Mağaza paneli dropdown menü z-index düzeltmesi */
-  .navbar .dropdown-menu {
+  .navbar .dropdown-menu,
+  .navbar .dropdown-menu.show {
     z-index: 999999 !important;
     position: fixed !important;
     top: 190px !important;

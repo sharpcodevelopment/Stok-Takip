@@ -227,18 +227,7 @@ const EmployeeHeader = ({ activeMenu = 'dashboard' }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu 
-                className="shadow border-0" 
-                style={{
-                  borderRadius: '12px', 
-                  minWidth: '160px',
-                  zIndex: 999999,
-                  position: 'fixed',
-                  top: '190px',
-                  right: '20px',
-                  background: '#ffffff',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                }}
+                className="shadow border-0"
               >
                 <Dropdown.Header className="text-muted small px-3 py-1">
                   <i className="fas fa-user me-2"></i>
