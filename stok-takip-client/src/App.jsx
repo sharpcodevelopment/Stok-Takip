@@ -27,7 +27,7 @@ const LoadingSpinner = () => (
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 9999
+    zIndex: 99999
   }}>
     <div style={{
       textAlign: 'center',
@@ -91,12 +91,19 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 1 saniye sonra loading'i kapat
-    const timer = setTimeout(() => {
+    // Sayfa yüklendiğinde hemen loading'i kapat
+    const handleLoad = () => {
       setIsLoading(false);
-    }, 1000);
+    };
 
-    return () => clearTimeout(timer);
+    // Sayfa zaten yüklendiyse hemen başlat
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      // Sayfa yüklenme olayını dinle
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
   }, []);
 
   if (isLoading) {
