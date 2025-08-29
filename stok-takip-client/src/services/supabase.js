@@ -303,7 +303,7 @@ export const supabaseHelpers = {
     
     // İlk request'i logla (tablo yapısını görmek için)
     if (data && data.length > 0) {
-      console.log('İlk stok talebi örneği:', data[0]);
+  
     }
     
     // Veri formatını frontend'e uygun hale getir

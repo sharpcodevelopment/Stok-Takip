@@ -34,9 +34,7 @@ export const authAPI = {
 
   getCurrentUser() {
     const user = localStorage.getItem('user');
-    console.log('authAPI.getCurrentUser - localStorage user:', user);
     const parsedUser = user ? JSON.parse(user) : null;
-    console.log('authAPI.getCurrentUser - parsed user:', parsedUser);
     return parsedUser;
   },
 
