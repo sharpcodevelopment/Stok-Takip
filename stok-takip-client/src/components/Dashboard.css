@@ -1320,6 +1320,10 @@
   /* Bootstrap'in varsayılan animasyonunu devre dışı bırak */
   .navbar-collapse {
     transition: none !important;
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
   }
   
   .navbar-collapse.collapsing {
@@ -1327,19 +1331,24 @@
     height: auto !important;
   }
   
-  /* Kendi smooth animasyonumuz */
+  /* Kendi smooth animasyonumuz - menü header ile birlikte kayar */
   .navbar-collapse.show {
-    animation: slideDownSmooth 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: menuSlideDown 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   .navbar-collapse.collapse:not(.show) {
-    animation: slideUpSmooth 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: menuSlideUp 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  @keyframes slideDownSmooth {
+  @keyframes menuSlideDown {
     0% {
       opacity: 0;
-      transform: translateY(-50px);
+      transform: translateY(-20px);
+      max-height: 0;
+    }
+    30% {
+      opacity: 0;
+      transform: translateY(-15px);
       max-height: 0;
     }
     100% {
@@ -1349,15 +1358,20 @@
     }
   }
   
-  @keyframes slideUpSmooth {
+  @keyframes menuSlideUp {
     0% {
       opacity: 1;
       transform: translateY(0);
       max-height: 500px;
     }
+    70% {
+      opacity: 0;
+      transform: translateY(-15px);
+      max-height: 0;
+    }
     100% {
       opacity: 0;
-      transform: translateY(-50px);
+      transform: translateY(-20px);
       max-height: 0;
     }
   }
