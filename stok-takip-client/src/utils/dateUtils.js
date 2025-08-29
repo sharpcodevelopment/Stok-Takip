@@ -2,7 +2,10 @@
 export const formatDateForDisplay = (dateString) => {
   if (!dateString) return '-';
   try {
-    return new Date(dateString).toLocaleString('tr-TR', {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '-';
+    
+    return date.toLocaleString('tr-TR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -18,7 +21,10 @@ export const formatDateForDisplay = (dateString) => {
 export const formatDateForDisplayShort = (dateString) => {
   if (!dateString) return '-';
   try {
-    return new Date(dateString).toLocaleString('tr-TR', {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '-';
+    
+    return date.toLocaleString('tr-TR', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -38,7 +44,11 @@ export const getCurrentTurkeyTime = () => {
 };
 
 export const getCurrentTurkeyTimeISO = () => {
-  const turkeyTime = getCurrentTurkeyTime();
+  const now = new Date();
+  // UTC offset'i Türkiye için ayarla (UTC+3)
+  const turkeyOffset = 3 * 60; // 3 saat = 180 dakika
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const turkeyTime = new Date(utc + (turkeyOffset * 60000));
   return turkeyTime.toISOString();
 };
 
@@ -56,6 +66,8 @@ export const getRelativeTimeString = (dateString) => {
   if (!dateString) return '-';
   try {
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '-';
+    
     const now = getCurrentTurkeyTime();
     const diffInSeconds = Math.floor((now - date) / 1000);
     

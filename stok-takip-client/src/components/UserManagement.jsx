@@ -241,7 +241,7 @@ const UserManagement = () => {
                         <td>{request.email}</td>
                         <td>{request.phoneNumber || '-'}</td>
                         <td>
-                          {getRelativeTimeString(request.adminRequestDate)}
+                          {formatDateForDisplay(request.adminRequestDate)}
                         </td>
                         <td>
                           <div className="btn-group" role="group">
@@ -308,7 +308,7 @@ const UserManagement = () => {
                         <td>{getRoleBadge(userItem.roles, userItem.isSuperAdmin)}</td>
                         <td>{getAdminRequestStatus(userItem)}</td>
                         <td>
-                          {getRelativeTimeString(userItem.createdAt)}
+                          {formatDateForDisplay(userItem.createdAt)}
                         </td>
                         <td>
                           {user?.isSuperAdmin ? (

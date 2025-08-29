@@ -278,7 +278,7 @@ const Dashboard = () => {
                            {transaction.productName} - {transaction.quantity} adet
                          </div>
                          <div className="recent-time">
-                           {getRelativeTimeString(transaction.transactionDate || transaction.date) || 'Yakın zamanda'}
+                           {formatDateForDisplayShort(transaction.transactionDate || transaction.date) || 'Yakın zamanda'}
                          </div>
                        </div>
                      </div>

@@ -161,7 +161,7 @@ const Products = () => {
                               if (isNaN(date.getTime())) {
                                 return '-';
                               }
-                              return getRelativeTimeString(date);
+                              return formatDateForDisplay(date);
                             } catch (error) {
                               return '-';
                             }
@@ -173,7 +173,7 @@ const Products = () => {
                               if (isNaN(date.getTime())) {
                                 return '-';
                               }
-                              return getRelativeTimeString(date);
+                              return formatDateForDisplay(date);
                             } catch (error) {
                               return '-';
                             }

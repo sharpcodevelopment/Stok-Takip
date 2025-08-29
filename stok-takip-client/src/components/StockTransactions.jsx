@@ -309,7 +309,7 @@ const StockTransactions = () => {
                     </td>
                     <td>{transaction.notes || transaction.description}</td>
                     <td>
-                      {getRelativeTimeString(transaction.transactionDate || transaction.date)}
+                      {formatDateForDisplay(transaction.transactionDate || transaction.date)}
                     </td>
                   </tr>
                 ))}
