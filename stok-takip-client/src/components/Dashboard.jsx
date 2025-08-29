@@ -121,7 +121,7 @@ const Dashboard = () => {
     try {
       const response = await api.get('/stockrequests');
       const requests = response.data || [];
-      const pendingCount = requests.filter(request => request.status === 'Pending').length;
+      const pendingCount = requests.filter(request => request.status === 'pending').length;
       setPendingRequests(pendingCount);
     } catch (error) {
       // Bekleyen talepler alınamadı
