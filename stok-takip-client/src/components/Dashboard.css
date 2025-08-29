@@ -1317,13 +1317,15 @@
     transform: translateY(0);
   }
   
-  /* Bootstrap'in varsayılan animasyonunu devre dışı bırak */
+  /* Bootstrap'in varsayılan animasyonunu tamamen devre dışı bırak */
   .navbar-collapse {
     transition: none !important;
+    height: auto !important;
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-100px);
     max-height: 0;
     overflow: hidden;
+    visibility: hidden;
   }
   
   .navbar-collapse.collapsing {
@@ -1331,48 +1333,63 @@
     height: auto !important;
   }
   
-  /* Kendi smooth animasyonumuz - menü header ile birlikte kayar */
-  .navbar-collapse.show {
-    animation: menuSlideDown 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  
+  /* Menü tamamen gizli başlangıç durumu */
   .navbar-collapse.collapse:not(.show) {
-    animation: menuSlideUp 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(-100px);
+    max-height: 0;
+    visibility: hidden;
   }
   
-  @keyframes menuSlideDown {
+  /* Header genişlediğinde menü yavaşça görünür */
+  .navbar.expanded .navbar-collapse.show {
+    animation: menuReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  /* Header daraldığında menü yavaşça kaybolur */
+  .navbar:not(.expanded) .navbar-collapse.show {
+    animation: menuHide 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  @keyframes menuReveal {
     0% {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-100px);
       max-height: 0;
+      visibility: hidden;
     }
-    30% {
+    50% {
       opacity: 0;
-      transform: translateY(-15px);
+      transform: translateY(-50px);
       max-height: 0;
+      visibility: hidden;
     }
     100% {
       opacity: 1;
       transform: translateY(0);
       max-height: 500px;
+      visibility: visible;
     }
   }
   
-  @keyframes menuSlideUp {
+  @keyframes menuHide {
     0% {
       opacity: 1;
       transform: translateY(0);
       max-height: 500px;
+      visibility: visible;
     }
-    70% {
+    50% {
       opacity: 0;
-      transform: translateY(-15px);
+      transform: translateY(-50px);
       max-height: 0;
+      visibility: hidden;
     }
     100% {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-100px);
       max-height: 0;
+      visibility: hidden;
     }
   }
   
