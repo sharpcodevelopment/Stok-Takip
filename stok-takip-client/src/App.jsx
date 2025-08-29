@@ -90,50 +90,17 @@ const UserRoute = ({ children }) => {
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Mobilde kalıcı loading kontrolü
-    let loadingTimeout;
-    let checkInterval;
+  // Loading spinner'ı kaldırdık - mobilde sorun yaratıyor
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 500);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-    const checkReady = () => {
-      // React component'leri yüklendi mi?
-      const appElement = document.querySelector('.App');
-      const routerElement = document.querySelector('[data-testid="router"]');
-      
-      // localStorage kontrolü - kullanıcı bilgileri var mı?
-      const hasUserData = localStorage.getItem('user') || localStorage.getItem('token') || localStorage.getItem('session');
-      
-      if (appElement && routerElement && hasUserData) {
-        clearTimeout(loadingTimeout);
-        clearInterval(checkInterval);
-        setIsLoading(false);
-        return true;
-      }
-      return false;
-    };
-
-    // İlk kontrol
-    if (!checkReady()) {
-      // Her 50ms kontrol et
-      checkInterval = setInterval(checkReady, 50);
-      
-      // Maksimum 5 saniye bekle
-      loadingTimeout = setTimeout(() => {
-        clearInterval(checkInterval);
-        setIsLoading(false);
-      }, 5000);
-    }
-
-    // Cleanup
-    return () => {
-      clearTimeout(loadingTimeout);
-      clearInterval(checkInterval);
-    };
-  }, []);
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
 
   return (
     <Router data-testid="router">
