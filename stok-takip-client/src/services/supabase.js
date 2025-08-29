@@ -409,6 +409,32 @@ export const supabaseHelpers = {
       }
       
       const currentStock = productData.stock_quantity;
+      
+      // Stok kontrolü: Eğer talep edilen miktar mevcut stoktan fazlaysa onay verme
+      if (requestedQuantity > currentStock) {
+        // Stok talebini reddet ve sebep ekle
+        const { error: rejectError } = await supabase
+          .from('stock_requests')
+          .update({ 
+            status: 'rejected',
+            rejection_reason: `Yetersiz stok. Mevcut stok: ${currentStock}, Talep edilen: ${requestedQuantity}`,
+            updated_at: turkeyTime
+          })
+          .eq('id', id);
+        
+        if (rejectError) {
+          console.error('Stok talebi reddedilemedi:', rejectError);
+          return { data, error: rejectError };
+        }
+        
+        return { 
+          data: null, 
+          error: { 
+            message: `Yetersiz stok. Mevcut stok: ${currentStock}, Talep edilen: ${requestedQuantity}` 
+          } 
+        };
+      }
+      
       const newStock = currentStock - requestedQuantity;
       
       // Stok miktarını güncelle

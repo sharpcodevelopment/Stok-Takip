@@ -72,7 +72,14 @@ const StockRequestManagement = () => {
       fetchPendingRequests();
     } catch (error) {
       console.error('Onay hatası:', error);
-      alert('Onay işlemi sırasında hata oluştu: ' + (error.response?.data?.message || error.message));
+      const errorMessage = error.response?.data?.message || error.message;
+      
+      // Yetersiz stok durumunda özel mesaj
+      if (errorMessage.includes('Yetersiz stok')) {
+        alert('❌ Onay verilemedi: ' + errorMessage + '\n\nStok talebi otomatik olarak reddedildi.');
+      } else {
+        alert('Onay işlemi sırasında hata oluştu: ' + errorMessage);
+      }
     } finally {
       setLoading(false);
     }
