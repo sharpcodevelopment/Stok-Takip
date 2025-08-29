@@ -53,9 +53,20 @@ const UserRequests = () => {
 
   const fetchRequests = async () => {
     try {
-      // Bu endpoint'i backend'te oluşturmanız gerekecek
       const response = await api.get('/stockrequests');
-      setRequests(response.data || []);
+      const allRequests = response.data || [];
+      
+      // Sadece mevcut kullanıcının taleplerini filtrele
+      const currentUser = await api.get('/auth/profile');
+      const currentUserName = currentUser.data?.user_metadata?.firstName + ' ' + currentUser.data?.user_metadata?.lastName;
+      const currentUserEmail = currentUser.data?.email;
+      
+      const userRequests = allRequests.filter(request => 
+        request.requestedByName === currentUserName ||
+        request.requestedByName === currentUserEmail
+      );
+      
+      setRequests(userRequests);
     } catch (error) {
       console.error('Talepler alınamadı:', error);
       setRequests([]);
