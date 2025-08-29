@@ -43,7 +43,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
           <Nav className="me-auto">
             <Nav.Link 
               onClick={() => navigate('/dashboard')} 
-              className={isActive('/dashboard') ? 'active' : ''}
+              className={`position-relative ${isActive('/dashboard') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
@@ -56,10 +56,15 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-tachometer-alt me-2"></i>
               Dashboard
+              {pendingRequests > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {pendingRequests}
+                </span>
+              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/products')} 
-              className={isActive('/products') ? 'active' : ''}
+              className={`position-relative ${isActive('/products') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
@@ -72,10 +77,15 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-box me-2"></i>
               Ürünler
+              {pendingRequests > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {pendingRequests}
+                </span>
+              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/categories')} 
-              className={isActive('/categories') ? 'active' : ''}
+              className={`position-relative ${isActive('/categories') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
@@ -88,10 +98,15 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-tags me-2"></i>
               Kategoriler
+              {pendingRequests > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {pendingRequests}
+                </span>
+              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/transactions')} 
-              className={isActive('/transactions') ? 'active' : ''}
+              className={`position-relative ${isActive('/transactions') ? 'active' : ''}`}
               style={{
                 color: '#e9ecef',
                 fontWeight: '500',
@@ -104,6 +119,11 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
             >
               <i className="fas fa-exchange-alt me-2"></i>
               Stok Hareketleri
+              {pendingRequests > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {pendingRequests}
+                </span>
+              )}
             </Nav.Link>
             <Nav.Link 
               onClick={() => navigate('/admin-requests')} 
