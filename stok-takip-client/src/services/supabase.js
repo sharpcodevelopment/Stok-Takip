@@ -134,13 +134,22 @@ export const supabaseHelpers = {
 
   // Categories
   async getCategories() {
+    // Önce tablo yapısını kontrol et
+    console.log('Categories tablosu yapısını kontrol ediyoruz...');
+    
     const { data, error } = await supabase
       .from('categories')
       .select('*')
       .order('name', { ascending: true });
     
     if (error) {
+      console.error('Categories getirme hatası:', error);
       return { data: [], error };
+    }
+    
+    // İlk kategoriyi logla (tablo yapısını görmek için)
+    if (data && data.length > 0) {
+      console.log('İlk kategori örneği:', data[0]);
     }
     
     // Her kategori için ürün sayısını al
@@ -184,13 +193,9 @@ export const supabaseHelpers = {
   },
 
   async updateCategory(id, updates) {
-    // Client-side Türkiye saatini kullan
-    const turkeyTime = getCurrentTurkeyTimeISO();
-    
     const formattedUpdates = {
       name: updates.name,
-      description: updates.description,
-      updated_at: turkeyTime
+      description: updates.description
     };
     
     // ID'yi number'a çevir
