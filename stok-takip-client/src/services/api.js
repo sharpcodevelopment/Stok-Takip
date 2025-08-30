@@ -278,8 +278,17 @@ const api = {
       return await authAPI.register(data);
     }
     if (url.includes('/categories')) {
-      const result = await categoriesAPI.create(data);
-      return { data: result.data };
+      try {
+        const result = await categoriesAPI.create(data);
+        if (result.error) {
+          console.error('Kategori ekleme hatası:', result.error);
+          return { data: null, error: result.error };
+        }
+        return { data: result.data };
+      } catch (error) {
+        console.error('Kategori ekleme exception:', error);
+        return { data: null, error };
+      }
     }
     if (url.includes('/products')) {
       const result = await productsAPI.create(data);

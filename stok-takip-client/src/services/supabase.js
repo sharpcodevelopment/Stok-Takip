@@ -215,21 +215,26 @@ export const supabaseHelpers = {
   },
 
   async addCategory(category) {
-    // Client-side Türkiye saatini kullan
-    const turkeyTime = getCurrentTurkeyTimeISO();
-    
-    const formattedCategory = {
-      name: category.name,
-      description: category.description || '',
-      created_at: turkeyTime,
-      updated_at: turkeyTime
-    };
-    
-    const { data, error } = await supabase
-      .from('categories')
-      .insert([formattedCategory])
-      .select();
-    return { data, error };
+    try {
+      // Sadece gerekli alanları gönder
+      const { data, error } = await supabase
+        .from('categories')
+        .insert({
+          name: category.name,
+          description: category.description || ''
+        })
+        .select();
+      
+      if (error) {
+        console.error('Kategori ekleme hatası:', error);
+        return { data: null, error };
+      }
+      
+      return { data, error };
+    } catch (error) {
+      console.error('Kategori ekleme exception:', error);
+      return { data: null, error };
+    }
   },
 
   async updateCategory(id, updates) {

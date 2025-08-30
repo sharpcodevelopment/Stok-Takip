@@ -71,16 +71,21 @@ const Categories = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+    
     try {
       if (editingCategory) {
         // Update category
-        
         const response = await api.put(`/categories/${editingCategory.id}`, formData);
-        
         setSuccess('Kategori başarıyla güncellendi');
       } else {
         // Add new category
-        await api.post('/categories', formData);
+        const response = await api.post('/categories', formData);
+        if (response.error) {
+          setError('Kategori eklenirken hata oluştu: ' + (response.error.message || 'Bilinmeyen hata'));
+          return;
+        }
         setSuccess('Kategori başarıyla eklendi');
       }
       setShowModal(false);
@@ -89,7 +94,7 @@ const Categories = () => {
       fetchCategories();
     } catch (error) {
       console.error('API hatası:', error);
-      setError('İşlem sırasında hata oluştu');
+      setError('İşlem sırasında hata oluştu: ' + (error.message || 'Bilinmeyen hata'));
     }
   };
 
