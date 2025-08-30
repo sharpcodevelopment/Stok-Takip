@@ -34,9 +34,16 @@ const AdminRequests = () => {
       const userRole = user?.user_metadata?.role;
       const isSuperAdmin = user?.user_metadata?.isSuperAdmin;
       
+      console.log('AdminRequests - User Role:', userRole);
+      console.log('AdminRequests - isSuperAdmin:', isSuperAdmin);
+      console.log('AdminRequests - User metadata:', user?.user_metadata);
+      
       if (userRole !== 'admin' || !isSuperAdmin) {
+        console.log('AdminRequests - Erişim reddedildi, dashboard\'a yönlendiriliyor');
         setError('Bu sayfaya sadece ana admin erişebilir.');
         navigate('/dashboard');
+      } else {
+        console.log('AdminRequests - Erişim onaylandı');
       }
     } catch (error) {
       console.error('Kullanıcı bilgileri alınamadı:', error);
