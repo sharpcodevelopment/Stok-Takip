@@ -76,40 +76,31 @@ export const supabaseHelpers = {
 
   async approveAdminRequest(userId, isApproved, rejectionReason = null) {
     try {
-      if (isApproved) {
-        // Kullanıcının rolünü admin olarak güncelle
-        const { data, error } = await supabase
-          .from('profiles')
-          .update({ 
-            role: 'admin',
-            is_admin_request_pending: false
-          })
-          .eq('id', userId)
-          .select();
-        
-        if (error) {
-          console.error('Admin onay hatası:', error);
-          return { data: null, error };
-        }
-        
-        return { data, error: null };
-      } else {
-        // Reddetme durumunda sadece pending durumunu false yap
-        const { data, error } = await supabase
-          .from('profiles')
-          .update({ 
-            is_admin_request_pending: false
-          })
-          .eq('id', userId)
-          .select();
-        
-        if (error) {
-          console.error('Admin red hatası:', error);
-          return { data: null, error };
-        }
-        
-        return { data, error: null };
+      console.log('approveAdminRequest başlatılıyor:', { userId, isApproved, rejectionReason });
+      
+      // RPC fonksiyonunu kullan
+      const { data, error } = await supabase
+        .rpc('approve_admin_request', {
+          user_id: userId,
+          is_approved: isApproved,
+          rejection_reason: rejectionReason
+        });
+      
+      console.log('RPC fonksiyonu sonucu:', { data, error });
+      
+      if (error) {
+        console.error('RPC fonksiyonu hatası:', error);
+        return { data: null, error };
       }
+      
+      // RPC fonksiyonu JSON döndürüyor, kontrol et
+      if (data && data.error) {
+        console.error('RPC fonksiyonu içinde hata:', data.error);
+        return { data: null, error: { message: data.error } };
+      }
+      
+      console.log('Admin onay işlemi başarılı:', data);
+      return { data, error: null };
     } catch (error) {
       console.error('Admin onay işlemi hatası:', error);
       return { data: null, error };
