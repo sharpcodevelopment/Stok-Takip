@@ -190,7 +190,7 @@ const AdminRequests = () => {
                   </Card.Header>
                   <Card.Body>
                                          <div className="mb-2">
-                       <strong>Email:</strong> {request.email || 'Email alınamadı'}
+                       <strong>Email:</strong> {request.email ? request.email : 'Email bilgisi mevcut değil'}
                      </div>
                      <div className="mb-2">
                        <strong>Telefon:</strong> {request.phone_number || 'Belirtilmemiş'}
