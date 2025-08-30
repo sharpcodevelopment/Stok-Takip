@@ -29,11 +29,11 @@ const AdminRequests = () => {
       const user = await supabaseHelpers.getCurrentUser();
       setUser(user);
       
-      // Sadece ana admin kontrolü
+      // Ana admin kontrolü
       const userEmail = user?.email;
       const userRole = user?.user_metadata?.role;
       
-      if (userRole !== 'admin' || userEmail !== 'admin@stoktakip.com') {
+      if (userRole !== 'admin' || (userEmail !== 'admin@stoktakip.com' && userEmail !== 'sergen@stoktakip.com')) {
         setError('Bu sayfaya sadece ana admin erişebilir.');
         navigate('/dashboard');
       }
