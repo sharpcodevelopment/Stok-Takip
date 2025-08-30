@@ -38,36 +38,20 @@ export const authAPI = {
     return parsedUser;
   },
 
-  async getUserRole() {
+  getUserRole() {
     const user = this.getCurrentUser();
-    if (!user) return 'user';
-    
-    try {
-      // Supabase profiles tablosundan rol bilgisini al
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('role, is_admin_request_pending')
-        .eq('id', user.id)
-        .single();
-      
-      if (error) {
-        console.error('Rol bilgisi alınamadı:', error);
-        return user?.user_metadata?.role || 'user';
-      }
-      
-      return data?.role || 'user';
-    } catch (error) {
-      console.error('Rol kontrolü hatası:', error);
-      return user?.user_metadata?.role || 'user';
-    }
+    // Geçici olarak user_metadata'dan al
+    return user?.user_metadata?.role || 'user';
   },
 
   isAdmin() {
-    return this.getUserRole() === 'admin';
+    const user = this.getCurrentUser();
+    return user?.user_metadata?.role === 'admin';
   },
 
   isUser() {
-    return this.getUserRole() === 'user';
+    const user = this.getCurrentUser();
+    return user?.user_metadata?.role === 'user';
   },
 
   // Admin request functions
