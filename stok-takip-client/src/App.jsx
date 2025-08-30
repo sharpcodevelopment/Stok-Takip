@@ -82,6 +82,35 @@ const AdminRoute = ({ children }) => {
   return children;
 };
 
+const SuperAdminRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  const session = localStorage.getItem('session');
+  
+  if (!(token || (user && session))) return <Navigate to="/login" />;
+  
+  // Rol kontrolü - sadece admin'ler erişebilir
+  const userData = user ? JSON.parse(user) : null;
+  const userRole = userData?.user_metadata?.role || 'user';
+  const isSuperAdmin = userData?.user_metadata?.isSuperAdmin;
+  
+  if (userRole !== 'admin') {
+    return <Navigate to="/user-dashboard" />;
+  }
+  
+  // Sadece ana admin'ler erişebilir
+  if (!isSuperAdmin) {
+    return <Navigate to="/dashboard" />;
+  }
+  
+  // Admin talebi bekleyen kullanıcıları kontrol et
+  if (userData?.user_metadata?.isAdminRequestPending) {
+    return <Navigate to="/user-dashboard" />;
+  }
+  
+  return children;
+};
+
 const UserRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   const user = localStorage.getItem('user');
@@ -129,7 +158,7 @@ function App() {
           <Route path="/categories" element={<AdminRoute><Categories /></AdminRoute>} />
           <Route path="/transactions" element={<AdminRoute><StockTransactions /></AdminRoute>} />
           <Route path="/user-management" element={<AdminRoute><UserManagement /></AdminRoute>} />
-          <Route path="/admin-requests" element={<AdminRoute><AdminRequests /></AdminRoute>} />
+          <Route path="/admin-requests" element={<SuperAdminRoute><AdminRequests /></SuperAdminRoute>} />
           <Route path="/stock-requests" element={<AdminRoute><StockRequestManagement /></AdminRoute>} />
           
           {/* User Routes */}

@@ -152,7 +152,7 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               Stok Hareketleri
             </Nav.Link>
             {/* Ana admin'e Admin Talepleri menüsünü göster */}
-            {(user?.email === 'admin@stoktakip.com' || user?.email === 'sergen@stoktakip.com') && (
+            {user?.user_metadata?.isSuperAdmin && (
               <Nav.Link 
                 onClick={() => {
                   navigate('/admin-requests');

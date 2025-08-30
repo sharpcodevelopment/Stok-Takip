@@ -31,10 +31,10 @@ const AdminRequests = () => {
       setUser(user);
       
       // Ana admin kontrolü
-      const userEmail = user?.email;
       const userRole = user?.user_metadata?.role;
+      const isSuperAdmin = user?.user_metadata?.isSuperAdmin;
       
-      if (userRole !== 'admin' || (userEmail !== 'admin@stoktakip.com' && userEmail !== 'sergen@stoktakip.com')) {
+      if (userRole !== 'admin' || !isSuperAdmin) {
         setError('Bu sayfaya sadece ana admin erişebilir.');
         navigate('/dashboard');
       }
