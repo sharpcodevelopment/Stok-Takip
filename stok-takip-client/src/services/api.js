@@ -20,7 +20,8 @@ export const authAPI = {
       firstName: userData.firstName,
       lastName: userData.lastName,
       phoneNumber: userData.phoneNumber,
-      role: role // Role bilgisini ekle
+      role: role, // Role bilgisini ekle
+      isAdminRequestPending: userData.isAdminRegistration // Admin kaydı ise beklemede olarak işaretle
     });
     return result;
   },
