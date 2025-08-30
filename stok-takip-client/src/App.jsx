@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { supabase } from './services/supabase.js';
 import Login from './components/Login.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import UserDashboard from './components/UserDashboard.jsx';

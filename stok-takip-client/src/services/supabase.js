@@ -75,14 +75,45 @@ export const supabaseHelpers = {
   },
 
   async approveAdminRequest(userId, isApproved, rejectionReason = null) {
-    const { data, error } = await supabase
-      .rpc('approve_admin_request', {
-        user_id: userId,
-        is_approved: isApproved,
-        rejection_reason: rejectionReason
-      });
-    
-    return { data, error };
+    try {
+      if (isApproved) {
+        // Kullanıcının rolünü admin olarak güncelle
+        const { data, error } = await supabase
+          .from('profiles')
+          .update({ 
+            role: 'admin',
+            is_admin_request_pending: false
+          })
+          .eq('id', userId)
+          .select();
+        
+        if (error) {
+          console.error('Admin onay hatası:', error);
+          return { data: null, error };
+        }
+        
+        return { data, error: null };
+      } else {
+        // Reddetme durumunda sadece pending durumunu false yap
+        const { data, error } = await supabase
+          .from('profiles')
+          .update({ 
+            is_admin_request_pending: false
+          })
+          .eq('id', userId)
+          .select();
+        
+        if (error) {
+          console.error('Admin red hatası:', error);
+          return { data: null, error };
+        }
+        
+        return { data, error: null };
+      }
+    } catch (error) {
+      console.error('Admin onay işlemi hatası:', error);
+      return { data: null, error };
+    }
   },
 
   // Database functions
@@ -522,5 +553,42 @@ export const supabaseHelpers = {
 
   getTurkeyTimeISO() {
     return getCurrentTurkeyTimeISO();
+  },
+
+  // Kullanıcı bilgilerini yenileme fonksiyonu
+  async refreshUserProfile() {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Profiles tablosundan güncel bilgileri al
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (!profileError && profileData) {
+          // Kullanıcı metadata'sını güncelle
+          const updatedUser = {
+            ...user,
+            user_metadata: {
+              ...user.user_metadata,
+              role: profileData.role || 'user',
+              isAdminRequestPending: profileData.is_admin_request_pending || false
+            }
+          };
+          
+          // LocalStorage'ı güncelle
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          
+          return { data: updatedUser, error: null };
+        }
+      }
+      
+      return { data: user, error: null };
+    } catch (error) {
+      console.error('User profile refresh error:', error);
+      return { data: null, error };
+    }
   }
 };

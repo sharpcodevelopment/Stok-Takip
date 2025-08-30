@@ -50,9 +50,29 @@ const Login = () => {
         console.log('User:', user);
         console.log('User type selected:', userType);
         
-        // Kullanıcının gerçek rolünü al
-        const userRole = user?.user_metadata?.role || 'user';
-        console.log('User role from metadata:', userRole);
+        // Kullanıcının gerçek rolünü Supabase'den al
+        let userRole = 'user';
+        try {
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('role, is_admin_request_pending')
+            .eq('id', user.id)
+            .single();
+          
+          if (!profileError && profileData) {
+            userRole = profileData.role || 'user';
+            console.log('User role from profiles:', userRole);
+            console.log('Admin request pending:', profileData.is_admin_request_pending);
+          } else {
+            console.log('Profile data alınamadı, metadata kullanılıyor');
+            userRole = user?.user_metadata?.role || 'user';
+          }
+        } catch (error) {
+          console.error('Profile bilgisi alınamadı:', error);
+          userRole = user?.user_metadata?.role || 'user';
+        }
+        
+        console.log('Final user role:', userRole);
         
         // Rol ve seçilen kullanıcı tipi kontrolü
         if (userType === 'admin') {
@@ -67,6 +87,11 @@ const Login = () => {
           // Mağaza çalışanı bölümü seçildi  
           if (userRole === 'user') {
             navigate('/user-dashboard');
+          } else if (userRole === 'admin') {
+            // Admin hesabı mağaza çalışanı bölümünden giriş yapmaya çalışıyor
+            // Kullanıcıya bilgi ver ve admin paneline yönlendir
+            alert('✅ Bu hesap yönetici hesabı!\n\n👤 Hesap türü: Yönetici\n🏢 Panel: Yönetici Paneli\n📋 Durum: Yönetici paneline yönlendiriliyorsunuz');
+            navigate('/dashboard');
           } else {
             setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
             return;
