@@ -41,16 +41,7 @@ export const supabaseHelpers = {
   // Admin request functions
   async getAdminRequests() {
     try {
-      // Önce RPC fonksiyonunu dene
       const { data, error } = await supabase
-        .rpc('get_admin_requests_with_email');
-      
-      if (!error && data) {
-        return { data: data || [], error: null };
-      }
-      
-      // RPC fonksiyonu yoksa fallback olarak profiles tablosundan al
-      const { data: fallbackData, error: fallbackError } = await supabase
         .from('profiles')
         .select(`
           id,
@@ -59,23 +50,24 @@ export const supabaseHelpers = {
           created_at,
           first_name,
           last_name,
-          phone_number
+          phone_number,
+          email
         `)
         .eq('is_admin_request_pending', true)
         .order('created_at', { ascending: false });
       
-      // Email bilgilerini ekle (placeholder)
-      if (fallbackData && fallbackData.length > 0) {
-        const requestsWithEmail = fallbackData.map((request) => {
+      // Email bilgilerini kontrol et
+      if (data && data.length > 0) {
+        const requestsWithEmail = data.map((request) => {
           return {
             ...request,
-            email: 'Email bilgisi mevcut değil'
+            email: request.email || 'Email bilgisi mevcut değil'
           };
         });
-        return { data: requestsWithEmail, error: fallbackError };
+        return { data: requestsWithEmail, error };
       }
       
-      return { data: fallbackData || [], error: fallbackError };
+      return { data: data || [], error };
     } catch (error) {
       console.error('Admin requests alınamadı:', error);
       return { data: [], error };
