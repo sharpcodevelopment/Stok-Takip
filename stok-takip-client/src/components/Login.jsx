@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert, Card, InputGroup } from 'react-bootstrap';
 import { authAPI } from '../services/api.js';
-import { supabase } from '../services/supabase.js';
+import { supabase, supabaseHelpers } from '../services/supabase.js';
 import './Login.css';
 
 const Login = () => {
@@ -50,16 +50,23 @@ const Login = () => {
         console.log('User:', user);
         console.log('User type selected:', userType);
         
-        // Kullanıcının gerçek rolünü Supabase'den al
+        // Kullanıcının gerçek rolünü Supabase'den al ve metadata'yı güncelle
         let userRole = 'user';
+        let profileData = null;
+        
         try {
-          const { data: profileData, error: profileError } = await supabase
+          // Önce kullanıcı metadata'sını güncelle
+          await supabaseHelpers.updateUserMetadata();
+          
+          // Güncel bilgileri al
+          const { data: profileResponse, error: profileError } = await supabase
             .from('profiles')
             .select('role, is_admin_request_pending')
             .eq('id', user.id)
             .single();
           
-          if (!profileError && profileData) {
+          if (!profileError && profileResponse) {
+            profileData = profileResponse;
             userRole = profileData.role || 'user';
             console.log('User role from profiles:', userRole);
             console.log('Admin request pending:', profileData.is_admin_request_pending);
@@ -73,6 +80,16 @@ const Login = () => {
         }
         
         console.log('Final user role:', userRole);
+        
+        // Admin talebi bekleyen kullanıcıları kontrol et
+        const isAdminRequestPending = profileData?.is_admin_request_pending || false;
+        
+        if (isAdminRequestPending) {
+          // Admin talebi bekleyen kullanıcı - her zaman mağaza paneline yönlendir
+          alert('✅ Admin olma talebiniz alındı!\n\n📋 Durum: Ana admin onayı bekleniyor\n👤 Şimdilik: Normal kullanıcı olarak giriş yapabilirsiniz\n📧 Bildirim: Onay durumu hakkında bilgilendirileceksiniz');
+          navigate('/user-dashboard');
+          return;
+        }
         
         // Rol ve seçilen kullanıcı tipi kontrolü
         if (userType === 'admin') {

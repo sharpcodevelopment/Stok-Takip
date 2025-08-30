@@ -27,6 +27,12 @@ const UserDashboard = () => {
     try {
       const response = await api.get('/auth/profile');
       setUser(response.data);
+      
+      // Admin talebi bekleyen kullanıcılar için kontrol
+      if (response.data?.user_metadata?.isAdminRequestPending) {
+        // Kullanıcıya bildirim göster
+        console.log('Admin talebi bekleyen kullanıcı tespit edildi');
+      }
     } catch (error) {
       console.error('Kullanıcı bilgileri alınamadı:', error);
     }
@@ -117,7 +123,7 @@ const UserDashboard = () => {
               <p className="welcome-subtitle">
                 Stok takip sistemini görüntülemek için aşağıdaki seçenekleri kullanabilirsiniz.
               </p>
-                             {user?.isAdminRequestPending && (
+                             {user?.user_metadata?.isAdminRequestPending && (
                                <Alert variant="warning">
                                  <i className="fas fa-clock me-2"></i>
                                  <strong>Admin Onay Talebi:</strong> Admin olma talebiniz alındı ve onay bekleniyor. 

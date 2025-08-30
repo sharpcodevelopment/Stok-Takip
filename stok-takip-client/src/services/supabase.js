@@ -581,5 +581,42 @@ export const supabaseHelpers = {
       console.error('User profile refresh error:', error);
       return { data: null, error };
     }
+  },
+
+  // Kullanıcı bilgilerini her girişte güncelle
+  async updateUserMetadata() {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Profiles tablosundan güncel bilgileri al
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('role, is_admin_request_pending')
+          .eq('id', user.id)
+          .single();
+        
+        if (!profileError && profileData) {
+          // Kullanıcı metadata'sını güncelle
+          const updatedUser = {
+            ...user,
+            user_metadata: {
+              ...user.user_metadata,
+              role: profileData.role || 'user',
+              isAdminRequestPending: profileData.is_admin_request_pending || false
+            }
+          };
+          
+          // LocalStorage'ı güncelle
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          
+          return { data: updatedUser, error: null };
+        }
+      }
+      
+      return { data: user, error: null };
+    } catch (error) {
+      console.error('User metadata update error:', error);
+      return { data: null, error };
+    }
   }
 };
