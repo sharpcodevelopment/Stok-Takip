@@ -45,10 +45,10 @@ export const supabaseHelpers = {
       .select(`
         id,
         role,
-        is_admin_req,
+        is_admin_request_pending,
         created_at
       `)
-      .eq('is_admin_req', true)
+      .eq('is_admin_request_pending', true)
       .order('created_at', { ascending: false });
     
     return { data: data || [], error };
