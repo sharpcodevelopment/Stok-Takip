@@ -66,12 +66,14 @@ const AdminRoute = ({ children }) => {
   if (!(token || (user && session))) return <Navigate to="/login" />;
   
   // Rol kontrolü - sadece admin'ler erişebilir
-  if (!authAPI.isAdmin()) {
+  const userData = user ? JSON.parse(user) : null;
+  const userRole = userData?.user_metadata?.role || 'user';
+  
+  if (userRole !== 'admin') {
     return <Navigate to="/user-dashboard" />;
   }
   
   // Admin talebi bekleyen kullanıcıları kontrol et
-  const userData = user ? JSON.parse(user) : null;
   if (userData?.user_metadata?.isAdminRequestPending) {
     return <Navigate to="/user-dashboard" />;
   }
