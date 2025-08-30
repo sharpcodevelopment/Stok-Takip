@@ -151,8 +151,8 @@ const AdminNavbar = ({ user, pendingRequests = 0, adminRequests = 0 }) => {
               <i className="fas fa-exchange-alt me-2"></i>
               Stok Hareketleri
             </Nav.Link>
-            {/* Sadece ana admin'e Admin Talepleri menüsünü göster */}
-            {user?.email === 'admin@stoktakip.com' && (
+            {/* Ana admin'e Admin Talepleri menüsünü göster */}
+            {(user?.email === 'admin@stoktakip.com' || user?.email === 'sergen@stoktakip.com') && (
               <Nav.Link 
                 onClick={() => {
                   navigate('/admin-requests');
