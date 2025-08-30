@@ -47,9 +47,12 @@ const AdminRequests = () => {
   const fetchAdminRequests = async () => {
     try {
       setLoading(true);
+      console.log('Admin talepleri alınıyor...');
       const response = await authAPI.getAdminRequests();
+      console.log('Admin talepleri response:', response);
       setAdminRequestsList(response.data || []);
       setAdminRequests(response.data?.length || 0);
+      console.log('Admin talepleri güncellendi, sayı:', response.data?.length || 0);
     } catch (error) {
       console.error('Admin talepleri alınamadı:', error);
       setError('Admin talepleri alınamadı.');
@@ -91,9 +94,16 @@ const AdminRequests = () => {
         rejectionReason: rejectionReason.trim() || null
       };
 
-      await authAPI.approveAdminRequest(selectedRequest.id, approvalData.isApproved, approvalData.rejectionReason);
+      console.log('Admin onay işlemi başlatılıyor...', selectedRequest.id, approvalData);
+      const result = await authAPI.approveAdminRequest(selectedRequest.id, approvalData.isApproved, approvalData.rejectionReason);
+      console.log('Admin onay işlemi sonucu:', result);
+      
+      if (result.error) {
+        throw new Error(result.error.message || 'Onay işlemi başarısız');
+      }
       
       // Listeyi yenile
+      console.log('Admin talepleri listesi yenileniyor...');
       await fetchAdminRequests();
       
       setShowApprovalModal(false);
@@ -103,7 +113,7 @@ const AdminRequests = () => {
       alert(approvalData.isApproved ? 'Kullanıcı admin olarak onaylandı.' : 'Admin talebi reddedildi.');
     } catch (error) {
       console.error('Onay işlemi başarısız:', error);
-      alert('Onay işlemi sırasında hata oluştu.');
+      alert('Onay işlemi sırasında hata oluştu: ' + error.message);
     } finally {
       setIsApproving(false);
     }

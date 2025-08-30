@@ -89,9 +89,8 @@ const Login = () => {
             navigate('/user-dashboard');
           } else if (userRole === 'admin') {
             // Admin hesabı mağaza çalışanı bölümünden giriş yapmaya çalışıyor
-            // Kullanıcıya bilgi ver ve admin paneline yönlendir
-            alert('✅ Bu hesap yönetici hesabı!\n\n👤 Hesap türü: Yönetici\n🏢 Panel: Yönetici Paneli\n📋 Durum: Yönetici paneline yönlendiriliyorsunuz');
-            navigate('/dashboard');
+            setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
+            return;
           } else {
             setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
             return;
