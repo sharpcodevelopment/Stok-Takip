@@ -61,7 +61,7 @@ const Login = () => {
           // Güncel bilgileri al
           const { data: profileResponse, error: profileError } = await supabase
             .from('profiles')
-            .select('role, is_admin_request_pending')
+            .select('role, is_admin_request_pending, is_super_admin')
             .eq('id', user.id)
             .single();
           

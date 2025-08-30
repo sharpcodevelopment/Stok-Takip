@@ -565,7 +565,8 @@ export const supabaseHelpers = {
             user_metadata: {
               ...user.user_metadata,
               role: profileData.role || 'user',
-              isAdminRequestPending: profileData.is_admin_request_pending || false
+              isAdminRequestPending: profileData.is_admin_request_pending || false,
+              isSuperAdmin: profileData.is_super_admin || false
             }
           };
           
@@ -591,7 +592,7 @@ export const supabaseHelpers = {
         // Profiles tablosundan güncel bilgileri al
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select('role, is_admin_request_pending')
+          .select('role, is_admin_request_pending, is_super_admin')
           .eq('id', user.id)
           .single();
         
@@ -602,7 +603,8 @@ export const supabaseHelpers = {
             user_metadata: {
               ...user.user_metadata,
               role: profileData.role || 'user',
-              isAdminRequestPending: profileData.is_admin_request_pending || false
+              isAdminRequestPending: profileData.is_admin_request_pending || false,
+              isSuperAdmin: profileData.is_super_admin || false
             }
           };
           
