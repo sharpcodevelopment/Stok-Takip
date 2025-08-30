@@ -41,9 +41,17 @@ export const supabaseHelpers = {
   // Admin request functions
   async getAdminRequests() {
     const { data, error } = await supabase
-      .rpc('get_admin_requests');
+      .from('profiles')
+      .select(`
+        id,
+        role,
+        is_admin_request_pending,
+        created_at
+      `)
+      .eq('is_admin_request_pending', true)
+      .order('created_at', { ascending: false });
     
-    return { data, error };
+    return { data: data || [], error };
   },
 
   async approveAdminRequest(userId, isApproved, rejectionReason = null) {
