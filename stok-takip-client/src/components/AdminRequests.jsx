@@ -188,13 +188,13 @@ const AdminRequests = () => {
                   </Card.Header>
                   <Card.Body>
                                          <div className="mb-2">
-                       <strong>Email:</strong> {request.email}
+                       <strong>Email:</strong> {request.email || 'Email alınamadı'}
                      </div>
                      <div className="mb-2">
                        <strong>Telefon:</strong> {request.phone_number || 'Belirtilmemiş'}
                      </div>
                      <div className="mb-3">
-                       <strong>Talep Tarihi:</strong> {formatDate(request.admin_request_date)}
+                       <strong>Talep Tarihi:</strong> {formatDate(request.created_at)}
                      </div>
                     <div className="d-grid gap-2">
                       <Button 

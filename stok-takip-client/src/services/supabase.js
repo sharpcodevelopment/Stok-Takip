@@ -46,7 +46,10 @@ export const supabaseHelpers = {
         id,
         role,
         is_admin_request_pending,
-        created_at
+        created_at,
+        first_name,
+        last_name,
+        phone_number
       `)
       .eq('is_admin_request_pending', true)
       .order('created_at', { ascending: false });
