@@ -46,48 +46,15 @@ const Login = () => {
         // Supabase response'undan user bilgilerini al
         const { user } = result.data;
         
-        // Rol kontrolü ve yönlendirme - Supabase profiles tablosundan al
-        try {
-          const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('role, is_admin_request_pending')
-            .eq('id', user.id)
-            .single();
-          
-          if (profileError) {
-            console.error('Profil bilgisi alınamadı:', profileError);
-            setError('Kullanıcı bilgileri alınamadı.');
-            return;
-          }
-          
-          const userRole = profileData?.role || 'user';
-          const isAdminRequestPending = profileData?.is_admin_request_pending || false;
-          
-          // Debug için log
-          console.log('Profile data:', profileData);
-          console.log('User role:', userRole);
-          console.log('Is admin request pending:', isAdminRequestPending);
+                // Geçici olarak rol kontrolünü devre dışı bırak - direkt yönlendir
+        console.log('User:', user);
+        console.log('User type selected:', userType);
         
-        // Rol ve seçilen kullanıcı tipi kontrolü
+        // Basit yönlendirme - seçilen tipe göre
         if (userType === 'admin') {
-          // Yönetici bölümü seçildi
-          if (userRole === 'admin' && !isAdminRequestPending) {
-            navigate('/dashboard');
-          } else if (userRole === 'admin' && isAdminRequestPending) {
-            setError('Admin olma talebiniz henüz onaylanmadı. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
-            return;
-          } else {
-            setError('Bu hesap yönetici değil. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
-            return;
-          }
+          navigate('/dashboard');
         } else {
-          // Mağaza çalışanı bölümü seçildi  
-          if (userRole === 'user' || (userRole === 'admin' && isAdminRequestPending)) {
-            navigate('/user-dashboard');
-          } else {
-            setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
-            return;
-          }
+          navigate('/user-dashboard');
         }
       } else {
         // Kayıt işlemi - userType'a göre kayıt olur
