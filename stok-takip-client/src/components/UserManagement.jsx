@@ -9,7 +9,7 @@ import './Dashboard.css';
 const UserManagement = () => {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
-  const [adminRequests, setAdminRequests] = useState([]);
+  const [adminRequests, setAdminRequests] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -81,10 +81,10 @@ const UserManagement = () => {
   const fetchAdminRequests = async () => {
     try {
       const response = await api.get('/auth/admin-requests');
-      setAdminRequests(response.data || []);
+      setAdminRequests(response.data?.length || 0);
     } catch (error) {
       console.error('Admin talepleri alınamadı:', error);
-      setAdminRequests([]);
+      setAdminRequests(0);
     }
   };
 
@@ -187,7 +187,7 @@ const UserManagement = () => {
 
   return (
     <div className="dashboard-container">
-      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests.length} />
+      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests} />
 
       <Container>
         {/* Header */}

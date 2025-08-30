@@ -176,3 +176,4 @@ SELECT
   COUNT(CASE WHEN role = 'admin' THEN 1 END) as total_admins
 FROM public.profiles;
 
+

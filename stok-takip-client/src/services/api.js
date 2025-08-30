@@ -257,8 +257,9 @@ const api = {
       return { data: result.data || [] };
     }
     if (url.includes('/auth/admin-requests')) {
-      // Admin requests - şimdilik boş array döndür
-      return { data: [] };
+      // Admin requests - Supabase'den al
+      const result = await authAPI.getAdminRequests();
+      return { data: result.data || [] };
     }
     if (url.includes('/products/low-stock')) {
       const result = await productsAPI.getLowStock();

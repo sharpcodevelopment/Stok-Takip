@@ -121,3 +121,4 @@ SELECT
   COUNT(CASE WHEN is_admin_request_pending = TRUE THEN 1 END) as pending_requests
 FROM auth.users;
 
+

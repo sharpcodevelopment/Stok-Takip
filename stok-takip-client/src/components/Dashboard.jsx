@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [pendingRequests, setPendingRequests] = useState(0);
+  const [adminRequests, setAdminRequests] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const navigate = useNavigate();
@@ -28,12 +29,14 @@ const Dashboard = () => {
     fetchRecentTransactions();
     fetchLowStockProducts();
     fetchPendingRequests();
+    fetchAdminRequests();
 
     // Gerçek zamanlı veri güncellemesi için interval
     const interval = setInterval(() => {
       fetchStats();
       fetchRecentTransactions();
       fetchPendingRequests();
+      fetchAdminRequests();
     }, 30000); // 30 saniyede bir güncelle
 
     return () => clearInterval(interval);
@@ -131,11 +134,21 @@ const Dashboard = () => {
     }
   };
 
+  const fetchAdminRequests = async () => {
+    try {
+      const response = await api.get('/auth/admin-requests');
+      setAdminRequests(response.data?.length || 0);
+    } catch (error) {
+      // Admin talepleri alınamadı
+      setAdminRequests(0);
+    }
+  };
+
 
 
   return (
     <div className="dashboard-container">
-      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={0} />
+      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests} />
 
       {/* Main Content */}
       <Container>

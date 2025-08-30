@@ -8,7 +8,8 @@ import './Dashboard.css';
 
 const AdminRequests = () => {
   const [user, setUser] = useState(null);
-  const [adminRequests, setAdminRequests] = useState([]);
+  const [adminRequests, setAdminRequests] = useState(0);
+  const [adminRequestsList, setAdminRequestsList] = useState([]);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -47,7 +48,8 @@ const AdminRequests = () => {
     try {
       setLoading(true);
       const response = await authAPI.getAdminRequests();
-      setAdminRequests(response.data || []);
+      setAdminRequestsList(response.data || []);
+      setAdminRequests(response.data?.length || 0);
     } catch (error) {
       console.error('Admin talepleri alınamadı:', error);
       setError('Admin talepleri alınamadı.');
@@ -120,9 +122,9 @@ const AdminRequests = () => {
 
   if (error) {
     return (
-      <div className="dashboard-container">
-        <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests.length} />
-        <Container>
+          <div className="dashboard-container">
+      <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests} />
+      <Container>
           <Alert variant="danger">
             <i className="fas fa-exclamation-triangle me-2"></i>
             {error}
@@ -134,7 +136,7 @@ const AdminRequests = () => {
 
   return (
     <div className="dashboard-container">
-              <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests.length} />
+              <AdminNavbar user={user} pendingRequests={pendingRequests} adminRequests={adminRequests} />
 
       <Container>
         <Row className="mb-4">
@@ -162,7 +164,7 @@ const AdminRequests = () => {
               </Card>
             </Col>
           </Row>
-        ) : adminRequests.length === 0 ? (
+        ) : adminRequestsList.length === 0 ? (
           <Row>
             <Col>
               <Card className="text-center p-4">
@@ -174,7 +176,7 @@ const AdminRequests = () => {
           </Row>
         ) : (
           <Row>
-            {adminRequests.map((request) => (
+            {adminRequestsList.map((request) => (
               <Col key={request.id} xs={12} md={6} lg={4} className="mb-3">
                 <Card className="h-100">
                   <Card.Header>

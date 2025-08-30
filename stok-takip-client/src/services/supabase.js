@@ -49,7 +49,8 @@ export const supabaseHelpers = {
         created_at,
         first_name,
         last_name,
-        phone_number
+        phone_number,
+        email
       `)
       .eq('is_admin_request_pending', true)
       .order('created_at', { ascending: false });
@@ -202,7 +203,8 @@ export const supabaseHelpers = {
     const turkeyTime = getCurrentTurkeyTimeISO();
     
     const formattedCategory = {
-      ...category,
+      name: category.name,
+      description: category.description || '',
       created_at: turkeyTime,
       updated_at: turkeyTime
     };
