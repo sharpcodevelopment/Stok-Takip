@@ -13,6 +13,7 @@ import StockTransactions from './components/StockTransactions.jsx';
 import UserManagement from './components/UserManagement.jsx';
 import StockRequestManagement from './components/StockRequestManagement.jsx';
 import AdminRequests from './components/AdminRequests.jsx';
+import TestConnection from './components/TestConnection.jsx';
 import { authAPI } from './services/api.js';
 import './App.css';
 
@@ -134,6 +135,7 @@ function App() {
           <Route path="/user-product-detail/:id" element={<UserRoute><UserProductDetail /></UserRoute>} />
           <Route path="/user-requests" element={<UserRoute><UserRequests /></UserRoute>} />
           
+          <Route path="/test" element={<TestConnection />} />
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </div>

@@ -35,50 +35,38 @@ const Login = () => {
 
     try {
       if (isLogin) {
-        // Backend API'sini kullan
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password
-          })
-        });
+        // Supabase API'sini kullan
+        const result = await authAPI.login(formData.email, formData.password);
         
-        const result = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(result.message || 'Giriş başarısız');
+        if (result.error) {
+          throw new Error(result.error.message || 'Giriş başarısız');
         }
         
-        // Token'ı localStorage'a kaydet
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('user', JSON.stringify(result.user));
+        // Supabase response'undan user bilgilerini al
+        const { user } = result.data;
         
         // Rol kontrolü ve yönlendirme
-        const userRole = result.user?.user_metadata?.role || 'user';
+        const userRole = user?.user_metadata?.role || 'user';
+        const isAdminRequestPending = user?.user_metadata?.isAdminRequestPending || false;
         
         // Rol ve seçilen kullanıcı tipi kontrolü
         if (userType === 'admin') {
           // Yönetici bölümü seçildi
-          if (userRole === 'admin') {
+          if (userRole === 'admin' && !isAdminRequestPending) {
             navigate('/dashboard');
+          } else if (userRole === 'admin' && isAdminRequestPending) {
+            setError('Admin olma talebiniz henüz onaylanmadı. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
+            return;
           } else {
             setError('Bu hesap yönetici değil. Lütfen "Mağaza Çalışanı" bölümünden giriş yapın.');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
             return;
           }
         } else {
           // Mağaza çalışanı bölümü seçildi  
-          if (userRole === 'user') {
+          if (userRole === 'user' || (userRole === 'admin' && isAdminRequestPending)) {
             navigate('/user-dashboard');
           } else {
             setError('Bu hesap yönetici hesabı. Lütfen "Yönetici" bölümünden giriş yapın.');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
             return;
           }
         }
@@ -94,32 +82,31 @@ const Login = () => {
           isAdminRegistration: userType === 'admin' // Admin kayıt mı?
         };
 
-        // Backend API'sini kullan
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(registerData)
-        });
+        // Supabase API'sini kullan
+        const result = await authAPI.register(registerData);
         
-        const result = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(result.message || 'Kayıt işlemi başarısız');
+        if (result.error) {
+          throw new Error(result.error.message || 'Kayıt işlemi başarısız');
         }
         
-        // Kayıt başarılı - response'a göre yönlendir
+        // Kayıt başarılı - Supabase response'una göre yönlendir
         
-        // Response'a göre yönlendirme
-        if (result.isAdminRequestPending) {
+        // Supabase response'una göre yönlendirme
+        const userRole = result.data?.user?.user_metadata?.role || 'user';
+        const isAdminRequestPending = result.data?.user?.user_metadata?.isAdminRequestPending || false;
+        
+        if (userRole === 'admin' && isAdminRequestPending) {
           // Admin kayıt talebi beklemede - kullanıcı dashboard'una yönlendir
           alert('✅ Admin olma talebiniz başarıyla alındı!\n\n📋 Durum: Ana admin onayı bekleniyor\n👤 Şimdilik: Normal kullanıcı olarak giriş yapabilirsiniz\n📧 Bildirim: Onay durumu hakkında bilgilendirileceksiniz');
           navigate('/user-dashboard');
-        } else {
+        } else if (userRole === 'user') {
           // Normal kullanıcı kaydı - direkt mağaza paneline yönlendir
           alert('✅ Kayıt başarılı!\n\n👤 Hesap türü: Mağaza Çalışanı\n🏪 Panel: Mağaza Paneli\n📋 Durum: Sisteme giriş yapabilirsiniz');
           navigate('/user-dashboard');
+        } else {
+          // Admin onaylanmış - admin paneline yönlendir
+          alert('✅ Admin hesabınız onaylandı!\n\n👤 Hesap türü: Yönetici\n🏢 Panel: Yönetici Paneli\n📋 Durum: Sisteme giriş yapabilirsiniz');
+          navigate('/dashboard');
         }
       }
     } catch (err) {

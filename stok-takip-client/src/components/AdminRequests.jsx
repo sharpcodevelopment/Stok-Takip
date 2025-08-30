@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Alert, Badge, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api.js';
+import api, { authAPI } from '../services/api.js';
+import { supabaseHelpers } from '../services/supabase.js';
 import AdminNavbar from './AdminNavbar.jsx';
 import './Dashboard.css';
 
@@ -25,12 +26,12 @@ const AdminRequests = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await api.get('/auth/profile');
-      setUser(response.data);
+      const user = await supabaseHelpers.getCurrentUser();
+      setUser(user);
       
       // Sadece ana admin kontrolü
-      const userEmail = response.data?.email;
-      const userRole = response.data?.user_metadata?.role;
+      const userEmail = user?.email;
+      const userRole = user?.user_metadata?.role;
       
       if (userRole !== 'admin' || userEmail !== 'admin@stoktakip.com') {
         setError('Bu sayfaya sadece ana admin erişebilir.');
@@ -45,7 +46,7 @@ const AdminRequests = () => {
   const fetchAdminRequests = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/auth/admin-requests');
+      const response = await authAPI.getAdminRequests();
       setAdminRequests(response.data || []);
     } catch (error) {
       console.error('Admin talepleri alınamadı:', error);
@@ -88,7 +89,7 @@ const AdminRequests = () => {
         rejectionReason: rejectionReason.trim() || null
       };
 
-      await api.post('/auth/approve-admin', approvalData);
+      await authAPI.approveAdminRequest(selectedRequest.id, approvalData.isApproved, approvalData.rejectionReason);
       
       // Listeyi yenile
       await fetchAdminRequests();
@@ -178,23 +179,23 @@ const AdminRequests = () => {
                 <Card className="h-100">
                   <Card.Header>
                     <div className="d-flex justify-content-between align-items-center">
-                      <h6 className="mb-0">
-                        <i className="fas fa-user me-2"></i>
-                        {request.firstName} {request.lastName}
-                      </h6>
+                                             <h6 className="mb-0">
+                         <i className="fas fa-user me-2"></i>
+                         {request.first_name} {request.last_name}
+                       </h6>
                       <Badge bg="warning">Beklemede</Badge>
                     </div>
                   </Card.Header>
                   <Card.Body>
-                    <div className="mb-2">
-                      <strong>Email:</strong> {request.email}
-                    </div>
-                    <div className="mb-2">
-                      <strong>Telefon:</strong> {request.phoneNumber || 'Belirtilmemiş'}
-                    </div>
-                    <div className="mb-3">
-                      <strong>Talep Tarihi:</strong> {formatDate(request.adminRequestDate)}
-                    </div>
+                                         <div className="mb-2">
+                       <strong>Email:</strong> {request.email}
+                     </div>
+                     <div className="mb-2">
+                       <strong>Telefon:</strong> {request.phone_number || 'Belirtilmemiş'}
+                     </div>
+                     <div className="mb-3">
+                       <strong>Talep Tarihi:</strong> {formatDate(request.admin_request_date)}
+                     </div>
                     <div className="d-grid gap-2">
                       <Button 
                         variant="success" 
@@ -234,9 +235,9 @@ const AdminRequests = () => {
             <div>
               <Alert variant={rejectionReason.trim() ? "warning" : "info"}>
                 <i className={`fas fa-${rejectionReason.trim() ? 'exclamation-triangle' : 'info-circle'} me-2`}></i>
-                <strong>{selectedRequest.firstName} {selectedRequest.lastName}</strong> 
-                ({selectedRequest.email}) kullanıcısının admin olma talebini 
-                {rejectionReason.trim() ? ' reddetmek' : ' onaylamak'} istediğinizden emin misiniz?
+                                 <strong>{selectedRequest.first_name} {selectedRequest.last_name}</strong> 
+                 ({selectedRequest.email}) kullanıcısının admin olma talebini 
+                 {rejectionReason.trim() ? ' reddetmek' : ' onaylamak'} istediğinizden emin misiniz?
               </Alert>
               
               <Form.Group className="mb-3">

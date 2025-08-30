@@ -38,6 +38,25 @@ export const supabaseHelpers = {
     return user;
   },
 
+  // Admin request functions
+  async getAdminRequests() {
+    const { data, error } = await supabase
+      .rpc('get_admin_requests');
+    
+    return { data, error };
+  },
+
+  async approveAdminRequest(userId, isApproved, rejectionReason = null) {
+    const { data, error } = await supabase
+      .rpc('approve_admin_request', {
+        user_id: userId,
+        is_approved: isApproved,
+        rejection_reason: rejectionReason
+      });
+    
+    return { data, error };
+  },
+
   // Database functions
   async getProducts() {
     const { data, error } = await supabase

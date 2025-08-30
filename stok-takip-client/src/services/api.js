@@ -49,6 +49,15 @@ export const authAPI = {
 
   isUser() {
     return this.getUserRole() === 'user';
+  },
+
+  // Admin request functions
+  async getAdminRequests() {
+    return await supabaseHelpers.getAdminRequests();
+  },
+
+  async approveAdminRequest(userId, isApproved, rejectionReason = null) {
+    return await supabaseHelpers.approveAdminRequest(userId, isApproved, rejectionReason);
   }
 };
 
@@ -208,11 +217,10 @@ export const dashboardAPI = {
   }
 };
 
-// Legacy axios-style API object for backward compatibility
+// Legacy axios-style API object for backward compatibility - TAMAMEN SUPABASE'E YÖNLENDİR
 const api = {
   async get(url) {
-
-    
+    // Tüm GET isteklerini Supabase'e yönlendir
     if (url.includes('/auth/profile')) {
       // Supabase'den current user bilgisi al
       const user = authAPI.getCurrentUser();
@@ -257,8 +265,7 @@ const api = {
   },
 
   async post(url, data) {
-
-    
+    // Tüm POST isteklerini Supabase'e yönlendir
     if (url.includes('/auth/login')) {
       return await authAPI.login(data.email, data.password);
     }
@@ -286,8 +293,7 @@ const api = {
   },
 
   async put(url, data) {
-
-    
+    // Tüm PUT isteklerini Supabase'e yönlendir
     if (url.includes('/products/')) {
       const id = url.split('/').pop();
       const result = await productsAPI.update(id, data);
@@ -295,16 +301,13 @@ const api = {
     }
     if (url.includes('/categories/')) {
       const id = url.split('/').pop();
-  
       const result = await categoriesAPI.update(id, data);
-      
       return { data: result.data };
     }
     if (url.includes('/stockrequests/') && url.includes('/approve')) {
       // Onaylama işlemi - URL'den ID'yi doğru çıkar
       const urlParts = url.split('/');
       const id = urlParts[urlParts.length - 2]; // approve'dan önceki kısım
-  
       const result = await stockRequestsAPI.update(id, { status: 'approved' });
       return { data: result.data };
     }
@@ -312,7 +315,6 @@ const api = {
       // Reddetme işlemi - URL'den ID'yi doğru çıkar
       const urlParts = url.split('/');
       const id = urlParts[urlParts.length - 2]; // reject'den önceki kısım
-  
       const result = await stockRequestsAPI.update(id, { 
         status: 'rejected',
         rejectionReason: data.reason 
@@ -329,8 +331,7 @@ const api = {
   },
 
   async delete(url) {
-
-    
+    // Tüm DELETE isteklerini Supabase'e yönlendir
     const id = url.split('/').pop();
     
     if (url.includes('/products/')) {
