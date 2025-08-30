@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert, Card, InputGroup } from 'react-bootstrap';
 import { authAPI } from '../services/api.js';
+import { supabase } from '../services/supabase.js';
 import './Login.css';
 
 const Login = () => {
@@ -45,9 +46,27 @@ const Login = () => {
         // Supabase response'undan user bilgilerini al
         const { user } = result.data;
         
-        // Rol kontrolü ve yönlendirme
-        const userRole = user?.user_metadata?.role || 'user';
-        const isAdminRequestPending = user?.user_metadata?.isAdminRequestPending || false;
+        // Rol kontrolü ve yönlendirme - Supabase profiles tablosundan al
+        try {
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('role, is_admin_request_pending')
+            .eq('id', user.id)
+            .single();
+          
+          if (profileError) {
+            console.error('Profil bilgisi alınamadı:', profileError);
+            setError('Kullanıcı bilgileri alınamadı.');
+            return;
+          }
+          
+          const userRole = profileData?.role || 'user';
+          const isAdminRequestPending = profileData?.is_admin_request_pending || false;
+          
+          // Debug için log
+          console.log('Profile data:', profileData);
+          console.log('User role:', userRole);
+          console.log('Is admin request pending:', isAdminRequestPending);
         
         // Rol ve seçilen kullanıcı tipi kontrolü
         if (userType === 'admin') {
