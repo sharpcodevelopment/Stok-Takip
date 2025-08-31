@@ -76,8 +76,6 @@ export const supabaseHelpers = {
 
   async approveAdminRequest(userId, isApproved, rejectionReason = null) {
     try {
-      console.log('approveAdminRequest başlatılıyor:', { userId, isApproved, rejectionReason });
-      
       // RPC fonksiyonunu kullan
       const { data, error } = await supabase
         .rpc('approve_admin_request', {
@@ -85,8 +83,6 @@ export const supabaseHelpers = {
           is_approved: isApproved,
           rejection_reason: rejectionReason
         });
-      
-      console.log('RPC fonksiyonu sonucu:', { data, error });
       
       if (error) {
         console.error('RPC fonksiyonu hatası:', error);
@@ -99,7 +95,6 @@ export const supabaseHelpers = {
         return { data: null, error: { message: data.error } };
       }
       
-      console.log('Admin onay işlemi başarılı:', data);
       return { data, error: null };
     } catch (error) {
       console.error('Admin onay işlemi hatası:', error);

@@ -39,16 +39,9 @@ const AdminRequests = () => {
       const userRole = user?.user_metadata?.role;
       const isSuperAdmin = user?.user_metadata?.isSuperAdmin;
       
-      console.log('AdminRequests - User Role:', userRole);
-      console.log('AdminRequests - isSuperAdmin:', isSuperAdmin);
-      console.log('AdminRequests - User metadata:', user?.user_metadata);
-      
       if (userRole !== 'admin' || !isSuperAdmin) {
-        console.log('AdminRequests - Erişim reddedildi, dashboard\'a yönlendiriliyor');
         setError('Bu sayfaya sadece ana admin erişebilir.');
         navigate('/dashboard');
-      } else {
-        console.log('AdminRequests - Erişim onaylandı');
       }
     } catch (error) {
       console.error('Kullanıcı bilgileri alınamadı:', error);
@@ -59,12 +52,9 @@ const AdminRequests = () => {
   const fetchAdminRequests = async () => {
     try {
       setLoading(true);
-      console.log('Admin talepleri alınıyor...');
       const response = await authAPI.getAdminRequests();
-      console.log('Admin talepleri response:', response);
       setAdminRequestsList(response.data || []);
       setAdminRequests(response.data?.length || 0);
-      console.log('Admin talepleri güncellendi, sayı:', response.data?.length || 0);
     } catch (error) {
       console.error('Admin talepleri alınamadı:', error);
       setError('Admin talepleri alınamadı.');
@@ -106,16 +96,13 @@ const AdminRequests = () => {
         rejectionReason: rejectionReason.trim() || null
       };
 
-      console.log('Admin onay işlemi başlatılıyor...', selectedRequest.id, approvalData);
       const result = await authAPI.approveAdminRequest(selectedRequest.id, approvalData.isApproved, approvalData.rejectionReason);
-      console.log('Admin onay işlemi sonucu:', result);
       
       if (result.error) {
         throw new Error(result.error.message || 'Onay işlemi başarısız');
       }
       
       // Listeyi yenile
-      console.log('Admin talepleri listesi yenileniyor...');
       await fetchAdminRequests();
       
       setShowApprovalModal(false);

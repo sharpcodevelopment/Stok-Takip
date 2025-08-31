@@ -94,28 +94,20 @@ const SuperAdminRoute = ({ children }) => {
   const userRole = userData?.user_metadata?.role || 'user';
   const isSuperAdmin = userData?.user_metadata?.isSuperAdmin;
   
-  console.log('SuperAdminRoute - User Role:', userRole);
-  console.log('SuperAdminRoute - isSuperAdmin:', isSuperAdmin);
-  console.log('SuperAdminRoute - User metadata:', userData?.user_metadata);
-  
   if (userRole !== 'admin') {
-    console.log('SuperAdminRoute - Admin değil, dashboard\'a yönlendiriliyor');
     return <Navigate to="/user-dashboard" />;
   }
   
   // Sadece ana admin'ler erişebilir
   if (!isSuperAdmin) {
-    console.log('SuperAdminRoute - Super admin değil, dashboard\'a yönlendiriliyor');
     return <Navigate to="/dashboard" />;
   }
   
   // Admin talebi bekleyen kullanıcıları kontrol et
   if (userData?.user_metadata?.isAdminRequestPending) {
-    console.log('SuperAdminRoute - Admin talebi bekliyor, user-dashboard\'a yönlendiriliyor');
     return <Navigate to="/user-dashboard" />;
   }
   
-  console.log('SuperAdminRoute - Erişim onaylandı');
   return children;
 };
 

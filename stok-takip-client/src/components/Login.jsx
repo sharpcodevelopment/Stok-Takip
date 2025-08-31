@@ -132,9 +132,7 @@ const Login = () => {
           throw new Error(result.error.message || 'Kayıt işlemi başarısız');
         }
         
-        // Kayıt sonrası session'ı kontrol et
-        console.log('Kayıt sonrası result:', result);
-        console.log('Kayıt yapan kişi email:', formData.email);
+
         
         // Kayıt başarılı - Kayıt yapan kişinin bilgilerini kullan
         const userRole = userType === 'admin' ? 'admin' : 'user';
