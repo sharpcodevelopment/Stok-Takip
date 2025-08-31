@@ -132,11 +132,9 @@ const Login = () => {
           throw new Error(result.error.message || 'Kayıt işlemi başarısız');
         }
         
-        // Kayıt başarılı - Supabase response'una göre yönlendir
-        
-        // Supabase response'una göre yönlendirme
-        const userRole = result.data?.user?.user_metadata?.role || 'user';
-        const isAdminRequestPending = result.data?.user?.user_metadata?.isAdminRequestPending || false;
+        // Kayıt başarılı - Kayıt yapan kişinin bilgilerini kullan
+        const userRole = userType === 'admin' ? 'admin' : 'user';
+        const isAdminRequestPending = userType === 'admin';
         
         if (userRole === 'admin' && isAdminRequestPending) {
           // Admin kayıt talebi beklemede - kullanıcı dashboard'una yönlendir
