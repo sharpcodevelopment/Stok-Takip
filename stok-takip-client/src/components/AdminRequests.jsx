@@ -30,7 +30,9 @@ const AdminRequests = () => {
       // Önce kullanıcı metadata'sını güncelle
       await supabaseHelpers.updateUserMetadata();
       
-      const user = await supabaseHelpers.getCurrentUser();
+      // localStorage'dan güncel kullanıcı bilgilerini al
+      const userString = localStorage.getItem('user');
+      const user = userString ? JSON.parse(userString) : null;
       setUser(user);
       
       // Ana admin kontrolü
