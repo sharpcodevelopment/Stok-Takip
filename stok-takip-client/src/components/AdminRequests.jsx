@@ -27,6 +27,9 @@ const AdminRequests = () => {
 
   const fetchUserProfile = async () => {
     try {
+      // Önce kullanıcı metadata'sını güncelle
+      await supabaseHelpers.updateUserMetadata();
+      
       const user = await supabaseHelpers.getCurrentUser();
       setUser(user);
       
